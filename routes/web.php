@@ -4,7 +4,11 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\PartController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ServiceTypeController;
+use App\Http\Controllers\UserCustomerController;
 use App\Http\Controllers\UserSignInController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +77,10 @@ Route::middleware(['auth', 'admin'])->group(function() {
         Route::get('/', [ServiceTypeController::class, 'servicesTable'])->name('serviceTypes-table');
         Route::post('/{serviceType}', [ServiceTypeController::class, 'serviceTypeDelete'])->name('serviceType-delete');
     });
+    Route::prefix('/admin/parts')->group(function() {
+        Route::get('/', [PartController::class, 'partsTable'])->name('parts-table');
+        Route::post('/{part}', [PartController::class, 'partDelete'])->name('part-delete');
+    });
 
     // Customer -> User Management
     Route::prefix('/admin/customers')->group(function() {
@@ -102,6 +110,24 @@ Route::middleware(['auth', 'customer'])->group(function() {
         }
         return abort(403);
     })->name('customer-panel');
+
+    // Customer Profile
+    Route::prefix('/customer/profile')->group(function() {
+        Route::get('/{customerId}', [UserCustomerController::class, 'customerProfile'])->name('customer-profile');
+    });
+
+    // Order Items
+    Route::prefix('/customer/items')->group(function() {
+        Route::get('/', [OrderItemController::class, 'itemsList'])->name('items');
+        Route::get('/{item}', [OrderItemController::class, 'itemOrderCard'])->name('item-order');
+        Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item-addToCart');
+    });
+
+    // Reservation
+    Route::prefix('/customer/reservation')->group(function() {
+        Route::get('/', [ReservationController::class, 'reservationForm'])->name('reservation-form');
+        Route::post('/', [ReservationController::class, 'makeReservation'])->name('reservation.submit');
+    });
 });
 
 // Temp force logout

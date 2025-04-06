@@ -13,7 +13,10 @@
 
                 <li>Service Management</li>
                 <li>
-                    <a href="{{ route('serviceTypes-table') }}">Services</a>
+                    <a href="{{ route('serviceTypes-table') }}">Service Types</a>
+                </li>
+                <li>
+                    <a href="{{ route('parts-table') }}">Parts</a>
                 </li>
 
                 <li>User Management</li>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Service extends Model
 {
@@ -18,4 +19,10 @@ class Service extends Model
         'service_payment_ref_no',
         'service_preferred_date'
     ];
+
+    // Relationships
+    public function serviceDetail(): BelongsTo
+    {
+        return $this->belongsTo(ServiceDetail::class);
+    }
 }
