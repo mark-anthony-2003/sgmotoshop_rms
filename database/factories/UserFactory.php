@@ -24,12 +24,37 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'user_first_name'       => fake()->firstName(),
+            'user_last_name'        => fake()->lastName(),
+            'user_email'            => fake()->unique()->safeEmail(),
+            'user_password'         => static::$password ??= Hash::make('password'),
+            'user_contact_no'       => fake()->phoneNumber(),
+            'user_date_of_birth'    => fake()->date(),
+            'user_type'             => 'customer',
+            'user_account_status'   => 'active',
+            'email_verified_at'     => now(),
+            'remember_token'        => Str::random(10),
         ];
+    }
+
+    /**
+     * Define a state for employees.
+     */
+    public function employee(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 'employee',
+        ]);
+    }
+
+    /**
+     * Define a state for customers.
+     */
+    public function customer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 'customer',
+        ]);
     }
 
     /**

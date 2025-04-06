@@ -21,10 +21,22 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $user = Auth::guard($guard)->user();
+
+                switch ($user->user_type) {
+                    case 'admin':
+                        return redirect()->route('admin-panel');
+                    case 'employee':
+                        return redirect()->route('employee-panel');
+                    case 'customer':
+                        return redirect()->route('customer-panel');
+                    default:
+                        return redirect()->route('home'); // fallback
+                }
             }
         }
 
         return $next($request);
     }
+
 }

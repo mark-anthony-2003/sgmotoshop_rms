@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,10 +19,18 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'user_first_name',
+        'user_last_name',
+        'user_email',
+        'user_password',
+        'user_contact_no',
+        'user_date_of_birth',
+        'user_profile_image',
+        'user_type',
+        'user_account_status'
     ];
 
     /**
@@ -29,7 +39,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'user_password',
         'remember_token',
     ];
 
@@ -40,6 +50,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'user_password' => 'hashed',
     ];
+
+    // Relationships
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class, 'address_user_id');
+    }
+
+    public function employees(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
 }
