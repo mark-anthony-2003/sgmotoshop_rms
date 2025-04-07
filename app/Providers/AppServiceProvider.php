@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
                 $carts = Cart::where('cart_user_id', Auth::id())->with('item')->get();
                 $cartCount = $carts->count();
             }
+
+            // dd($carts);
             
             $view->with('cartCount', $cartCount)
                  ->with('carts', count($carts));
