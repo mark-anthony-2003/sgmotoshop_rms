@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../views";
+
 
 /* Preline UI */
 @import "../../node_modules/preline/variants.css";
@@ -6,3 +8,12 @@
 
 /* Plugins */
 /* @plugin "@tailwindcss/forms"; */
+
+body {
+    font-family: "Sora", sans-serif;
+    font-family: "Sora", sans-serif;
+    font-optical-sizing: auto;
+    /* font-weight: <weight>; */
+    font-style: normal;
+}
+

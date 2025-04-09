@@ -25,16 +25,15 @@ class AppServiceProvider extends ServiceProvider
         View::composer('includes.header', function($view) {
             $cartCount = 0;
             $carts = [];
-
+        
             if (Auth::check() && Auth::user()->user_type === 'customer') {
                 $carts = Cart::where('cart_user_id', Auth::id())->with('item')->get();
                 $cartCount = $carts->count();
             }
-
-            // dd($carts);
-            
+        
             $view->with('cartCount', $cartCount)
-                 ->with('carts', count($carts));
+                 ->with('carts', $carts);
         });
+        
     }
 }

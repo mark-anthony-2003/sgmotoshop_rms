@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address_barangay');
             $table->string('address_city');
             $table->string('address_province');
-            $table->string('address_country');
+            $table->string('address_country')->default('Philippines');
             $table->enum('address_type', [
                 'home',
                 'work'

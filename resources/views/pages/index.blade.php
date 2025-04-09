@@ -1,13 +1,10 @@
 @extends('includes.app')
 
 @section('content')
-    <h2>Home Panel</h2>
-
-    @if (Auth::check() && Auth::user()->user_type === 'customer')
-        <div>
-            <a href="{{ route('items') }}">Order Items</a>
-            <a href="{{ route('reservation-form') }}">Make a Reservation</a>
+    <section class="flex justify-center items-center mt-18">
+        <div class="w-full max-w-lg p-4">
+            <h2 class="text-4xl font-semibold text-center text-[#222831] mb-4">SG Motopshop</h2>
         </div>
-    @endif
+    </section>
 @endsection
 

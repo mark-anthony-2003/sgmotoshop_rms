@@ -26,8 +26,10 @@ class RedirectIfAuthenticated
                 switch ($user->user_type) {
                     case 'admin':
                         return redirect()->route('admin-panel');
-                    case 'employee':
-                        return redirect()->route('employee-panel');
+                    case 'manager':
+                        return redirect()->route('manager-panel');
+                    case 'laborer':
+                        return redirect()->route('laborer-panel');
                     case 'customer':
                         return redirect()->route('customer-panel');
                     default:

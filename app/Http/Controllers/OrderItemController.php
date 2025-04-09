@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderItemController extends Controller
 {
@@ -16,7 +17,7 @@ class OrderItemController extends Controller
 
     public function itemOrderCard(Item $item)
     {
-        $popularItems = Item::orderBy('item_sold', 'desc')->take(6)->get();
+        $popularItems = Item::orderBy('item_sold', 'desc')->take(5)->get();
         return view('pages.items.item_order', compact('item', 'popularItems'));
     }
 
@@ -46,5 +47,64 @@ class OrderItemController extends Controller
             return redirect()->route('items')->with('success', 'Item added to cart successfully');
         }
         return redirect()->back()->with('error', 'Item is out of stock or invalid quantity');
+    }
+
+    public function itemsOrderCheckOut(Request $request)
+    {
+        $selectedItems = $request->input('selected_items', []);
+        $quantities = $request->input('cart_quantity', []);
+
+        if (empty($selectedItems)) {
+            return redirect()->back()->with('error', 'No items selected for checkout.');
+        }
+
+        $carts = Cart::whereIn('cart_id', $selectedItems)
+                      ->where('cart_user_id', Auth::id())
+                      ->with('item')
+                      ->get();
+
+        if ($carts->isEmpty()) {
+            return redirect()->back()->with('error', 'No valid items found in the cart.');
+        }
+
+        $totalAmount = 0;
+        $shipmentItems = [];
+
+        foreach ($carts as $cart) {
+            $item = $cart->item;
+
+            if (isset($quantities[$cart->cart_id])) {
+                $cart->cart_quantity = $quantities[$cart->cart_id];
+                $cart->cart_sub_total = $cart->cart_quantity * $item->item_price;
+                $cart->save();
+
+                $item->decrement('item_stocks', $cart->cart_quantity);
+
+                $shipmentItems[] = [
+                    'cart_item_id' => $item->item_id,
+                    'cart_quantity' => $cart->cart_quantity,
+                    'cart_sub_total' => $cart->cart_sub_total
+                ];
+            }
+            $totalAmount += $cart->cart_sub_total;
+        }
+
+        session([
+            'itemsCheckout' => $selectedItems
+        ]);
+        return redirect()->route('item-orderSummary');
+    }
+
+    public function itemOrderSummary()
+    {
+        $selectedItems = session('itemsCheckout', []);
+        $carts = Cart::whereIn('cart_id', $selectedItems)
+                     ->where('cart_user_id', Auth::id())
+                     ->with('item')
+                     ->get();
+        $totalAmount = $carts->sum('cart_sub_total');
+        $customer = Auth::user();
+
+        return view('pages.items.item_order_summary', compact('selectedItems', 'carts', 'totalAmount', 'customer'));
     }
 }

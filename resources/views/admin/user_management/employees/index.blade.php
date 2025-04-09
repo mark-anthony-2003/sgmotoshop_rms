@@ -25,7 +25,12 @@
                     <td> {{ $employee->user->user_first_name }} {{ $employee->user->user_last_name }} </td>
                     <td> {{ $employee->user->user_email }} </td>
                     <td> {{ $employee->positionType->position_type_name }} </td>
-                    <td> {{ $employee->user->user_type }} </td>
+                    <td>
+                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white">
+                            {{ $employee->user->user_type }}
+                        </span>
+                    </td>
+
                     <td> {{ $employee->user->user_account_status }} </td>
                 </tr>
             @empty

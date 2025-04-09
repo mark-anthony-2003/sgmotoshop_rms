@@ -10,6 +10,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\UserCustomerController;
 use App\Http\Controllers\UserSignInController;
+use App\Http\Controllers\UserSignUpController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +37,12 @@ Route::middleware('guest')->group(function() {
             if ($user->user_type === 'admin') {
                 return redirect()->route('admin-panel');
             } elseif ($user->user_type === 'employee') {
-                return redirect()->route('employee-panel');
+                $employee = $user->employees;
+                if ($employee->positionType->position_type_name === 'manager') {
+                    return redirect()->route('manager-panel');
+                } elseif ($employee->positionType->position_type_name === 'laborer') {
+                    return redirect()->route('laborer-panel');
+                }
             } elseif ($user->user_type === 'customer') {
                 return redirect()->route('customer-panel');
             }
@@ -50,11 +56,15 @@ Route::middleware('guest')->group(function() {
     // Sign in as Employee
     Route::get('/sign-in/as', [UserSignInController::class, 'showEmployeeSignInAs'])->name('sign-in.employee-as');
     Route::get('/sign-in/as/manager', [UserSignInController::class, 'showEmployeeSignInAsManager'])->name('sign-in.employee-as-manager');
-    Route::post('/sign-in/manager', [UserSignInController::class, 'signInEmployee'])->name('sign-in.manager.submit');
+    Route::post('/sign-in/as/manager', [UserSignInController::class, 'signInEmployee'])->name('sign-in.manager.submit');
     Route::get('/sign-in/as/laborer', [UserSignInController::class, 'showEmployeeSignInAsLaborer'])->name('sign-in.employee-as-laborer');
+    Route::post('/sign-in/as/laborer', [UserSignInController::class, 'signInEmployee'])->name('sign-in.laborer.submit');
     // Sign in as Customer
     Route::get('/sign-in/customer', [UserSignInController::class, 'showCustomerSignInForm'])->name('sign-in.customer');
     Route::post('/sign-in/customer', [UserSignInController::class, 'signIn'])->name('sign-in.customer.submit');
+    // Sign up as Customer
+    Route::get('/sign-up/customer', [UserSignUpController::class, 'showCustomerSignUpForm'])->name('sign-up.customer');
+    Route::post('/sign-up/customer', [UserSignUpController::class, 'signUp'])->name('sign-up.customer.submit');
 
 });
 
@@ -114,6 +124,7 @@ Route::middleware(['auth', 'customer'])->group(function() {
     // Customer Profile
     Route::prefix('/customer/profile')->group(function() {
         Route::get('/{customerId}', [UserCustomerController::class, 'customerProfile'])->name('customer-profile');
+        Route::post('/{customerId}', [UserCustomerController::class, 'updateCustomerProfile'])->name('customer.update');
     });
 
     // Order Items
@@ -121,6 +132,10 @@ Route::middleware(['auth', 'customer'])->group(function() {
         Route::get('/', [OrderItemController::class, 'itemsList'])->name('items');
         Route::get('/{item}', [OrderItemController::class, 'itemOrderCard'])->name('item-order');
         Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item-addToCart');
+        
+        // Order Items Summary
+        Route::post('/order-checkout', [OrderItemController::class, 'itemsOrderCheckOut'])->name('item-orderCheckOut');
+        Route::get('/order-summary', [OrderItemController::class, 'itemOrderSummary'])->name('item-orderSummary');
     });
 
     // Reservation

@@ -1,137 +1,188 @@
 @extends('includes.app')
 
 @section('content')
-    <h2>Customer Profile</h2>
+    <section class="flex justify-center items-center mt-18">
+        <div class="w-full max-w-6xl px-4 py-4">
+            <h2 class="text-2xl font-bold text-[#222831] mb-5">Customer Profile</h2>
 
-    <div>
-        <form action="" method="post" enctype="multipart/form-data">
-            @csrf
-
-            <div>
-                <h4>User Settings</h4>
-
-                <div>
-                    <label for="user_profile_image">Profile Image</label>
-                    <input type="file" name="user_profile_image">
-
-                    <label for="user_first_name">First Name</label>
-                    <input type="text" name="user_first_name" value="{{ old('user_first_name', $user->user_first_name) }}">
-
-                    <label for="user_last_name">Last Name</label>
-                    <input type="text" name="user_last_name" value="{{ old('user_last_name', $user->user_last_name) }}">
-                </div>
-                <div>
-                    <label for="user_email">Email Address</label>
-                    <input type="email" name="user_email" value="{{ old('user_email', $user->user_email) }}">
-
-                    <label for="user_contact_no">Contact No</label>
-                    <input type="text" name="user_contact_no" value="{{ old('user_contact_no', $user->user_contact_no) }}">
-
-                    <label for="user_date_of_birth">Date of Birth</label>
-                    <input type="date" name="user_date_of_birth" value="{{ old('user_date_of_birth', $user->user_date_of_birth) }}">
+            <div class="flex">
+                <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
+                    <nav class="flex gap-x-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
+                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white active" id="segment-item-1" aria-selected="true" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
+                            User Settings
+                        </button>
+                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white" id="segment-item-2" aria-selected="false" data-hs-tab="#segment-2" aria-controls="segment-2" role="tab">
+                            Orders History
+                        </button>
+                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white" id="segment-item-3" aria-selected="false" data-hs-tab="#segment-3" aria-controls="segment-3" role="tab">
+                            Reservations History
+                        </button>
+                    </nav>
                 </div>
             </div>
 
-            <div>
-                <h4>Address</h4>
+            <div class="mt-3">
+                <div id="segment-1" role="tabpanel" aria-labelledby="segment-item-1">
+                    <form action="{{ route('customer.update', $customer->user_id) }}" method="post" enctype="multipart/form-data" class="space-y-8">
+                        @csrf
 
-                <label for="address_country">Country</label>
-                <select name="address_country" id="address_country">
-                    <option value="{{ old('address_country', $user->addresses->first()->address_country ?? 'Philippines') }}" selected>
-                        {{ old('address_country', $user->addresses->first()->address_country ?? 'Philippines') }}
-                    </option>
-                </select>
+                        <div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="user_profile_image" class="block text-sm text-[#222831]">Profile Image</label>
+                                    <input type="file" name="user_profile_image" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                </div>
+            
+                                <div>
+                                    <label for="user_first_name" class="block text-sm text-[#222831]">First Name</label>
+                                    <input type="text" name="user_first_name" value="{{ old('user_first_name', $customer->user_first_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                </div>
+            
+                                <div>
+                                    <label for="user_last_name" class="block text-sm text-[#222831]">Last Name</label>
+                                    <input type="text" name="user_last_name" value="{{ old('user_last_name', $customer->user_last_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                </div>
+            
+                                <div>
+                                    <label for="user_email" class="block text-sm text-[#222831]">Email Address</label>
+                                    <input type="email" name="user_email" value="{{ old('user_email', $customer->user_email) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                </div>
+            
+                                <div>
+                                    <label for="user_contact_no" class="block text-sm text-[#222831]">Contact No</label>
+                                    <input type="text" name="user_contact_no" value="{{ old('user_contact_no', $customer->user_contact_no) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                </div>
+            
+                                <div>
+                                    <label for="user_date_of_birth" class="block text-sm text-[#222831]">Date of Birth</label>
+                                    <input type="date" name="user_date_of_birth" value="{{ old('user_date_of_birth', $customer->user_date_of_birth) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-[#222831] mb-4">Address</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                                <div>
+                                    <label for="address_country" class="block text-sm text-[#222831]">Country</label>
+                                    <select name="address_country" id="address_country" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('address_country', $customer->addresses->first()->address_country ?? 'Philippines') }}" selected>
+                                            {{ old('address_country', $customer->addresses->first()->address_country ?? 'Philippines') }}
+                                        </option>
+                                    </select>
+                                </div>
+            
+                                <div>
+                                    <label for="address_province" class="block text-sm text-[#222831]">State/Province</label>
+                                    <select name="address_province" id="address_province" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('address_province', $customer->addresses->first()->address_province ?? 'Select State/Province') }}" selected>
+                                            {{ old('address_province', $customer->addresses->first()->address_province ?? 'Select State/Province') }}
+                                        </option>
+                                    </select>
+                                </div>
+            
+                                <div>
+                                    <label for="address_city" class="block text-sm text-[#222831]">City/Town</label>
+                                    <select name="address_city" id="address_city" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('address_city', $customer->addresses->first()->address_city ?? 'Select City/Municipality') }}" selected>
+                                            {{ old('address_city', $customer->addresses->first()->address_city ?? 'Select City/Municipality') }}
+                                        </option>
+                                    </select>
+                                </div>
+            
+                                <div>
+                                    <label for="address_barangay" class="block text-sm text-[#222831]">Barangay</label>
+                                    <select name="address_barangay" id="address_barangay" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('address_barangay', $customer->addresses->first()->address_barangay ?? 'Select Street/Barangay') }}" selected>
+                                            {{ old('address_barangay', $customer->addresses->first()->address_barangay ?? 'Select Street/Barangay') }}
+                                        </option>
+                                    </select>
+                                </div>
+            
+                                <div>
+                                    <label for="address_type" class="block text-sm text-gray-600 mb-1">Address Type</label>
+                                    <select name="address_type" id="address_type" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="">Select Type</option>
+                                        <option value="home" {{ old('address_type', $customer->addresses->first()->address_type ?? '') == 'home' ? 'selected' : '' }}>Home</option>
+                                        <option value="work" {{ old('address_type', $customer->addresses->first()->address_type ?? '') == 'work' ? 'selected' : '' }}>Work</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-                <label for="address_province">State/Province</label>
-                <select name="address_province" id="address_province">
-                    <option value="{{ old('address_province', $user->addresses->first()->address_province ?? '') }}" selected>
-                        {{ old('address_province', $user->addresses->first()->address_province ?? 'Select State/Province') }}
-                    </option>
-                </select>
-
-                <label for="address_city">City/Town/Municipality</label>
-                <select name="address_city" id="address_city">
-                    <option value="{{ old('address_city', $user->addresses->first()->address_city ?? '') }}" selected>
-                        {{ old('address_city', $user->addresses->first()->address_city ?? 'Select City/Town/Municipality') }}
-                    </option>
-                </select>
-
-                <label for="address_barangay">Street/Barangay</label>
-                <select name="address_barangay" id="address_barangay">
-                    <option value="{{ old('address_barangay', $user->addresses->first()->address_barangay ?? '') }}" selected>
-                        {{ old('address_barangay', $user->addresses->first()->address_barangay ?? 'Select Street/Barangay') }}
-                    </option>
-                </select>
-
-                <label for="address_type">Address Type</label>
-                <select name="address_type" id="address_type">
-                    <option value="">Select Address Type</option>
-                    <option value="home" {{ old('address_type', $user->addresses->first()->address_type ?? '') == 'home' ? 'selected' : '' }}>Home</option>
-                    <option value="work" {{ old('address_type', $user->addresses->first()->address_type ?? '') == 'work' ? 'selected' : '' }}>Work</option>
-                </select>
+                        <div class="text-right">
+                            <button type="submit" class="inline-block px-6 py-2 bg-[#222831] text-white text-sm rounded transition">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
+                    <p class="text-gray-500">
+                        This is the <em class="font-semibold text-gray-800">second</em> item's tab body.
+                    </p>
+                </div>
+                <div id="segment-3" class="hidden" role="tabpanel" aria-labelledby="segment-item-3">
+                    <p class="text-gray-500">
+                        This is the <em class="font-semibold text-gray-800">third</em> item's tab body.
+                    </p>
+                </div>
             </div>
+        </div>
+    </section>
+@endsection
 
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        const userAddressProvince = "{{ old('address_province', $customer->addresses->first()->address_province ?? '') }}"
+        const userAddressCity = "{{ old('address_city', $customer->addresses->first()->address_city ?? '') }}"
+        const userAddressBarangay = "{{ old('address_barangay', $customer->addresses->first()->address_barangay ?? '') }}"
 
-    <script>
-        $(document).ready(function() {
-            const userAddressProvince = "{{ old('address_province', $user->addresses->first()->address_province ?? '') }}"
-            const userAddressCity = "{{ old('address_city', $user->addresses->first()->address_city ?? '') }}"
-            const userAddressBarangay = "{{ old('address_barangay', $user->addresses->first()->address_barangay ?? '') }}"
-
-            // fetch province
-            $.get('/address/provinces', function(data) {
-                $('#address_province').empty().append('<option>Select State/Province</option>')
-                data.forEach(function(item) {
-                    const selected = item.name == userAddressProvince ? 'selected' : ''
-                    $('#address_province').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
-                })
-
-                if (userAddressProvince) $('#address_province').trigger('change')
+        $.get('/address/provinces', function (data) {
+            $('#address_province').empty().append('<option>Select State/Province</option>')
+            data.forEach(function (item) {
+                const selected = item.name === userAddressProvince ? 'selected' : ''
+                $('#address_province').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
             })
 
-            // fetch cities on province change
-            $('#address_province').change(function() {
-                const provinceCode = $('#address_province option:selected').data('code')
-                const provinceName = $(this).val()
+            if (userAddressProvince) $('#address_province').trigger('change')
+        })
 
-                $('input[name="address_province"]').val(provinceName)
-                $('#address_city').html('<option>Select City/Town/Municipality</option>')
-                $('#address_barangay').html('<option>Select Street/Barangay</option>')
+        $('#address_province').change(function () {
+            const code = $('#address_province option:selected').data('code')
+            const name = $(this).val()
 
-                if (!provinceCode) return
+            $('#address_city').html('<option>Select City/Town</option>')
+            $('#address_barangay').html('<option>Select Barangay</option>')
 
-                $.get(`/address/cities/${provinceCode}`, function(data) {
-                    $('#address_city').empty().append('<option>Select City/Town/Municipality</option>')
-                    data.forEach(function(item) {
-                        const selected = item.name == userAddressCity ? 'selected' : ''
-                        $('#address_city').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
-                    })
+            if (!code) return
 
-                    if (userAddressCity) $('#address_city').trigger('change')
+            $.get(`/address/cities/${code}`, function (data) {
+                $('#address_city').empty().append('<option>Select City/Town</option>')
+                data.forEach(function (item) {
+                    const selected = item.name === userAddressCity ? 'selected' : ''
+                    $('#address_city').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
                 })
+
+                if (userAddressCity) $('#address_city').trigger('change')
             })
+        })
 
-            // fetch barangays on city change
-            $('#address_city').change(function() {
-                const cityCode = $('#address_city option:selected').data('code')
-                const cityName = $(this).val()
+        $('#address_city').change(function () {
+            const code = $('#address_city option:selected').data('code')
+            const name = $(this).val()
 
-                $('input[name="address_city"]').val(cityName)
-                $('#address_barangay').html('<option>Select Street/Barangay</option>')
+            $('#address_barangay').html('<option>Select Barangay</option>')
+            if (!code) return
 
-                if (!cityCode) return
-
-                $.get(`/address/barangays/${cityCode}`, function(data) {
-                    $('#address_barangay').empty().append('<option>Select Street/Barangay</option>')
-                    data.forEach(function(item) {
-                        const selected = item.name == userAddressBarangay ? 'selected' : ''
-                        $('#address_barangay').append(`<option value="${item.name}" ${selected}>${item.name}</option>`)
-                    })
+            $.get(`/address/barangays/${code}`, function (data) {
+                $('#address_barangay').empty().append('<option>Select Barangay</option>')
+                data.forEach(function (item) {
+                    const selected = item.name === userAddressBarangay ? 'selected' : ''
+                    $('#address_barangay').append(`<option value="${item.name}" ${selected}>${item.name}</option>`)
                 })
             })
         })
-    </script>
-@endsection
+    })
+</script>
+@endpush
