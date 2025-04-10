@@ -134,8 +134,8 @@ Route::middleware(['auth', 'customer'])->group(function() {
         Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item-addToCart');
         
         // Order Items Summary
-        Route::post('/order-checkout', [OrderItemController::class, 'itemsOrderCheckOut'])->name('item-orderCheckOut');
-        Route::get('/order-summary', [OrderItemController::class, 'itemOrderSummary'])->name('item-orderSummary');
+        Route::post('/order-summary', [OrderItemController::class, 'itemsOrderCheckOut'])->name('items.checkout');
+        Route::get('/order-summary', [OrderItemController::class, 'itemOrderSummary'])->name('items.summary');
     });
 
     // Reservation
@@ -148,6 +148,9 @@ Route::middleware(['auth', 'customer'])->group(function() {
 // Temp force logout
 Route::get('/force-logout', function() {
     Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+
     return redirect('/home');
 });
 

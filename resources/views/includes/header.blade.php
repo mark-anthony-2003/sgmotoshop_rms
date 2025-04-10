@@ -21,8 +21,6 @@
                                     $dashboardRoute = route('laborer-panel');
                                 }
                             }
-                        } else {
-                            $dashboardRoute = route('home');
                         }
                     }
                 @endphp
@@ -49,9 +47,8 @@
                             </button>
                             <div class="hs-dropdown-menu hidden z-50 mt-2 min-w-[14rem] bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-cart">
                                 <ul>
-                                    <form action="{{ route('item-orderCheckOut') }}" method="post">
+                                    <form action="{{ route('items.checkout') }}" method="post">
                                         @csrf
-
                                         @forelse ($carts as $cart)
                                             <li class="flex items-start gap-2 border-b py-2">
                                                 <input 

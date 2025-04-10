@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderItemController extends Controller
 {
@@ -89,15 +90,20 @@ class OrderItemController extends Controller
             $totalAmount += $cart->cart_sub_total;
         }
 
-        session([
-            'itemsCheckout' => $selectedItems
-        ]);
-        return redirect()->route('item-orderSummary');
+        // Store selected items in the session for the next request
+        session(['itemsCheckout' => $selectedItems]);
+
+        // Log for debugging
+        Log::info('Selected items for checkout: ', $selectedItems);
+        
+        return redirect()->route('items.summary');
     }
 
     public function itemOrderSummary()
     {
         $selectedItems = session('itemsCheckout', []);
+        Log::info('Selected items in summary: ', $selectedItems);
+
         $carts = Cart::whereIn('cart_id', $selectedItems)
                      ->where('cart_user_id', Auth::id())
                      ->with('item')
