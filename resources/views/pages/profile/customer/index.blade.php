@@ -25,7 +25,7 @@
                 <div id="segment-1" role="tabpanel" aria-labelledby="segment-item-1">
                     <form action="{{ route('customer.update', $customer->user_id) }}" method="post" enctype="multipart/form-data" class="space-y-8">
                         @csrf
-
+                        
                         <div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
@@ -99,7 +99,7 @@
                                 </div>
             
                                 <div>
-                                    <label for="address_type" class="block text-sm text-gray-600 mb-1">Address Type</label>
+                                    <label for="address_type" class="block text-sm text-[#222831] mb-1">Address Type</label>
                                     <select name="address_type" id="address_type" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                         <option value="">Select Type</option>
                                         <option value="home" {{ old('address_type', $customer->addresses->first()->address_type ?? '') == 'home' ? 'selected' : '' }}>Home</option>
@@ -122,9 +122,80 @@
                     </p>
                 </div>
                 <div id="segment-3" class="hidden" role="tabpanel" aria-labelledby="segment-item-3">
-                    <p class="text-gray-500">
-                        This is the <em class="font-semibold text-gray-800">third</em> item's tab body.
-                    </p>
+                    <div class="flex flex-col">
+                        <div class="-m-1.5 overflow-x-auto">
+                            <div class="p-1.5 min-w-full inline-block align-middle">
+                                <div class="overflow-hidden">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">No#</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Service Type</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Preferred Date</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Approval Status</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Method</th>
+                                                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200">
+                                            @php
+                                                $groupedReservations = $reservations->groupBy(fn($r) => $r->service->service_id);
+                                                $rowCounter = 1;
+                                            @endphp
+                                        
+                                            @foreach ($groupedReservations as $serviceId => $group)
+                                                @php
+                                                    $groupTotal = $group->sum(fn($r) => $r->serviceType->service_type_price);
+                                                    $serviceDetails = $group->first()->service;
+                                                @endphp
+                                        
+                                                @foreach ($group as $reservation)
+                                                    <tr>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $rowCounter++ }}</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->serviceType->service_type_name }}</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">₱{{ number_format($reservation->serviceType->service_type_price, 2) }}</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white uppercase">
+                                                                {{ $reservation->serviceType->service_type_status }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                            {{ \Carbon\Carbon::parse($reservation->service->service_preferred_date)->format('F d, Y') }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                                    {{ $reservation->st_approval_type === 'approved' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                                {{ $reservation->st_approval_type }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
+                                                            {{ $reservation->service->service_payment_method }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
+                                                            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">
+                                                                {{ $reservation->service->service_payment_status }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                
+                                                <tr class="bg-gray-100">
+                                                    <td colspan="2"></td>
+                                                    <td class="px-6 py-4 font-bold text-sm text-gray-800 text-start">
+                                                        Total: ₱{{ number_format($groupTotal, 2) }}
+                                                    </td>
+                                                    <td colspan="5"></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ class Manager extends Model
     protected $primaryKey = 'manager_id';
 
     protected $fillable = [
+        'manager_employee_id',
         'manager_position_type_id',
         'manager_area_checker',
         'manager_inventory_recorder',

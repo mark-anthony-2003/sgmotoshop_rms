@@ -20,9 +20,6 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             EmployeeSeeder::class,
 
-            ManagerTypeSeeder::class,
-            LaborerTypeSeeder::class,
-
             ItemSeeder::class,
             ServiceTypeSeeder::class,
             PartSeeder::class,

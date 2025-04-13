@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('managers', function (Blueprint $table) {
             $table->id('manager_id');
+            $table->foreignId('manager_employee_id')
+                ->constrained('employees', 'employee_id')
+                ->onDelete('cascade');
             $table->foreignId('manager_position_type_id')
                 ->constrained('position_types', 'position_type_id')
                 ->onDelete('cascade');

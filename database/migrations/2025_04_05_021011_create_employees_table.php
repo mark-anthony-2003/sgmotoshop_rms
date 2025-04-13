@@ -16,9 +16,6 @@ return new class extends Migration
             $table->foreignId('employee_user_id')
                 ->constrained('users', 'user_id')
                 ->onDelete('cascade');
-            // $table->foreignId('employee_service_transaction_id')
-            //     ->constrained('service_transactions', 'service_transaction_id')
-            //     ->onDelete('cascade');
             $table->foreignId('employee_salary_type_id')
                 ->constrained('salary_types', 'salary_type_id')
                 ->onDelete('cascade');

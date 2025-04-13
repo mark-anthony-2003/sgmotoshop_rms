@@ -16,7 +16,7 @@
                             $employee = $user->employees;
                             if ($employee && $employee->positionType) {
                                 if ($employee->positionType->position_type_name === 'manager') {
-                                    $dashboardRoute = route('manager-panel');
+                                    $dashboardRoute = route('manager.panel');
                                 } elseif ($employee->positionType->position_type_name === 'laborer') {
                                     $dashboardRoute = route('laborer-panel');
                                 }

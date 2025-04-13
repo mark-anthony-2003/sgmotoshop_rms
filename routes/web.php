@@ -4,6 +4,8 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LaborerController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\ReservationController;
@@ -39,7 +41,7 @@ Route::middleware('guest')->group(function() {
             } elseif ($user->user_type === 'employee') {
                 $employee = $user->employees;
                 if ($employee->positionType->position_type_name === 'manager') {
-                    return redirect()->route('manager-panel');
+                    return redirect()->route('manager.panel');
                 } elseif ($employee->positionType->position_type_name === 'laborer') {
                     return redirect()->route('laborer-panel');
                 }
@@ -103,13 +105,15 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 // Employee Routes
 Route::middleware(['auth', 'employee'])->group(function() {
-    Route::get('/manager/home', function() {
-        return view('includes.employee.manager.index');
-    })->name('manager-panel');
-
     Route::get('/laborer/home', function() {
         return view('includes.employee.laborer.index');
     })->name('laborer-panel');
+
+    // Manager Panel
+    Route::get('/manager/panel', [ManagerController::class, 'managerPanel'])->name('manager.panel');
+    Route::post('/manager/approve/{serviceDetailId}', [ManagerController::class, 'approveReservation'])->name('manager.approve');
+    Route::post('/manager/reject/{serviceDetailId}', [ManagerController::class, 'rejectReservation'])->name('manager.reject');
+    Route::post('/laborer/assign/{serviceDetailId}', [LaborerController::class, 'assignLaborer'])->name('laborer.assign');
 });
 
 // Customer Routes

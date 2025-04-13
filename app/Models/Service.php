@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Service extends Model
 {
@@ -24,5 +25,9 @@ class Service extends Model
     public function serviceDetail(): BelongsTo
     {
         return $this->belongsTo(ServiceDetail::class);
+    }
+    public function serviceTransaction(): HasOne
+    {
+        return $this->hasOne(ServiceTransaction::class, 'service_traction_service_id', 'service_id');
     }
 }

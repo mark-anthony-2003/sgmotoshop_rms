@@ -24,6 +24,17 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('parts', 'part_id')
                 ->onDelete('cascade');
+                $table->foreignId('st_assigned_by_manager_id')
+                ->nullable()
+                ->constrained('users', 'user_id')
+                ->onDelete('set null');
+            $table->enum('st_approval_type', [
+                'pending',
+                'approved',
+                'rejected'
+                ])
+                ->default('pending');
+            $table->text('st_manager_remarks')->nullable();
             $table->timestamps();
         });
     }

@@ -1,37 +1,40 @@
 @extends('includes.app')
 
 @section('content')
-    <h2>Customers Table</h2>
+    <section class="flex justify-center items-center mt-18">
+        <div class="w-full max-w-6xl px-4 py-4">
+            <h2 class="text-2xl font-bold text-[#222831] mb-5">Customers Table</h2>
 
-    @if (session('success'))
-        <div> {{ session('success') }} </div>
-    @endif
-
-    <table>
-        <thead>
-            <tr>
-                <th>No#</th>
-                <th>Customer Name</th>
-                <th>Email</th>
-                <th>User Type</th>
-                <th>Account Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($customers as $index => $customer)
-                <tr>
-                    <td> {{ $index + 1 }} </td>
-                    <td> {{ $customer->user_first_name }} {{ $customer->user_last_name }} </td>
-                    <td> {{ $customer->user_email }} </td>
-                    <td> {{ $customer->user_type }} </td>
-                    <td> {{ $customer->user_account_status }} </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7">No Customers</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            <div class="flex flex-col">
+                <div class="-m-1.5 overflow-x-auto">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">No#</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Customer Name</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Email</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Account Status</th>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @forelse ($customers as $index => $customer)
+                                        <tr>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                {{ Str::title($customer->user_first_name) }} {{ Str::title($customer->user_last_name) }}
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $customer->user_email }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $customer->user_account_status }}</td>
+                                        </tr>
+                                    @empty
+                                        <td colspan="7">No Customers</td>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
-

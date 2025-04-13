@@ -13,7 +13,11 @@ class UserCustomerController extends Controller
     {
         $customer = User::findOrFail($customerId);
         $orderItems = Shipment::all();
-        $reservations = ServiceDetail::with(['service', 'serviceType'])->get();
+        $reservations = ServiceDetail::with([
+            'service',
+            'serviceType',
+            'assignedByManager'
+        ])->get();
 
         return view('pages.profile.customer.index', compact('customer', 'orderItems', 'reservations'));
     }

@@ -15,7 +15,10 @@ class ServiceDetail extends Model
     protected $fillable = [
         'service_detail_service_id',
         'service_detail_service_type_id',
-        'service_detail_part_id'
+        'service_detail_part_id',
+        'st_assignment_by_manager',
+        'st_approval_type',
+        'st_manager_remarks'
     ];
 
     // Relationships
@@ -23,9 +26,13 @@ class ServiceDetail extends Model
     {
         return $this->belongsTo(Service::class, 'service_detail_service_id', 'service_id');
     }
-
     public function serviceType(): BelongsTo
     {
         return $this->belongsTo(ServiceType::class, 'service_detail_service_type_id', 'service_type_id');
     }
+    public function assignedByManager(): BelongsTo
+    {
+        return $this->belongsTo(Manager::class, 'st_assigned_by_manager_id', 'manager_id');
+    }
+    
 }

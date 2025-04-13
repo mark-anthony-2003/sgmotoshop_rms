@@ -17,8 +17,6 @@ class ReservationController extends Controller
         $address = $customer->addresses;
         $serviceTypes = ServiceType::all();
 
-        dump($serviceTypes);
-
         return view(
             'pages.reservation.index',
             compact('customer', 'address', 'serviceTypes')
@@ -51,7 +49,6 @@ class ReservationController extends Controller
         ServiceTransaction::create([
             'service_transaction_user_id' => Auth::id(),
             'service_transaction_service_id' => $service->service_id,
-            'service_transaction_employee_id' => null
         ]);
 
         foreach ($request->serviceTypes as $serviceTypeId) {

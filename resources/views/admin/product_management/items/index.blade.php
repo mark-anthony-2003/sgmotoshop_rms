@@ -1,47 +1,70 @@
 @extends('includes.app')
 
 @section('content')
-    <h2>Items Table</h2>
+    <section class="flex justify-center items-center mt-18">
+        <div class="w-full max-w-6xl px-4 py-4">
+            <h2 class="text-2xl font-bold text-[#222831] mb-5">Items Table</h2>
 
-    @if (session('success'))
-        <div> {{ session('success') }} </div>
-    @endif
-
-    <table>
-        <thead>
-            <tr>
-                <th>No#</th>
-                <th>Item Name</th>
-                <th>Price</th>
-                <th>Stocks</th>
-                <th>Sold</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($itemsList as $index => $item)
-                <tr>
-                    <td> {{ $index + 1 }} </td>
-                    <td> {{ $item->item_name }} </td>
-                    <td> {{ $item->item_price }} </td>
-                    <td> {{ $item->item_stocks }} </td>
-                    <td> {{ $item->item_sold }} </td>
-                    <td> {{ $item->item_status }} </td>
-                    <td>
-                        
-                        <form action="{{ route('item-delete', $item) }}" method="post">
-                            @csrf
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7">No Items Available</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            <div class="flex flex-col">
+                <div class="-m-1.5 overflow-x-auto">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">No#</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Item Name</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Price</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Stocks</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Sold</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @forelse ($itemsList as $index => $item )
+                                        <tr>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($item->item_name) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ number_format($item->item_price, 2) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ number_format($item->item_stocks) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ number_format($item->item_sold) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
+                                                <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                    {{ $item->item_status === 'in_stock' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $item->item_status))) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                <form action="{{ route('item-delete', $item) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" id="hs-new-toast" class="text-red-800 underline">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <td colspan="7">No Items Available</td>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
 
+@push('scripts')
+    @if (session('success'))
+        <script>
+            Toastify({
+                text: "✅ {{ session('success') }}",
+                duration: 3000,
+                gravity: "top", 
+                position: "right", 
+                backgroundColor: "#16a34a", // green-600
+                stopOnFocus: true,
+                className: "rounded-lg shadow text-sm px-4 py-2 text-white font-medium"
+            }).showToast();
+        </script>
+    @endif
+@endpush

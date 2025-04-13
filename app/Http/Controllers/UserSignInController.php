@@ -98,7 +98,7 @@ class UserSignInController extends Controller
 
                 $positionType = $employee->positionType->position_type_name;
                 if ($positionType === 'manager') {
-                    return redirect()->route('manager-panel');
+                    return redirect()->route('manager.panel');
                 } elseif ($positionType === 'laborer') {
                     return redirect()->route('laborer-panel');
                 }
