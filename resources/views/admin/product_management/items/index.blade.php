@@ -3,7 +3,13 @@
 @section('content')
     <section class="flex justify-center items-center mt-18">
         <div class="w-full max-w-6xl px-4 py-4">
-            <h2 class="text-2xl font-bold text-[#222831] mb-5">Items Table</h2>
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-[#222831] mb-5">Items Table</h2>
+                <a href="{{ route('item.create.form') }}" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-md border border-transparent bg-blue-600 text-white">
+                    Add New Item
+                </a>
+            </div>
+            
 
             <div class="flex flex-col">
                 <div class="-m-1.5 overflow-x-auto">
@@ -33,10 +39,12 @@
                                                     {{ strtoupper(ucfirst(str_replace('_', ' ', $item->item_status))) }}
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
+                                                <a href="#" class="text-gray-800 hover:underline">Info</a>
+                                                <a href="{{ route('item.edit', $item) }}" class="text-gray-800 hover:underline">Edit</a>
                                                 <form action="{{ route('item-delete', $item) }}" method="post">
                                                     @csrf
-                                                    <button type="submit" id="hs-new-toast" class="text-red-800 underline">Delete</button>
+                                                    <button type="submit" id="hs-new-toast" class="text-red-800 hover:underline">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -81,8 +81,12 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     // Items -> Product Management
     Route::prefix('admin/items')->group(function() {
-        Route::get('/', [ItemController::class, 'itemsTable'])->name('items-table');
-        Route::post('/{item}', [ItemController::class, 'itemDelete'])->name('item-delete');
+        Route::get('/', [ItemController::class, 'itemsTable'])->name('items.table');
+        Route::get('/create', [ItemController::class, 'itemForm'])->name('item.create.form');
+        Route::post('/store', [ItemController::class, 'itemCreate'])->name('item.store');
+        Route::get('/{item}/edit', [ItemController::class, 'itemEdit'])->name('item.edit');
+        Route::post('/{item}/update', [ItemController::class, 'itemUpdate'])->name('item.update');
+        Route::post('/{item}/delete', [ItemController::class, 'itemDelete'])->name('item-delete');
     });
     // Services -> Service Preparation
     Route::prefix('/admin/services')->group(function() {

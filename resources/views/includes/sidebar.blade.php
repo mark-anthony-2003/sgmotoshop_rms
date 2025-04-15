@@ -16,7 +16,7 @@
 
             <li class="mt-4 font-semibold text-gray-500 uppercase">Inventory Management</li>
             <li>
-                <a href="{{ route('items-table') }}"
+                <a href="{{ route('items.table') }}"
                    class="block px-4 py-2 rounded hover:bg-gray-100 {{ Route::is('items-table') ? $activeClass : '' }}">
                    Items
                 </a>
