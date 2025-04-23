@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id('finance_id');
-            $table->string('finance_accounts');
-            $table->date('finance_date_recorded');
+            $table->string('accounts');
+            $table->date('date_recorded');
             $table->timestamps();
         });
     }

@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id('service_id');
-            $table->integer('service_total_amount');
-            $table->enum('service_payment_method', [
+            $table->integer('total_amount');
+            $table->date('preferred_date');
+            $table->enum('payment_method', [
                 'cash',
                 'gcash'
             ]);
-            $table->enum('service_payment_status', [
+            $table->string('payment_reference')->nullable();
+            $table->enum('payment_status', [
                 'pending',
                 'completed'
             ]);
-            $table->string('service_payment_ref_no')->nullable();
-            $table->date('service_preferred_date');
             $table->timestamps();
         });
     }

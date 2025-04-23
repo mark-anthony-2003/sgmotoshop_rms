@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('position_types', function (Blueprint $table) {
             $table->id('position_type_id');
-            $table->enum('position_type_name', [
+            $table->enum('position_name', [
                 'manager',
                 'laborer'
             ]);

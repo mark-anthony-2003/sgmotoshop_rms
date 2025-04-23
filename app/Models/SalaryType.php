@@ -12,6 +12,6 @@ class SalaryType extends Model
     protected $primaryKey = 'salary_type_id';
 
     protected $fillable = [
-        'salary_type_name'
+        'salary_name'
     ];
 }

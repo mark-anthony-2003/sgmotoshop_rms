@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id('item_id');
             $table->string('item_name');
-            $table->integer('item_price');
-            $table->integer('item_stocks');
-            $table->integer('item_sold')->nullable();
-            $table->string('item_image')->nullable();
+            $table->integer('price');
+            $table->integer('stocks');
+            $table->integer('sold')->nullable();
+            $table->string('image')->nullable();
             $table->enum('item_status', [
                 'in_stock',
                 'out_of_stock'

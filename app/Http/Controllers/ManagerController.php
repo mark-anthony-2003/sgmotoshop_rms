@@ -26,9 +26,9 @@ class ManagerController extends Controller
         }
 
         $transaction->update([
-            'st_approval_type'          => 'approved',
-            'st_assigned_by_manager_id' => Auth::id(),
-            'st_manager_remarks'        => 'Approved by manager.'
+            'approval_type'          => 'approved',
+            'assigned_by_manager_id' => Auth::id(),
+            'manager_remarks'        => 'Approved by manager.'
         ]);
 
         return redirect()->back()->with('success', 'Reservation approved successfully.');
@@ -43,9 +43,9 @@ class ManagerController extends Controller
         }
 
         $transaction->update([
-            'st_approval_type'          => 'rejected',
-            'st_assigned_by_manager_id' => Auth::id(),
-            'st_manager_remarks'        => 'Rejected due to availability issues.'
+            'approval_type'          => 'rejected',
+            'assigned_by_manager_id' => Auth::id(),
+            'manager_remarks'        => 'Rejected due to availability issues.'
         ]);
 
         return redirect()->back()->with('success', 'Reservation rejected.');

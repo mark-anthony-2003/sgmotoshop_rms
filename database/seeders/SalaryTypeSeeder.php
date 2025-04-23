@@ -15,12 +15,12 @@ class SalaryTypeSeeder extends Seeder
     {
         DB::table('salary_types')->insert([
             [
-                'salary_type_name'  => 'regular',
+                'salary_name'       => 'regular',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'salary_type_name'  => 'per_day',
+                'salary_name'       => 'per_day',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],

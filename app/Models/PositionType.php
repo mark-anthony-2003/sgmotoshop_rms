@@ -12,6 +12,6 @@ class PositionType extends Model
     protected $primaryKey = 'position_type_id';
 
     protected $fillable = [
-        'position_type_name'
+        'position_name'
     ];
 }

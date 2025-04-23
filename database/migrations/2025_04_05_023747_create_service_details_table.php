@@ -13,28 +13,28 @@ return new class extends Migration
     {
         Schema::create('service_details', function (Blueprint $table) {
             $table->id('service_detail_id');
-            $table->foreignId('service_detail_service_id')
+            $table->foreignId('service_id')
                 ->constrained('services', 'service_id')
                 ->onDelete('cascade');
-            $table->foreignId('service_detail_service_type_id')
+            $table->foreignId('service_type_id')
                 ->nullable()
                 ->constrained('service_types', 'service_type_id')
                 ->onDelete('cascade');
-            $table->foreignId('service_detail_part_id')
+            $table->foreignId('part_id')
                 ->nullable()
                 ->constrained('parts', 'part_id')
                 ->onDelete('cascade');
-                $table->foreignId('st_assigned_by_manager_id')
+            $table->foreignId('assigned_by_manager_id')
                 ->nullable()
                 ->constrained('users', 'user_id')
                 ->onDelete('set null');
-            $table->enum('st_approval_type', [
+            $table->enum('approval_type', [
                 'pending',
                 'approved',
                 'rejected'
                 ])
                 ->default('pending');
-            $table->text('st_manager_remarks')->nullable();
+            $table->text('manager_remarks')->nullable();
             $table->timestamps();
         });
     }

@@ -13,26 +13,26 @@ class ServiceDetail extends Model
     protected $primaryKey = 'service_detail_id';
 
     protected $fillable = [
-        'service_detail_service_id',
-        'service_detail_service_type_id',
-        'service_detail_part_id',
-        'st_assignment_by_manager',
-        'st_approval_type',
-        'st_manager_remarks'
+        'service_id',
+        'service_type_id',
+        'part_id',
+        'assignment_by_manager',
+        'approval_type',
+        'manager_remarks'
     ];
 
     // Relationships
     public function service(): BelongsTo
     {
-        return $this->belongsTo(Service::class, 'service_detail_service_id', 'service_id');
+        return $this->belongsTo(Service::class, 'service_id');
     }
     public function serviceType(): BelongsTo
     {
-        return $this->belongsTo(ServiceType::class, 'service_detail_service_type_id', 'service_type_id');
+        return $this->belongsTo(ServiceType::class, 'service_type_id');
     }
     public function assignedByManager(): BelongsTo
     {
-        return $this->belongsTo(Manager::class, 'st_assigned_by_manager_id', 'manager_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     
 }

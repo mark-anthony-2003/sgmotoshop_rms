@@ -13,15 +13,15 @@ class ServiceType extends Model
     protected $primaryKey = 'service_type_id';
 
     protected $fillable = [
-        'service_type_name',
-        'service_type_price',
-        'service_type_image',
-        'service_type_status'
+        'service_name',
+        'price',
+        'image',
+        'service_status'
     ];
 
     // Relationships
     public function serviceDetail(): HasMany
     {
-        return $this->hasMany(ServiceDetail::class, 'service_detail_id', 'service_type_id');
+        return $this->hasMany(ServiceDetail::class, 'service_type_id');
     }
 }

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('service_types', function (Blueprint $table) {
             $table->id('service_type_id');
-            $table->string('service_type_name');
-            $table->integer('service_type_price');
-            $table->string('service_type_image')->nullable();
-            $table->enum('service_type_status',[
+            $table->string('service_name');
+            $table->integer('price');
+            $table->string('image')->nullable();
+            $table->enum('service_status',[
                 'available',
                 'not_available'
             ]);

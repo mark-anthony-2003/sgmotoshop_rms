@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('managers', function (Blueprint $table) {
-            $table->id('manager_id');
-            $table->foreignId('manager_employee_id')
-                ->constrained('employees', 'employee_id')
-                ->onDelete('cascade');
-            $table->foreignId('manager_position_type_id')
+            $table->foreignId('position_type_id')
                 ->constrained('position_types', 'position_type_id')
                 ->onDelete('cascade');
-            $table->boolean('manager_area_checker')->default(true);
-            $table->boolean('manager_inventory_recorder')->default(true);
-            $table->boolean('manager_payroll_assistance')->default(true);
+            $table->foreignId('employee_id')
+                ->constrained('employees', 'employee_id')
+                ->onDelete('cascade');
+            $table->boolean('area_checker')->default(true);
+            $table->boolean('inventory_recorder')->default(true);
+            $table->boolean('payroll_assistance')->default(true);
             $table->timestamps();
         });
     }

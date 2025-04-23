@@ -9,11 +9,11 @@ class Expense extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'expense_id';
-
     protected $fillable = [
-        'expense_finance_id',
+        'finance_id',
+        'product_id',
+        'service_id',
         'expense_type',
-        'expense_amount'
+        'amount'
     ];
 }

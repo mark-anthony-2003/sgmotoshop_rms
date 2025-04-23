@@ -12,8 +12,7 @@ class ServiceTransaction extends Model
     protected $primaryKey = 'service_transaction_id';
 
     protected $fillable = [
-        'service_transaction_user_id',
-        'service_transaction_service_id',
-        'service_transaction_employee_id',
+        'user_id',
+        'service_id',
     ];
 }

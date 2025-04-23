@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('salary_types', function (Blueprint $table) {
             $table->id('salary_type_id');
-            $table->enum('salary_type_name', [
+            $table->enum('salary_name', [
                 'regular',
                 'per_day'
             ]);

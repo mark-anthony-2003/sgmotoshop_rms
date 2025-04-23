@@ -15,14 +15,14 @@ class PositionTypeSeeder extends Seeder
     {
         DB::table('position_types')->insert([
             [
-                'position_type_name'    => 'manager',
-                'created_at'            => now(),
-                'updated_at'            => now()
+                'position_name'     => 'manager',
+                'created_at'        => now(),
+                'updated_at'        => now()
             ],
             [
-                'position_type_name'    => 'laborer',
-                'created_at'            => now(),
-                'updated_at'            => now()
+                'position_name'     => 'laborer',
+                'created_at'        => now(),
+                'updated_at'        => now()
             ]
         ]);
     }

@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id('salary_id');
-            $table->foreignId('salary_finance_id')
+            $table->foreignId('finance_id')
                 ->constrained('finances', 'finance_id')
                 ->onDelete('cascade');
-            $table->foreignId('salary_employee_id')
+            $table->foreignId('employee_id')
                 ->constrained('employees', 'employee_id')
                 ->onDelete('cascade');
-            $table->integer('salary_basic_salary');
+            $table->integer('basic_salary');
             $table->timestamps();
         });
     }

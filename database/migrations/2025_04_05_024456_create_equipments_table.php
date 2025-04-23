@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('equipments', function (Blueprint $table) {
             $table->id('equipment_id');
-            $table->foreignId('equipment_employee_id')
+            $table->foreignId('employee_id')
                 ->constrained('employees', 'employee_id')
                 ->onDelete('cascade');
-            $table->foreignId('equipment_service_id')
+            $table->foreignId('service_id')
                 ->constrained('services', 'service_id')
                 ->onDelete('cascade');
             $table->string('equipment_name');
-            $table->date('equipment_purchase_date');
-            $table->date('equipment_maintenance_date');
+            $table->date('purchase_date');
+            $table->date('maintenance_date');
             $table->enum('equipment_status', [
                 'operational',
                 'under_repair',

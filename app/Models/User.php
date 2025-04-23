@@ -22,15 +22,15 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
-        'user_first_name',
-        'user_last_name',
-        'user_email',
-        'user_password',
-        'user_contact_no',
-        'user_date_of_birth',
-        'user_profile_image',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'contact_number',
+        'date_of_birth',
+        'profile_image',
+        'user_status',
         'user_type',
-        'user_account_status'
     ];
 
     /**
@@ -39,7 +39,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'user_password',
+        'password',
         'remember_token',
     ];
 
@@ -50,17 +50,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'user_password' => 'hashed',
+        'password' => 'hashed',
     ];
 
     // Relationships
     public function addresses(): HasMany
     {
-        return $this->hasMany(Address::class, 'address_user_id');
+        return $this->hasMany(Address::class, 'user_id');
     }
 
     public function employees(): HasOne
     {
-        return $this->hasOne(Employee::class, 'employee_user_id', 'user_id');
+        return $this->hasOne(Employee::class, 'user_id');
     }
 }

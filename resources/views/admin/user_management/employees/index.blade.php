@@ -21,10 +21,12 @@
                                     @forelse ($employees as $index => $employee)
                                         <tr>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($employee->user->user_first_name) }} {{ Str::title($employee->user->user_last_name) }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $employee->user->user_email }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->positionType->position_type_name }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->user->user_account_status }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                {{ Str::title($employee->user->first_name) }} {{ Str::title($employee->user->last_name) }}
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $employee->user->email }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->positionType->position_name }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->user->user_status }}</td>
                                         </tr>
                                     @empty
                                         <td colspan="7">No Employees</td>

@@ -13,30 +13,34 @@ return new class extends Migration
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->id('shipment_id');
-            $table->foreignId('shipment_cart_id')
+            $table->foreignId('cart_id')
                 ->constrained('carts', 'cart_id')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('shipment_total_amount');
-            $table->enum('shipment_item_status', [
+            $table->unsignedBigInteger('total_amount');
+            $table->enum('item_status', [
                 'pending',
                 'completed',
                 'canceled'
             ]);
+            $table->date('shipment_date');
             $table->enum('shipment_method', [
                 'courier',
                 'on_site_pickup'
             ]);
-            $table->date('shipment_date');
-            $table->enum('shipment_payment_method', [
+            $table->enum('shipment_status', [
+                'in_transit',
+                'delayed'
+            ]);
+            $table->enum('payment_method', [
                 'cash_on_delivery',
                 'gcash'
             ]);
-            $table->enum('shipment_payment_status', [
+            $table->enum('payment_status', [
                 'paid',
                 'pending',
                 'failed'
             ]);
-            $table->string('shipment_payment_ref')->nullable();
+            $table->string('payment_reference')->nullable();
             $table->timestamps();
         });
     }

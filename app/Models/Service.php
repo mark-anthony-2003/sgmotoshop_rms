@@ -14,20 +14,20 @@ class Service extends Model
     protected $primaryKey = 'service_id';
 
     protected $fillable = [
-        'service_total_amount',
-        'service_payment_method',
-        'service_payment_status',
-        'service_payment_ref_no',
-        'service_preferred_date'
+        'total_amount',
+        'preferred_date',
+        'payment_method',
+        'payment_reference',
+        'payment_status',
     ];
 
     // Relationships
     public function serviceDetail(): BelongsTo
     {
-        return $this->belongsTo(ServiceDetail::class);
+        return $this->belongsTo(ServiceDetail::class, 'service_id');
     }
     public function serviceTransaction(): HasOne
     {
-        return $this->hasOne(ServiceTransaction::class, 'service_traction_service_id', 'service_id');
+        return $this->hasOne(ServiceTransaction::class, 'service_id');
     }
 }

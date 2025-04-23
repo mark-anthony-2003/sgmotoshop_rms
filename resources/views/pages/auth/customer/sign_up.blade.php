@@ -11,28 +11,28 @@
     
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="user_first_name" class="block text-sm font-medium text-[#30475E]">First Name</label>
+                        <label for="first_name" class="block text-sm font-medium text-[#30475E]">First Name</label>
                         <input 
-                            type="text" name="user_first_name" id="user_first_name" 
+                            type="text" name="first_name" id="first_name" 
                             class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required>
                     </div>
                     <div>
-                        <label for="user_last_name" class="block text-sm font-medium text-[#30475E]">Last Name</label>
+                        <label for="last_name" class="block text-sm font-medium text-[#30475E]">Last Name</label>
                         <input 
-                            type="text" name="user_last_name" id="user_last_name" 
+                            type="text" name="last_name" id="last_name" 
                             class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required>
                     </div>
                 </div>
                 <div>
-                    <label for="user_email" class="block text-sm font-medium text-[#30475E]">Email</label>
+                    <label for="email" class="block text-sm font-medium text-[#30475E]">Email</label>
                     <input 
-                        type="email" name="user_email" id="user_email" 
+                        type="email" name="email" id="email" 
                         class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required>
                 </div>
                 <div>
-                    <label for="user_password" class="block text-sm font-medium text-[#30475E]">Password</label>
+                    <label for="password" class="block text-sm font-medium text-[#30475E]">Password</label>
                     <input 
-                        type="password" name="user_password" id="user_password" 
+                        type="password" name="password" id="password" 
                         class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required>
                 </div>
                 <div class="flex items-center justify-end">
@@ -69,7 +69,7 @@
 @push('scripts')
 <script>
     const togglePasswordVisibility = () => {
-        const password = document.getElementById('user_password');
+        const password = document.getElementById('password');
         const type = document.getElementById('show_password').checked ? 'text' : 'password';
         password.type = type;
     }

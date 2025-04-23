@@ -9,13 +9,11 @@ class Manager extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'manager_id';
-
     protected $fillable = [
-        'manager_employee_id',
-        'manager_position_type_id',
-        'manager_area_checker',
-        'manager_inventory_recorder',
-        'manager_payroll_assistance'
+        'position_type_id',
+        'employee_id',
+        'area_checker',
+        'inventory_recorder',
+        'payroll_assistance'
     ];
 }

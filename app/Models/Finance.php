@@ -12,7 +12,7 @@ class Finance extends Model
     protected $primaryKey = 'finance_id';
 
     protected $fillable = [
-        'finance_accounts',
-        'finance_date_recorded'
+        'accounts',
+        'date_recorded'
     ];
 }

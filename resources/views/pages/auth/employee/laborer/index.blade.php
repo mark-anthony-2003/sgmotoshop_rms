@@ -10,16 +10,16 @@
                 <input type="hidden" name="employee_type" value="{{ $employeeType ?? 'manager' }}">
 
                 <div>
-                    <label for="user_email" class="block text-sm font-medium text-[#222831]">Email</label>
+                    <label for="email" class="block text-sm font-medium text-[#222831]">Email</label>
                     <input 
-                        type="email" name="user_email" id="user_email"
+                        type="email" name="email" id="email"
                         class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required
                     >
                 </div>
                 <div>
-                    <label for="user_password" class="block text-sm font-medium text-[#222831]">Password</label>
+                    <label for="password" class="block text-sm font-medium text-[#222831]">Password</label>
                     <input 
-                        type="password" name="user_password" id="user_password"
+                        type="password" name="password" id="password"
                         class="w-full px-4 py-2 text-sm border border-gray-300 rounded-md" required>
                 </div>
                 <div class="flex items-center justify-end">
@@ -46,7 +46,7 @@
 @push('scripts')
 <script>
     const togglePasswordVisibility = () => {
-        const passwordInput = document.getElementById('user_password');
+        const passwordInput = document.getElementById('password');
         passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
     }
 </script>

@@ -17,12 +17,12 @@ class LaborerController extends Controller
 
         $serviceDetail = ServiceDetail::findOrFail($serviceDetailId);
 
-        if ($serviceDetail->st_approval_type !== 'approved') {
+        if ($serviceDetail->approval_type !== 'approved') {
             return redirect()->back()->with('error', 'Reservation must be approved first.');
         }
 
         $serviceDetail->update([
-            'st_assigned_by_manager_id' => $request->laborer_id
+            'assigned_by_manager_id' => $request->laborer_id
         ]);
 
         return redirect()->back()->with('success', 'Laborer assigned succussfully.');

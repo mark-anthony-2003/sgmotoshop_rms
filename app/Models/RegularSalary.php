@@ -9,10 +9,8 @@ class RegularSalary extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'regular_salary_id';
-
     protected $fillable = [
-        'regular_salary_salary_type_id',
-        'regular_salary_monthly_rate'
+        'salary_type_id',
+        'monthly_rate'
     ];
 }

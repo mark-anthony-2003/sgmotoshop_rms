@@ -12,11 +12,11 @@ class Equipment extends Model
     protected $primaryKey = 'equipment_id';
 
     protected $fillable = [
-        'equipment_employee_id',
-        'equipment_service_id',
+        'employee_id',
+        'service_id',
         'equipment_name',
-        'equipment_purchase_date',
-        'equipment_maintenance_date',
+        'purchase_date',
+        'maintenance_date',
         'equipment_status'
     ];
 }

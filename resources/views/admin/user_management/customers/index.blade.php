@@ -21,10 +21,10 @@
                                         <tr>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
-                                                {{ Str::title($customer->user_first_name) }} {{ Str::title($customer->user_last_name) }}
+                                                {{ Str::title($customer->first_name) }} {{ Str::title($customer->last_name) }}
                                             </td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $customer->user_email }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $customer->user_account_status }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $customer->email }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $customer->user_status }}</td>
                                         </tr>
                                     @empty
                                         <td colspan="7">No Customers</td>

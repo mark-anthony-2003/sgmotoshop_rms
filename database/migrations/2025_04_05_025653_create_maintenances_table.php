@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->id('maintenance_id');
-            $table->foreignId('maintenance_finance_id')
+            $table->foreignId('finance_id')
                 ->constrained('finances', 'finance_id')
                 ->onDelete('cascade');
-            $table->foreignId('maintenance_equipment_id')
+            $table->foreignId('equipment_id')
                 ->constrained('equipments', 'equipment_id')
                 ->onDelete('cascade');
-            $table->string('maintenance_type');
+            $table->string('maintenance_type_name');
             $table->timestamps();
         });
     }

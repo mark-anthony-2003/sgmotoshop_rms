@@ -12,9 +12,9 @@ class Product extends Model
     protected $primaryKey = 'product_id';
 
     protected $fillable = [
-        'product_user_id',
-        'product_shipment_id',
-        'product_amount',
-        'product_tracking_no'
+        'user_id',
+        'shipment_id',
+        'amount',
+        'tracking_no'
     ];
 }

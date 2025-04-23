@@ -13,17 +13,17 @@ class Address extends Model
     protected $primaryKey = 'address_id';
 
     protected $fillable = [
-        'address_user_id',
-        'address_barangay',
-        'address_city',
-        'address_province',
-        'address_country',
+        'user_id',
+        'barangay',
+        'city',
+        'province',
+        'country',
         'address_type'
     ];
 
     // Relationships
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'address_user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

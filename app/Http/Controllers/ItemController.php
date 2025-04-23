@@ -22,25 +22,26 @@ class ItemController extends Controller
     {
         $validated = $request->validate([
             'item_name'     => 'required|string|max:100',
-            'item_price'    => 'required|integer',
-            'item_stocks'   => 'required|integer',
-            'item_sold'     => 'required|integer',
+            'price'         => 'required|integer',
+            'stocks'        => 'required|integer',
+            'sold'          => 'required|integer',
+            'image'         => 'nullable|image|mimes:png,jpg|max:5000',
             'item_status'   => 'required|in:in_stock,out_of_stock',
         ]);
 
-        $validated['item_status'] = ($validated['item_stock'] == 0) ? 'out_of_stock' : 'in_stock';
+        $validated['item_status'] = ($validated['stocks'] == 0) ? 'out_of_stock' : 'in_stock';
 
         $itemImagePath = null;
-        if ($request->hasFile('item_image')) {
-            $itemImagePath = $request->file('item_image')->store('item_images', 'public');
+        if ($request->hasFile('image')) {
+            $itemImagePath = $request->file('image')->store('item_images', 'public');
         }
 
         $item = Item::create([
             'item_name'     => $validated['item_name'],
-            'item_price'    => $validated['item_price'],
-            'item_stocks'   => $validated['item_stocks'],
-            'item_sold'     => $validated['item_sold'],
-            'item_image'    => $itemImagePath,
+            'price'         => $validated['price'],
+            'stocks'        => $validated['stocks'],
+            'sold'          => $validated['sold'],
+            'image'         => $itemImagePath,
             'item_status'   => $validated['item_status']
         ]);
 
@@ -59,23 +60,23 @@ class ItemController extends Controller
     {
         $validated = $request->validate([
             'item_name'     => 'required|string|max:100',
-            'item_price'    => 'required|integer',
-            'item_stocks'   => 'required|integer',
-            'item_sold'     => 'required|integer',
+            'price'         => 'required|integer',
+            'stocks'        => 'required|integer',
+            'sold'          => 'required|integer',
             'item_status'   => 'required|in:in_stock,out_of_stock',
         ]);
 
         $itemImagePath = $item->item_image;
-        if ($request->hasFile('item_image')) {
-            $itemImagePath = $request->file('item_image')->store('item_images', 'public');
+        if ($request->hasFile('image')) {
+            $itemImagePath = $request->file('image')->store('item_images', 'public');
         }
 
         $item->update([
             'item_name'     => $validated['item_name'],
-            'item_price'    => $validated['item_price'],
-            'item_stocks'   => $validated['item_stocks'],
-            'item_sold'     => $validated['item_sold'],
-            'item_image'    => $itemImagePath,
+            'price'         => $validated['price'],
+            'stocks'        => $validated['stocks'],
+            'sold'          => $validated['sold'],
+            'image'         => $itemImagePath,
             'item_status'   => $validated['item_status']
         ]);
 

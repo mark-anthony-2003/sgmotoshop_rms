@@ -14,19 +14,19 @@
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">No#</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Service Name</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Price</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Service Status</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Actions</th>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                     @forelse ($serviceTypesList as $index => $serviceType)
                                         <tr>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($serviceType->service_type_name) }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ number_format($serviceType->service_type_price, 2) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($serviceType->service_name) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ number_format($serviceType->price, 2) }}</td>
                                             <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
                                                 <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
-                                                    {{ $serviceType->service_type_status === 'available' ? 'bg-teal-500' : 'bg-red-500' }}">
-                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $serviceType->service_type_status))) }}
+                                                    {{ $serviceType->service_status === 'available' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $serviceType->service_status))) }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">

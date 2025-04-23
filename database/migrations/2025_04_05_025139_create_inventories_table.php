@@ -13,22 +13,22 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id('inventory_id');
-            $table->foreignId('inventory_product_id')
+            $table->foreignId('product_id')
                 ->constrained('products', 'product_id')
                 ->onDelete('cascade');
-            $table->foreignId('inventory_service_id')
+            $table->foreignId('service_id')
                 ->constrained('services', 'service_id')
                 ->onDelete('cascade');
-            $table->foreignId('inventory_employee_id')
+            $table->foreignId('employee_id')
                 ->constrained('inventories', 'inventory_id')
                 ->onDelete('cascade');
-            $table->foreignId('inventory_equipment_id')
+            $table->foreignId('equipment_id')
                 ->constrained('equipments', 'equipment_id')
                 ->onDelete('cascade');
-            $table->foreignId('inventory_finance_id')
+            $table->foreignId('finance_id')
                 ->constrained('finances', 'finance_id')
                 ->onDelete('cascade');
-            $table->integer('inventory_sales');
+            $table->integer('sales');
             $table->timestamps();
         });
     }

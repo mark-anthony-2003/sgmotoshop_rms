@@ -15,15 +15,15 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'user_first_name'       => 'MDL',
-            'user_last_name'        => 'Admin',
-            'user_email'            => 'mdl@admin.com',
-            'user_password'         => Hash::make('mdladmin'),
-            'user_contact_no'       => '09222555100',
-            'user_date_of_birth'    => '2003-04-19',
-            'user_profile_image'    => null,
-            'user_type'             => 'admin',
-            'user_account_status'   => 'active'
+            'first_name'       => 'MDL',
+            'last_name'        => 'Admin',
+            'email'            => 'mdl@admin.com',
+            'password'         => Hash::make('mdladmin'),
+            'contact_number'   => '09222555100',
+            'date_of_birth'    => '2003-04-19',
+            'profile_image'    => null,
+            'user_type'        => 'admin',
+            'user_status'      => 'active'
         ]);
     }
 }

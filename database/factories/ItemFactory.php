@@ -18,10 +18,10 @@ class ItemFactory extends Factory
     {
         return [
             'item_name'     => fake()->word(),
-            'item_price'    => fake()->numberBetween(100, 2000),
-            'item_stocks'   => fake()->numberBetween(0, 500),
-            'item_sold'     => fake()->numberBetween(0, 200),
-            'item_image'    => fake()->imageUrl(640, 470, 'products'),
+            'price'         => fake()->numberBetween(100, 2000),
+            'stocks'        => fake()->numberBetween(0, 500),
+            'sold'          => fake()->numberBetween(0, 200),
+            'image'         => fake()->imageUrl(640, 470, 'products'),
             'item_status'   => fake()->randomElement([
                 'in_stock',
                 'out_of_stock'

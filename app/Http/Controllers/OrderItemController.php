@@ -18,32 +18,32 @@ class OrderItemController extends Controller
 
     public function itemOrderCard(Item $item)
     {
-        $popularItems = Item::orderBy('item_sold', 'desc')->take(5)->get();
+        $popularItems = Item::orderBy('sold', 'desc')->take(5)->get();
         return view('pages.items.item_order', compact('item', 'popularItems'));
     }
 
     public function itemAddToCart(Request $request, Item $item)
     {
         $cartQuantity = $request->input('cart_quantity', 1);
-        $cartQuantity = min($cartQuantity, $item->item_stocks);
+        $cartQuantity = min($cartQuantity, $item->stocks);
 
         if ($item->item_status === 'in_stock' && $cartQuantity > 0) {
-            $cart = Cart::where('cart_item_id', $item->item_id)
-                        ->where('cart_user_id', auth()->user()->user_id)
+            $cart = Cart::where('item_id', $item->item_id)
+                        ->where('user_id', auth()->user()->user_id)
                         ->first();
             if ($cart) {
-                $cart->increment('cart_quantity', $cartQuantity);
-                $cart->cart_sub_total = $cart->cart_quantity * $item->item_price;
+                $cart->increment('quantity', $cartQuantity);
+                $cart->sub_total = $cart->quantity * $item->price;
                 $cart->save();
             } else {
                 Cart::create([
-                    'cart_item_id'      => $item->item_id,
-                    'cart_user_id'      => auth()->user()->user_id,
-                    'cart_quantity'     => $cartQuantity,
-                    'cart_sub_total'    => $item->item_price * $cartQuantity
+                    'item_id'      => $item->item_id,
+                    'user_id'      => auth()->user()->user_id,
+                    'quantity'     => $cartQuantity,
+                    'sub_total'    => $item->price * $cartQuantity
                 ]);
             }
-            $item->decrement('item_stocks', $cartQuantity);
+            $item->decrement('stocks', $cartQuantity);
 
             return redirect()->route('items')->with('success', 'Item added to cart successfully');
         }
@@ -53,14 +53,14 @@ class OrderItemController extends Controller
     public function itemsOrderCheckOut(Request $request)
     {
         $selectedItems = $request->input('selected_items', []);
-        $quantities = $request->input('cart_quantity', []);
+        $quantities = $request->input('quantity', []);
 
         if (empty($selectedItems)) {
             return redirect()->back()->with('error', 'No items selected for checkout.');
         }
 
         $carts = Cart::whereIn('cart_id', $selectedItems)
-                      ->where('cart_user_id', Auth::id())
+                      ->where('user_id', Auth::id())
                       ->with('item')
                       ->get();
 
@@ -75,19 +75,19 @@ class OrderItemController extends Controller
             $item = $cart->item;
 
             if (isset($quantities[$cart->cart_id])) {
-                $cart->cart_quantity = $quantities[$cart->cart_id];
-                $cart->cart_sub_total = $cart->cart_quantity * $item->item_price;
+                $cart->quantity = $quantities[$cart->cart_id];
+                $cart->sub_total = $cart->quantity * $item->price;
                 $cart->save();
 
-                $item->decrement('item_stocks', $cart->cart_quantity);
+                $item->decrement('stocks', $cart->quantity);
 
                 $shipmentItems[] = [
-                    'cart_item_id' => $item->item_id,
-                    'cart_quantity' => $cart->cart_quantity,
-                    'cart_sub_total' => $cart->cart_sub_total
+                    'item_id' => $item->item_id,
+                    'quantity' => $cart->quantity,
+                    'sub_total' => $cart->sub_total
                 ];
             }
-            $totalAmount += $cart->cart_sub_total;
+            $totalAmount += $cart->sub_total;
         }
 
         // Store selected items in the session for the next request
@@ -105,10 +105,10 @@ class OrderItemController extends Controller
         Log::info('Selected items in summary: ', $selectedItems);
 
         $carts = Cart::whereIn('cart_id', $selectedItems)
-                     ->where('cart_user_id', Auth::id())
+                     ->where('user_id', Auth::id())
                      ->with('item')
                      ->get();
-        $totalAmount = $carts->sum('cart_sub_total');
+        $totalAmount = $carts->sum('sub_total');
         $customer = Auth::user();
 
         return view('pages.items.item_order_summary', compact('selectedItems', 'carts', 'totalAmount', 'customer'));

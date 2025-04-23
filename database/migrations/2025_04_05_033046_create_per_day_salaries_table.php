@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('per_day_salaries', function (Blueprint $table) {
             $table->id('per_day_salary_id');
-            $table->foreignId('per_day_salary_salary_type_id')
+            $table->foreignId('salary_type_id')
                 ->constrained('salary_types', 'salary_type_id')
                 ->onDelete('cascade');
-            $table->integer('per_day_salary_daily_rate');
-            $table->integer('per_day_salary_days_worked');
+            $table->integer('daily_rate');
+            $table->integer('days_worked');
             $table->timestamps();
         });
     }

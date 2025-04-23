@@ -53,16 +53,16 @@ class UserSignInController extends Controller
     public function signIn(Request $request)
     {
         $request->validate([
-            'user_email'    => 'required|email',
-            'user_password' => 'required',
-            'user_type'     => 'required|in:admin,customer'
+            'email'     => 'required|email',
+            'password'  => 'required',
+            'user_type' => 'required|in:admin,customer'
         ]);
 
-        $user = User::where('user_email', $request->user_email)
+        $user = User::where('email', $request->email)
                     ->where('user_type', $request->user_type)
                     ->first();
         
-        if ($user && Hash::check($request->user_password, $user->user_password)) {
+        if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
 
             if ($user->user_type === 'admin') {
@@ -79,17 +79,17 @@ class UserSignInController extends Controller
     public function signInEmployee(Request $request)
     {
         $credentials = $request->validate([
-            'user_email'        => 'required|email',
-            'user_password'     => 'required',
-            'employee_type'     => 'required|in:manager,laborer'
+            'email'         => 'required|email',
+            'password'      => 'required',
+            'position_name' => 'required|in:manager,laborer'
         ]);
 
-        $user = User::where('user_email', $credentials['user_email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
-        if ($user && Hash::check($credentials['user_password'], $user->user_password)) {
-            $employee = Employee::where('employee_user_id', $user->user_id)
+        if ($user && Hash::check($credentials['password'], $user->user_password)) {
+            $employee = Employee::where('employee_id', $user->user_id)
                                 ->whereHas('positionType', function($query) use ($credentials) {
-                                    $query->where('position_type_name', $credentials['employee_type']);
+                                    $query->where('position_name', $credentials['position_name']);
                                 })
                                 ->first();
 
@@ -105,11 +105,11 @@ class UserSignInController extends Controller
             }
             Auth::logout();
             return redirect()->back()->withErrors([
-                'employee_type' => 'Unauthorized access for this employee type.'
+                'position_name' => 'Unauthorized access for this employee type.'
             ]);
         }
         return redirect()->back()->withErrors([
-            'user_email' => 'Invalid credentials'
+            'email' => 'Invalid credentials'
         ]);
     }
 }

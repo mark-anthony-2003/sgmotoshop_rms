@@ -10,17 +10,15 @@ class Laborer extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'laborer_id';
-
     protected $fillable = [
-        'laborer_employee_id',
-        'laborer_position_type_id',
-        'laborer_work',
-        'laborer_employment_status'
+        'employee_id',
+        'position_type_id',
+        'work',
+        'employment_status'
     ];
 
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'laborer_employee_id', 'employee_id');
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 }

@@ -18,9 +18,9 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $defaultSalary = SalaryType::where('salary_type_name', 'per_day')->value('salary_type_id');
-        $laborerPosition = PositionType::where('position_type_name', 'laborer')->value('position_type_id');
-        $managerPosition = PositionType::where('position_type_name', 'manager')->value('position_type_id');
+        $defaultSalary = SalaryType::where('salary_name', 'per_day')->value('salary_type_id');
+        $laborerPosition = PositionType::where('position_name', 'laborer')->value('position_type_id');
+        $managerPosition = PositionType::where('position_name', 'manager')->value('position_type_id');
         $workerRoles = [
             'Mechanic',                 // General vehicle repairs and maintenance
             'Auto Electrician',         // Electrical wiring and diagnostics
@@ -36,21 +36,21 @@ class EmployeeSeeder extends Seeder
         // Assign the first employee as a Manager
         $firstEmployee = $employeees->shift();
         $managerEmployee = Employee::updateOrCreate(
-            ['employee_user_id' => $firstEmployee->user_id],
+            ['user_id' => $firstEmployee->user_id],
             [
-                'employee_salary_type_id'           => $defaultSalary,
-                'employee_position_type_id'         => $managerPosition,
-                'employee_date_hired'               => now()
+                'salary_type_id'           => $defaultSalary,
+                'position_type_id'         => $managerPosition,
+                'date_hired'               => now()
             ]
         );
 
         Manager::updateOrCreate(
-            ['manager_employee_id' => $managerEmployee->employee_id],
+            ['employee_id' => $managerEmployee->employee_id],
             [
-                'manager_position_type_id'      => $managerPosition,
-                'manager_area_checker'          => true,
-                'manager_inventory_recorder'    => true,
-                'manager_payroll_assistance'    => true
+                'position_type_id'      => $managerPosition,
+                'area_checker'          => true,
+                'inventory_recorder'    => true,
+                'payroll_assistance'    => true
             ]
         );
 
@@ -58,21 +58,21 @@ class EmployeeSeeder extends Seeder
         foreach ($employeees as $laborer)
         {
             $laborerEmployee = Employee::updateOrCreate(
-                ['employee_user_id' => $laborer->user_id],
+                ['user_id' => $laborer->user_id],
                 [
-                    'employee_salary_type_id'           => $defaultSalary,
-                    'employee_position_type_id'         => $laborerPosition,
-                    'employee_date_hired'               => now()
+                    'salary_type_id'           => $defaultSalary,
+                    'position_type_id'         => $laborerPosition,
+                    'date_hired'               => now()
                 ]
             );
 
             $assignedWorkerRole = $workerRoles[array_rand($workerRoles)];
             Laborer::updateOrCreate(
-                ['laborer_employee_id' => $laborerEmployee->employee_id],
+                ['employee_id' => $laborerEmployee->employee_id],
                 [
-                    'laborer_position_type_id'  => $laborerPosition,
-                    'laborer_work'              => $assignedWorkerRole,
-                    'laborer_employment_status' => 'active'        
+                    'position_type_id'  => $laborerPosition,
+                    'work'              => $assignedWorkerRole,
+                    'employment_status' => 'active'        
                 ]
             );
         }

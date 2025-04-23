@@ -26,45 +26,45 @@ class ReservationController extends Controller
     public function makeReservation(Request $request)
     {
         $request->validate([
-            'serviceTypes' => 'required|array',
-            'serviceTypes.*' => 'exists:service_types,service_type_id',
-            'parts' => 'nullable|array',
-            'parts.*' => 'exists|part_id,part_name',
-            'service_payment_method' => 'required|in:cash,gcash',
-            'service_payment_ref_no' => 'nullable|string',
-            'service_preferred_date' => 'required|date'
+            'serviceTypes'              => 'required|array',
+            'serviceTypes.*'            => 'exists:service_types,service_type_id',
+            'parts'                     => 'nullable|array',
+            'parts.*'                   => 'exists|parts,part_id',
+            'payment_method'            => 'required|in:cash,gcash',
+            'payment_reference'         => 'nullable|string',
+            'preferred_date'            => 'required|date'
         ]);
 
         $totalAmount = ServiceType::whereIn('service_type_id', $request->serviceTypes)
-            ->sum('service_type_price');
+            ->sum('price');
 
         $service = Service::create([
-            'service_total_amount'      => $totalAmount,
-            'service_payment_method'    => $request->service_payment_method,
-            'service_payment_status'    => 'pending',
-            'service_payment_ref_no'    => $request->service_payment_ref_no,
-            'service_preferred_date'    => $request->service_preferred_date 
+            'total_amount'          => $totalAmount,
+            'payment_method'        => $request->payment_method,
+            'payment_status'        => 'pending',
+            'payment_reference'     => $request->payment_reference,
+            'preferred_date'        => $request->preferred_date
         ]);
 
         ServiceTransaction::create([
-            'service_transaction_user_id' => Auth::id(),
-            'service_transaction_service_id' => $service->service_id,
+            'user_id' => Auth::id(),
+            'service_id' => $service->service_id,
         ]);
 
         foreach ($request->serviceTypes as $serviceTypeId) {
             ServiceDetail::create([
-                'service_detail_service_id'         => $service->service_id,
-                'service_detail_service_type_id'    => $serviceTypeId,
-                'service_detail_part_id'            => null
+                'service_id'         => $service->service_id,
+                'service_type_id'    => $serviceTypeId,
+                'part_id'            => null
             ]);
         }
 
         if ($request->has('parts')) {
             foreach ($request->parts as $partId) {
                 ServiceDetail::create([
-                    'service_detail_service_id'         => $service->service_id,
-                    'service_detail_service_type_id'    => null,
-                    'service_detail_part_id'            => $partId
+                    'service_id'         => $service->service_id,
+                    'service_type_id'    => null,
+                    'part_id'            => $partId
                 ]);
             }
         }

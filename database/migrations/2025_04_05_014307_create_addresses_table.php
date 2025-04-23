@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id('address_id');
-            $table->foreignId('address_user_id')
+            $table->foreignId('user_id')
                 ->constrained('users', 'user_id')
                 ->onDelete('cascade');
-            $table->string('address_barangay');
-            $table->string('address_city');
-            $table->string('address_province');
-            $table->string('address_country')->default('Philippines');
+            $table->string('barangay');
+            $table->string('city');
+            $table->string('province');
+            $table->string('country')->default('Philippines');
             $table->enum('address_type', [
                 'home',
                 'work'

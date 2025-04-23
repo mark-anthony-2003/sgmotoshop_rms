@@ -13,20 +13,19 @@ class Cart extends Model
     protected $primaryKey = 'cart_id';
 
     protected $fillable = [
-        'cart_user_id',
-        'cart_item_id',
-        'cart_quantity',
-        'cart_sub_total'
+        'item_id',
+        'shipment_id',
+        'quantity',
+        'sub_total'
     ];
 
     // Relationships
     public function item(): BelongsTo
     {
-        return $this->belongsTo(Item::class, 'cart_item_id');
+        return $this->belongsTo(Item::class, 'item_id');
     }
-
-    public function user(): BelongsTo
+    public function shipment(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'cart_user_id');
+        return $this->belongsTo(Shipment::class, 'shipment_id');
     }
 }

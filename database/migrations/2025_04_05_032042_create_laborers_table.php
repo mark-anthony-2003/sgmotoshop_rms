@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('laborers', function (Blueprint $table) {
-            $table->id('laborer_id');
-            $table->foreignId('laborer_employee_id')
-                ->constrained('employees', 'employee_id')
-                ->onDelete('cascade');
-            $table->foreignId('laborer_position_type_id')
+            $table->foreignId('position_type_id')
                 ->constrained('position_types', 'position_type_id')
                 ->onDelete('cascade');
-            $table->enum('laborer_work', [
+            $table->foreignId('employee_id')
+                ->constrained('employees', 'employee_id')
+                ->onDelete('cascade');
+            $table->enum('work', [
                 'Mechanic', 
                 'Auto Electrician', 
                 'Transmission Specialist', 
@@ -27,7 +26,7 @@ return new class extends Migration
                 'Tire Technician',
                 'Oil Change Specialist'
             ]);
-            $table->enum('laborer_employment_status', [
+            $table->enum('employment_status', [
                 'active',
                 'on_leave',
                 'resigned'

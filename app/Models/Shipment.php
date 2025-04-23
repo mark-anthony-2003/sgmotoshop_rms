@@ -12,13 +12,13 @@ class Shipment extends Model
     protected $primaryKey = 'shipment_id';
 
     protected $fillable = [
-        'shipment_cart_id',
-        'shipment_total_amount',
-        'shipment_item_status',
-        'shipment_method',
+        'cart_id',
+        'total_amount',
+        'item_status',
         'shipment_date',
-        'shipment_payment_method',
-        'shipment_payment_status',
-        'shipment_payment_ref'
+        'shipment_method',
+        'payment_method',
+        'payment_status',
+        'payment_reference'
     ];
 }
