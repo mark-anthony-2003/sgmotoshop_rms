@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
             $carts = [];
         
             if (Auth::check() && Auth::user()->user_type === 'customer') {
-                $carts = Cart::where('cart_user_id', Auth::id())->with('item')->get();
+                $carts = Cart::where('user_id', Auth::id())->with('item')->get();
                 $cartCount = $carts->count();
             }
         

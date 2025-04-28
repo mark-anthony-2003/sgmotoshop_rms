@@ -29,33 +29,33 @@
                         <div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
-                                    <label for="user_profile_image" class="block text-sm text-[#222831]">Profile Image</label>
-                                    <input type="file" name="user_profile_image" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                    <label for="image" class="block text-sm text-[#222831]">Profile Image</label>
+                                    <input type="file" name="image" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
                                 </div>
             
                                 <div>
-                                    <label for="user_first_name" class="block text-sm text-[#222831]">First Name</label>
-                                    <input type="text" name="user_first_name" value="{{ old('user_first_name', $customer->user_first_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                    <label for="first_name" class="block text-sm text-[#222831]">First Name</label>
+                                    <input type="text" name="first_name" value="{{ old('first_name', $customer->first_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                 </div>
             
                                 <div>
-                                    <label for="user_last_name" class="block text-sm text-[#222831]">Last Name</label>
-                                    <input type="text" name="user_last_name" value="{{ old('user_last_name', $customer->user_last_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                    <label for="last_name" class="block text-sm text-[#222831]">Last Name</label>
+                                    <input type="text" name="last_name" value="{{ old('last_name', $customer->last_name) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                 </div>
             
                                 <div>
-                                    <label for="user_email" class="block text-sm text-[#222831]">Email Address</label>
-                                    <input type="email" name="user_email" value="{{ old('user_email', $customer->user_email) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                    <label for="email" class="block text-sm text-[#222831]">Email Address</label>
+                                    <input type="email" name="email" value="{{ old('email', $customer->email) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                 </div>
             
                                 <div>
-                                    <label for="user_contact_no" class="block text-sm text-[#222831]">Contact No</label>
-                                    <input type="text" name="user_contact_no" value="{{ old('user_contact_no', $customer->user_contact_no) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                    <label for="contact_number" class="block text-sm text-[#222831]">Contact No</label>
+                                    <input type="text" name="contact_number" value="{{ old('contact_number', $customer->contact_number) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                 </div>
             
                                 <div>
-                                    <label for="user_date_of_birth" class="block text-sm text-[#222831]">Date of Birth</label>
-                                    <input type="date" name="user_date_of_birth" value="{{ old('user_date_of_birth', $customer->user_date_of_birth) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                    <label for="date_of_birth" class="block text-sm text-[#222831]">Date of Birth</label>
+                                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $customer->date_of_birth) }}" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
                                 </div>
                             </div>
                         </div>
@@ -63,37 +63,37 @@
                             <h4 class="text-lg font-semibold text-[#222831] mb-4">Address</h4>
                             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                                 <div>
-                                    <label for="address_country" class="block text-sm text-[#222831]">Country</label>
-                                    <select name="address_country" id="address_country" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
-                                        <option value="{{ old('address_country', $customer->addresses->first()->address_country ?? 'Philippines') }}" selected>
-                                            {{ old('address_country', $customer->addresses->first()->address_country ?? 'Philippines') }}
+                                    <label for="country" class="block text-sm text-[#222831]">Country</label>
+                                    <select name="country" id="country" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('country', $customer->addresses->first()->country ?? 'Philippines') }}" selected>
+                                            {{ old('country', $customer->addresses->first()->country ?? 'Philippines') }}
                                         </option>
                                     </select>
                                 </div>
             
                                 <div>
-                                    <label for="address_province" class="block text-sm text-[#222831]">State/Province</label>
-                                    <select name="address_province" id="address_province" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
-                                        <option value="{{ old('address_province', $customer->addresses->first()->address_province ?? 'Select State/Province') }}" selected>
-                                            {{ old('address_province', $customer->addresses->first()->address_province ?? 'Select State/Province') }}
+                                    <label for="province" class="block text-sm text-[#222831]">State/Province</label>
+                                    <select name="province" id="province" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('province', $customer->addresses->first()->province ?? 'Select State/Province') }}" selected>
+                                            {{ old('province', $customer->addresses->first()->province ?? 'Select State/Province') }}
                                         </option>
                                     </select>
                                 </div>
             
                                 <div>
-                                    <label for="address_city" class="block text-sm text-[#222831]">City/Town</label>
-                                    <select name="address_city" id="address_city" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
-                                        <option value="{{ old('address_city', $customer->addresses->first()->address_city ?? 'Select City/Municipality') }}" selected>
-                                            {{ old('address_city', $customer->addresses->first()->address_city ?? 'Select City/Municipality') }}
+                                    <label for="city" class="block text-sm text-[#222831]">City/Town</label>
+                                    <select name="city" id="city" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('city', $customer->addresses->first()->city ?? 'Select City/Municipality') }}" selected>
+                                            {{ old('city', $customer->addresses->first()->city ?? 'Select City/Municipality') }}
                                         </option>
                                     </select>
                                 </div>
             
                                 <div>
-                                    <label for="address_barangay" class="block text-sm text-[#222831]">Barangay</label>
-                                    <select name="address_barangay" id="address_barangay" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
-                                        <option value="{{ old('address_barangay', $customer->addresses->first()->address_barangay ?? 'Select Street/Barangay') }}" selected>
-                                            {{ old('address_barangay', $customer->addresses->first()->address_barangay ?? 'Select Street/Barangay') }}
+                                    <label for="barangay" class="block text-sm text-[#222831]">Barangay</label>
+                                    <select name="barangay" id="barangay" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md">
+                                        <option value="{{ old('barangay', $customer->addresses->first()->barangay ?? 'Select Street/Barangay') }}" selected>
+                                            {{ old('barangay', $customer->addresses->first()->barangay ?? 'Select Street/Barangay') }}
                                         </option>
                                     </select>
                                 </div>
@@ -147,35 +147,35 @@
                                         
                                             @foreach ($groupedReservations as $serviceId => $group)
                                                 @php
-                                                    $groupTotal = $group->sum(fn($r) => $r->serviceType->service_type_price);
+                                                    $groupTotal = $group->sum(fn($r) => $r->serviceType->price);
                                                     $serviceDetails = $group->first()->service;
                                                 @endphp
                                         
                                                 @foreach ($group as $reservation)
                                                     <tr>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $rowCounter++ }}</td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->serviceType->service_type_name }}</td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">₱{{ number_format($reservation->serviceType->service_type_price, 2) }}</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->serviceType->service_name }}</td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">₱{{ number_format($reservation->serviceType->price, 2) }}</td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                                             <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white uppercase">
-                                                                {{ $reservation->serviceType->service_type_status }}
+                                                                {{ $reservation->serviceType->service_status }}
                                                             </span>
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                                                            {{ \Carbon\Carbon::parse($reservation->service->service_preferred_date)->format('F d, Y') }}
+                                                            {{ \Carbon\Carbon::parse($reservation->service->preferred_date)->format('F d, Y') }}
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                                             <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
-                                                                    {{ $reservation->st_approval_type === 'approved' ? 'bg-teal-500' : 'bg-red-500' }}">
-                                                                {{ $reservation->st_approval_type }}
+                                                                    {{ $reservation->approval_type === 'approved' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                                {{ $reservation->approval_type }}
                                                             </span>
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
-                                                            {{ $reservation->service->service_payment_method }}
+                                                            {{ $reservation->service->payment_method }}
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
                                                             <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">
-                                                                {{ $reservation->service->service_payment_status }}
+                                                                {{ $reservation->service->payment_status }}
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -190,7 +190,6 @@
                                                 </tr>
                                             @endforeach
                                         </tbody>
-                                        
                                     </table>
                                 </div>
                             </div>
@@ -205,52 +204,52 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
-        const userAddressProvince = "{{ old('address_province', $customer->addresses->first()->address_province ?? '') }}"
-        const userAddressCity = "{{ old('address_city', $customer->addresses->first()->address_city ?? '') }}"
-        const userAddressBarangay = "{{ old('address_barangay', $customer->addresses->first()->address_barangay ?? '') }}"
+        const userAddressProvince = "{{ old('province', $customer->addresses->first()->province ?? '') }}"
+        const userAddressCity = "{{ old('city', $customer->addresses->first()->city ?? '') }}"
+        const userAddressBarangay = "{{ old('barangay', $customer->addresses->first()->barangay ?? '') }}"
 
         $.get('/address/provinces', function (data) {
-            $('#address_province').empty().append('<option>Select State/Province</option>')
+            $('#province').empty().append('<option>Select State/Province</option>')
             data.forEach(function (item) {
                 const selected = item.name === userAddressProvince ? 'selected' : ''
-                $('#address_province').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
+                $('#province').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
             })
 
-            if (userAddressProvince) $('#address_province').trigger('change')
+            if (userAddressProvince) $('#province').trigger('change')
         })
 
-        $('#address_province').change(function () {
-            const code = $('#address_province option:selected').data('code')
+        $('#province').change(function () {
+            const code = $('#province option:selected').data('code')
             const name = $(this).val()
 
-            $('#address_city').html('<option>Select City/Town</option>')
-            $('#address_barangay').html('<option>Select Barangay</option>')
+            $('#city').html('<option>Select City/Town</option>')
+            $('#barangay').html('<option>Select Barangay</option>')
 
             if (!code) return
 
             $.get(`/address/cities/${code}`, function (data) {
-                $('#address_city').empty().append('<option>Select City/Town</option>')
+                $('#city').empty().append('<option>Select City/Town</option>')
                 data.forEach(function (item) {
                     const selected = item.name === userAddressCity ? 'selected' : ''
-                    $('#address_city').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
+                    $('#city').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
                 })
 
-                if (userAddressCity) $('#address_city').trigger('change')
+                if (userAddressCity) $('#city').trigger('change')
             })
         })
 
-        $('#address_city').change(function () {
-            const code = $('#address_city option:selected').data('code')
+        $('#city').change(function () {
+            const code = $('#city option:selected').data('code')
             const name = $(this).val()
 
-            $('#address_barangay').html('<option>Select Barangay</option>')
+            $('#barangay').html('<option>Select Barangay</option>')
             if (!code) return
 
             $.get(`/address/barangays/${code}`, function (data) {
-                $('#address_barangay').empty().append('<option>Select Barangay</option>')
+                $('#barangay').empty().append('<option>Select Barangay</option>')
                 data.forEach(function (item) {
                     const selected = item.name === userAddressBarangay ? 'selected' : ''
-                    $('#address_barangay').append(`<option value="${item.name}" ${selected}>${item.name}</option>`)
+                    $('#barangay').append(`<option value="${item.name}" ${selected}>${item.name}</option>`)
                 })
             })
         })

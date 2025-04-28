@@ -117,8 +117,8 @@
                     @endif
 
                     @php
-                        $firstInitial = strtoupper(Auth::user()->user_first_name[0]);
-                        $lastInitial = strtoupper(Auth::user()->user_last_name[0]);
+                        $firstInitial = strtoupper(Auth::user()->first_name[0]);
+                        $lastInitial = strtoupper(Auth::user()->last_name[0]);
                     @endphp
                     <div class="hs-dropdown relative inline-flex">
                         <button id="hs-dropdown-user" type="button" class="hs-dropdown-toggle inline-flex items-center gap-x-2 text-sm font-medium text-[#222831]">

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id('cart_id');
+            $table->foreignId('user_id')
+                ->constrained('users', 'user_id')
+                ->onDelete('cascade');
             $table->foreignId('item_id')
                 ->constrained('items', 'item_id')
-                ->onDelete('cascade');
-            $table->foreignId('shipment_id')
-                ->constrained('shipments', 'shipment_id')
                 ->onDelete('cascade');
             $table->integer('quantity')->nullable();
             $table->integer('sub_total')->nullable();

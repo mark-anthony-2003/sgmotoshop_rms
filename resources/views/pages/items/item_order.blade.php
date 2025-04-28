@@ -20,8 +20,8 @@
                     <div class="w-full flex flex-col justify-between">
                         <div>
                             <h3 class="text-2xl font-bold text-[#222831]">{{ Str::title($item->item_name) }}</h3>
-                            <p class="mt-1 text-[#222831]">₱{{ number_format($item->item_price, 2) }}</p>
-                            <p class="mt-5 text-xs text-[#222831]">{{ $item->item_sold }} sold</p>
+                            <p class="mt-1 text-[#222831]">₱{{ number_format($item->price, 2) }}</p>
+                            <p class="mt-5 text-xs text-[#222831]">{{ $item->sold }} sold</p>
                             <span
                                 class="mt-1 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium text-white
                                     {{ $item->item_status == 'out_of_stock' ? 'bg-red-500' : 'bg-teal-500' }}">
@@ -38,7 +38,7 @@
                                     {{ $item->item_status === 'out_of_stock' ? 'disabled' : '' }}>-</button>
             
                                 <input type="number" name="cart_quantity" id="cart_quantity"
-                                    min="1" max="{{ $item->item_stocks }}" value="1"
+                                    min="1" max="{{ $item->stocks }}" value="1"
                                     class="w-16 border text-center rounded py-1">
             
                                 <button type="button"
@@ -65,18 +65,18 @@
                     @foreach ($popularItems as $popularItem)
                         <div class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-md">
                             <a href="{{ route('item-order', $popularItem->item_id) }}">
-                                @if ($popularItem->item_image)
+                                @if ($popularItem->image)
                                     <img 
                                         src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
-                                        alt="{{ $popularItem->item_name }}"
+                                        alt="{{ $popularItem->name }}"
                                         class="w-full h-auto rounded-t-md">
                                 @else
                                     <div>No Image Available</div>
                                 @endif
                                 <div class="p-4">
-                                    <h3 class="text-lg font-bold text-gray-800"> {{ Str::title($popularItem->item_name) }} </h3>
-                                    <p class="mt-1 text-[#222831]"> ₱{{ number_format($popularItem->item_price, 2) }} </p>
-                                    <p class="mt-5 text-xs text-gray-500"> <span> {{ $popularItem->item_sold }} sold </span> </p>
+                                    <h3 class="text-lg font-bold text-gray-800"> {{ Str::title($popularItem->name) }} </h3>
+                                    <p class="mt-1 text-[#222831]"> ₱{{ number_format($popularItem->price, 2) }} </p>
+                                    <p class="mt-5 text-xs text-gray-500"> <span> {{ $popularItem->sold }} sold </span> </p>
                                 </div>
                             </a>
                         </div>

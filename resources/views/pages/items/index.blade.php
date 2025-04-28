@@ -23,8 +23,8 @@
                             @endif
                             <div class="p-4">
                                 <h3 class="text-lg font-bold text-[#222831]"> {{ Str::title($item->item_name) }} </h3>
-                                <p class="mt-1 text-[#222831]"> ₱{{ number_format($item->item_price, 2) }} </p>
-                                <p class="mt-5 text-xs text-gray-500"> <span> {{ $item->item_sold }} sold </span> </p>
+                                <p class="mt-1 text-[#222831]"> ₱{{ number_format($item->price, 2) }} </p>
+                                <p class="mt-5 text-xs text-gray-500"> <span> {{ $item->sold }} sold </span> </p>
                             </div>
                         </a>
                     </div>

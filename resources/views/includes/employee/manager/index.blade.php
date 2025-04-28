@@ -23,24 +23,24 @@
                                     @forelse ($reservations as $reservation)
                                         <tr>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->service_detail_id }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->serviceType->service_type_name ?? 'N/A' }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $reservation->serviceType->service_name ?? 'N/A' }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm">
                                                 <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium text-white 
-                                                    {{ $reservation->st_approval_type === 'approved' ? 'bg-teal-500' : 
-                                                    ($reservation->st_approval_type === 'rejected' ? 'bg-red-500' : 
+                                                    {{ $reservation->approval_type === 'approved' ? 'bg-teal-500' : 
+                                                    ($reservation->approval_type === 'rejected' ? 'bg-red-500' : 
                                                     'bg-yellow-500') }}">
-                                                    {{ ucfirst($reservation->st_approval_type) }}
+                                                    {{ ucfirst($reservation->approval_type) }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-800">
-                                                @if ($reservation->st_approval_type === 'approved')
+                                                @if ($reservation->approval_type === 'approved')
                                                 <form action="{{ route('laborer.assign', $reservation->service_detail_id) }}" method="POST">
                                                     @csrf
                                                     <select name="laborer_id" class="rounded border-gray-300">
                                                         <option value="">Select Laborer</option>
                                                         @foreach ($laborers as $laborer)
                                                             <option value="{{ $laborer->laborer_id }}">
-                                                                {{ $laborer->employee->user->user_first_name }} {{ $laborer->employee->user->user_last_name }}
+                                                                {{ $laborer->employee->user->first_name }} {{ $laborer->employee->user->last_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -53,7 +53,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-800">
-                                                @if ($reservation->st_approval_type === 'pending')
+                                                @if ($reservation->approval_type === 'pending')
                                                     <form action="{{ route('manager.approve', $reservation->service_detail_id) }}" method="POST" class="inline">
                                                         @csrf
                                                         <button type="submit" class="py-1 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-md border border-transparent bg-teal-500 text-white">

@@ -13,8 +13,8 @@ class Cart extends Model
     protected $primaryKey = 'cart_id';
 
     protected $fillable = [
+        'user_id',
         'item_id',
-        'shipment_id',
         'quantity',
         'sub_total'
     ];
