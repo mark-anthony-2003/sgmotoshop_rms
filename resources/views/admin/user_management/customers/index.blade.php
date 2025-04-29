@@ -27,7 +27,7 @@
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $customer->user_status }}</td>
                                         </tr>
                                     @empty
-                                        <td colspan="7">No Customers</td>
+                                        <td colspan="7" class="text-center">No Customers</td>
                                     @endforelse
                                 </tbody>
                             </table>

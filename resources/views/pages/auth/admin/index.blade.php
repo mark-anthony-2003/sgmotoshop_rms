@@ -38,13 +38,6 @@
                     > Sign In
                     </button>
                 </div>
-    
-                <div class="text-center">
-                    <p class="text-sm text-gray-500">
-                        Don't have an account?
-                        <a href="{{ route('sign-up.customer') }}" class="text-[#30475E] hover:underline">Sign up</a>
-                    </p>
-                </div>
             </form>
         </div>
     </section>

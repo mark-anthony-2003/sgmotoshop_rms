@@ -13,6 +13,11 @@ class ItemController extends Controller
         return view('admin.product_management.items.index', compact('itemsList'));
     }
 
+    public function itemDetail(Item $item)
+    {
+        return view('admin.product_management.items.show', compact('item'));
+    }
+
     public function itemForm()
     {
         return view('admin.product_management.items.create');

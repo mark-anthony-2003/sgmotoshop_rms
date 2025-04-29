@@ -83,27 +83,40 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::prefix('admin/items')->group(function() {
         Route::get('/', [ItemController::class, 'itemsTable'])->name('items.table');
         Route::get('/create', [ItemController::class, 'itemForm'])->name('item.create.form');
+        Route::get('/{item}', [ItemController::class, 'itemDetail'])->name('item.show');
         Route::post('/store', [ItemController::class, 'itemCreate'])->name('item.store');
         Route::get('/{item}/edit', [ItemController::class, 'itemEdit'])->name('item.edit');
         Route::post('/{item}/update', [ItemController::class, 'itemUpdate'])->name('item.update');
-        Route::post('/{item}/delete', [ItemController::class, 'itemDelete'])->name('item-delete');
+        Route::post('/{item}/delete', [ItemController::class, 'itemDelete'])->name('item.delete');
     });
     // Services -> Service Preparation
     Route::prefix('/admin/services')->group(function() {
-        Route::get('/', [ServiceTypeController::class, 'servicesTable'])->name('serviceTypes-table');
-        Route::post('/{serviceType}', [ServiceTypeController::class, 'serviceTypeDelete'])->name('serviceType-delete');
+        Route::get('/', [ServiceTypeController::class, 'servicesTable'])->name('serviceTypes.table');
+        Route::get('/create', [ServiceTypeController::class, 'serviceTypeForm'])->name('serviceType.create.form');
+        Route::get('/{serviceType}', [ServiceTypeController::class, 'serviceTypeDetail'])->name('serviceType.show');
+        Route::post('/store', [ServiceTypeController::class, 'serviceTypeCreate'])->name('serviceType.store');
+        Route::get('/{serviceType}/edit', [ServiceTypeController::class, 'serviceTypeEdit'])->name('serviceType.edit');
+        Route::post('/{serviceType}/update', [ServiceTypeController::class, 'serviceTypeUpdate'])->name('serviceType.update');
+        Route::post('/{serviceType}', [ServiceTypeController::class, 'serviceTypeDelete'])->name('serviceType.delete');
     });
     Route::prefix('/admin/parts')->group(function() {
-        Route::get('/', [PartController::class, 'partsTable'])->name('parts-table');
-        Route::post('/{part}', [PartController::class, 'partDelete'])->name('part-delete');
+        Route::get('/', [PartController::class, 'partsTable'])->name('parts.table');
+        Route::get('/create', [PartController::class, 'partForm'])->name('part.create.form');
+        Route::post('/store', [PartController::class, 'partCreate'])->name('part.store');
+        Route::get('/{part}/edit', [PartController::class, 'partEdit'])->name('part.edit');
+        Route::post('/{part}/update', [PartController::class, 'partUpdate'])->name('part.update');
+        Route::post('/{part}', [PartController::class, 'partDelete'])->name('part.delete');
     });
 
+    // Employee -> User Management
+    Route::prefix('/admin/employees')->group(function() {
+        Route::get('/', [EmployeeController::class, 'employeesTable'])->name('employees.table');
+        Route::get('/create', [EmployeeController::class, 'employeeForm'])->name('employee.create.form');
+        Route::post('/store', [EmployeeController::class, 'employeeCreate'])->name('employee.create');
+    });
     // Customer -> User Management
     Route::prefix('/admin/customers')->group(function() {
-        Route::get('/', [CustomerController::class, 'customersTable'])->name('customers-table');
-    });
-    Route::prefix('/admin/employees')->group(function() {
-        Route::get('/', [EmployeeController::class, 'employeesTable'])->name('employees-table');
+        Route::get('/', [CustomerController::class, 'customersTable'])->name('customers.table');
     });
 });
 

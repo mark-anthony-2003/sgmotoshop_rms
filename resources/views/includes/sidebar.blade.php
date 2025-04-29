@@ -24,13 +24,13 @@
 
             <li class="mt-4 font-semibold text-gray-500 uppercase">Service Management</li>
             <li>
-                <a href="{{ route('serviceTypes-table') }}"
+                <a href="{{ route('serviceTypes.table') }}"
                    class="block px-4 py-2 rounded hover:bg-gray-100 {{ Route::is('serviceTypes-table') ? $activeClass : '' }}">
                    Service Types
                 </a>
             </li>
             <li>
-                <a href="{{ route('parts-table') }}"
+                <a href="{{ route('parts.table') }}"
                    class="block px-4 py-2 rounded hover:bg-gray-100 {{ Route::is('parts-table') ? $activeClass : '' }}">
                    Parts
                 </a>
@@ -38,13 +38,13 @@
 
             <li class="mt-4 font-semibold text-gray-500 uppercase">User Management</li>
             <li>
-                <a href="{{ route('employees-table') }}"
+                <a href="{{ route('employees.table') }}"
                    class="block px-4 py-2 rounded hover:bg-gray-100 {{ Route::is('employees-table') ? $activeClass : '' }}">
                    Employees
                 </a>
             </li>
             <li>
-                <a href="{{ route('customers-table') }}"
+                <a href="{{ route('customers.table') }}"
                    class="block px-4 py-2 rounded hover:bg-gray-100 {{ Route::is('customers-table') ? $activeClass : '' }}">
                    Customers
                 </a>

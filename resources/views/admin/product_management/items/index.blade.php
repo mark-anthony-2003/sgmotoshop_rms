@@ -39,13 +39,13 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-gray-800 hover:underline">Info</a>
-                                                <a href="{{ route('item.edit', $item) }}" class="text-gray-800 hover:underline">Edit</a>
+                                                <a href="{{ route('item.show', $item) }}" class="text-gray-800 hover:underline px-1">Info</a>
+                                                <a href="{{ route('item.edit', $item) }}" class="text-gray-800 hover:underline px-1">Edit</a>
                                                 
                                                 <button 
                                                     type="button"
                                                     data-hs-overlay="#delete-modal-{{ $item->item_id }}"
-                                                    class="text-red-800 hover:underline">
+                                                    class="text-red-800 hover:underline px-1">
                                                     Delete
                                                 </button>
                                                 <div id="delete-modal-{{ $item->item_id }}" class="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
@@ -57,7 +57,6 @@
                                                                 </h3>
                                                                 <button type="button" class="text-gray-400 hover:text-gray-600" data-hs-overlay="#delete-modal-{{ $item->item_id }}">
                                                                     <span class="sr-only">Close</span>
-                                                                    <!-- Close icon -->
                                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                                     </svg>
@@ -74,8 +73,7 @@
                                                                 <button type="button" class="py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md border border-gray-300" data-hs-overlay="#delete-modal-{{ $item->item_id }}">
                                                                     Cancel
                                                                 </button>
-
-                                                                <form action="{{ route('item-delete', $item) }}" method="POST">
+                                                                <form action="{{ route('item.delete', $item) }}" method="POST">
                                                                     @csrf
                                                                     <button type="submit" class="py-2 px-4 bg-red-600 text-white rounded-md">
                                                                         Delete

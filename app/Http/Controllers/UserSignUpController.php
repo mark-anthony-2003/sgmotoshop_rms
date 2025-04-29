@@ -32,7 +32,7 @@ class UserSignUpController extends Controller
             'user_status'           => 'active',
             'user_type'             => 'customer',
             'email_verified_at'     => now(),
-            'remember_token'        => Str::random(10),
+            'remember_token'        => Str::random(10)
         ]);
 
         return redirect()->route('sign-in.customer')->with('success', 'Account created successfully');

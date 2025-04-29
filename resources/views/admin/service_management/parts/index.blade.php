@@ -5,7 +5,7 @@
         <div class="w-full max-w-6xl px-4 py-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-[#222831] mb-5">Parts Table</h2>
-                <a href="#" class="inline-block px-6 py-2 bg-[#222831] text-white text-sm rounded transition">
+                <a href="{{ route('part.create.form') }}" class="inline-block px-6 py-2 bg-[#222831] text-white text-sm rounded transition">
                     Add New Part
                 </a>
             </div>
@@ -26,6 +26,8 @@
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($part->part_name) }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                <a href="{{ route('part.edit', $part) }}" class="text-gray-800 hover:underline px-1">Edit</a>
+
                                                 <button 
                                                     type="button"
                                                     data-hs-overlay="#delete-modal-{{ $part->part_id }}"
@@ -58,7 +60,7 @@
                                                                 <button type="button" class="py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md border border-gray-300" data-hs-overlay="#delete-modal-{{ $part->part_id }}">
                                                                     Cancel
                                                                 </button>
-                                                                <form action="{{ route('part-delete', $part) }}" method="POST">
+                                                                <form action="{{ route('part.delete', $part) }}" method="POST">
                                                                     @csrf
                                                                     <button type="submit" id="hs-new-toast" class="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700">Delete</button>
                                                                 </form>
@@ -69,7 +71,7 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <td colspan="7">No Parts Available</td>
+                                        <td colspan="7" class="text-center">No Parts Available</td>
                                     @endforelse
                                 </tbody>
                             </table>
