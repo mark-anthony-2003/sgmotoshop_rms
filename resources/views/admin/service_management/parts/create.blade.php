@@ -8,18 +8,13 @@
             </h2>
 
             <div class="flex justify-center items-center">
-                <form 
-                    action="{{ isset($part) ? route('part.update', $part->part_id) : route('part.store') }}"
-                    method="POST"
-                    class="bg-white p-4 rounded-lg border space-y-4 w-4xl">
+                <form action="{{ isset($part) ? route('part.update', $part->part_id) : route('part.store') }}" method="POST" class="bg-white p-4 rounded-lg border space-y-4 w-4xl">
                     @csrf
     
                     <div>
                         <label for="part_name" class="block text-sm font-medium text-[#222831] mb-1">Part Name</label>
                         <input type="text" name="part_name" value="{{ old('part_name', $part->part_name ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
-                        @error('part_name')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('part_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </div>
                 
                     <div class="text-right">

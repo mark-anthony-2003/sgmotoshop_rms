@@ -15,6 +15,7 @@
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Customer Name</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Email</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Account Status</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Actions</th>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                     @forelse ($customers as $index => $customer)
@@ -25,6 +26,9 @@
                                             </td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $customer->email }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $customer->user_status }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
+                                                <a href="#" class="text-gray-800 hover:underline px-1">Edit</a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <td colspan="7" class="text-center">No Customers</td>

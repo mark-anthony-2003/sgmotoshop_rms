@@ -21,10 +21,11 @@ class EmployeeController extends Controller
 
     public function employeeForm()
     {
+        $employee = null;
         $positions = PositionType::all();
         $salaries = SalaryType::all();
 
-        return view('admin.user_management.employees.create', compact('positions', 'salaries'));
+        return view('admin.user_management.employees.create', compact('employee','positions', 'salaries'));
     }
 
     public function employeeCreate(Request $request)
@@ -37,6 +38,7 @@ class EmployeeController extends Controller
             'date_of_birth'     => 'required|date',
             'contact_number'    => 'required|string|max:20',
             'profile_image'     => 'nullable|image|mimes:png,jpg|max:5000',
+            'user_status'       => 'required|in:active,inactive,suspended',
             'country'           => 'required|string|max:100',
             'province'          => 'required|string|max:100',
             'city'              => 'required|string|max:100',
@@ -59,7 +61,7 @@ class EmployeeController extends Controller
             'date_of_birth'     => $validated['date_of_birth'],
             'contact_number'    => $validated['contact_number'],
             'profile_image'     => $employeeImagePath,
-            'user_status'       => 'active',
+            'user_status'       => $validated['user_status'],
             'user_type'         => 'employee',
             'email_verified_at' => now(),
             'remember_token'    => Str::random(10)
@@ -82,5 +84,72 @@ class EmployeeController extends Controller
         ]);
 
         return redirect()->route('employees.table')->with('success', 'Account created successfully');
+    }
+
+    public function employeeEdit(Employee $employee)
+    {
+        $employee->load('user');
+        $positions = PositionType::all();
+        $salaries = SalaryType::all();
+
+        return view('admin.user_management.employees.create', compact('employee', 'positions', 'salaries'));
+    }
+
+    public function employeeUpdate(Request $request, Employee $employee)
+    {
+        $validated = $request->validate([
+            'first_name'        => 'required|string|max:100',
+            'last_name'         => 'required|string|max:100',
+            'email'             => 'required|email',
+            'password'          => 'nullable|string|min:6',
+            'date_of_birth'     => 'required|date',
+            'contact_number'    => 'required|string|max:20',
+            'profile_image'     => 'nullable|image|mimes:png,jpg|max:5000',
+            'user_status'       => 'required|in:active,inactive,suspended',
+            'country'           => 'required|string|max:100',
+            'province'          => 'required|string|max:100',
+            'city'              => 'required|string|max:100',
+            'barangay'          => 'required|string|max:100',
+            'address_type'      => 'required|in:home,work',
+            'position_type_id'  => 'required|exists:position_types,position_type_id',
+            'salary_type_id'    => 'required|exists:salary_types,salary_type_id',
+        ]);
+
+        $employeeImagePath = $employee->user->profile_image;
+        if ($request->hasFile('profile_image')) {
+            $employeeImagePath = $request->file('profile_image')->store('profile_images', 'public');
+        }
+
+        $employee->user->update([
+            'first_name'     => $validated['first_name'],
+            'last_name'      => $validated['last_name'],
+            'email'          => $validated['email'],
+            'date_of_birth'  => $validated['date_of_birth'],
+            'contact_number' => $validated['contact_number'],
+            'profile_image'  => $employeeImagePath,
+            'user_status'    => $validated['user_status'],
+            'password'       => $validated['password'] ? Hash::make($validated['password']) : $employee->user->password,
+        ]);
+
+        $employee->user->addresses()->updateOrCreate(
+            ['user_id' => $employee->user->user_id],
+            [
+                'country'       => $validated['country'],
+                'province'      => $validated['province'],
+                'city'          => $validated['city'],
+                'barangay'      => $validated['barangay'],
+                'address_type'  => $validated['address_type'],
+            ]
+        );
+
+        $employee->user->employee()->updateOrCreate(
+            ['user_id' => $employee->user->user_id],
+            [
+                'salary_type_id'   => $validated['salary_type_id'],
+                'position_type_id' => $validated['position_type_id'],
+            ]
+        );
+
+        return redirect()->route('employees.table')->with('success', 'Employee updated successfully');
     }
 }

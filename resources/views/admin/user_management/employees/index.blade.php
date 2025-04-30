@@ -21,6 +21,7 @@
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Email</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Role</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Account Status</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Actions</th>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                     @forelse ($employees as $index => $employee)
@@ -30,8 +31,16 @@
                                                 {{ Str::title($employee->user->first_name) }} {{ Str::title($employee->user->last_name) }}
                                             </td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $employee->user->email }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->positionType->position_name }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">{{ $employee->user->user_status }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-xs font-medium text-gray-800 uppercase">{{ $employee->positionType->position_name }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
+                                                <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                    {{ $employee->user->user_status === 'active' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $employee->user->user_status))) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium">
+                                                <a href="{{ route('employee.edit', $employee) }}" class="text-gray-800 hover:underline px-1">Edit</a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <td colspan="7" class="text-center">No Employees</td>

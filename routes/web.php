@@ -112,7 +112,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::prefix('/admin/employees')->group(function() {
         Route::get('/', [EmployeeController::class, 'employeesTable'])->name('employees.table');
         Route::get('/create', [EmployeeController::class, 'employeeForm'])->name('employee.create.form');
-        Route::post('/store', [EmployeeController::class, 'employeeCreate'])->name('employee.create');
+        Route::post('/store', [EmployeeController::class, 'employeeCreate'])->name('employee.store');
+        Route::get('/{employee}/edit', [EmployeeController::class, 'employeeEdit'])->name('employee.edit');
+        Route::post('/{employee}/update', [EmployeeController::class, 'employeeUpdate'])->name('employee.update');
     });
     // Customer -> User Management
     Route::prefix('/admin/customers')->group(function() {
