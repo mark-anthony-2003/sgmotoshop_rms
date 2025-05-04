@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaborerController;
 use App\Http\Controllers\ManagerController;
@@ -89,6 +90,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
         Route::post('/{item}/update', [ItemController::class, 'itemUpdate'])->name('item.update');
         Route::post('/{item}/delete', [ItemController::class, 'itemDelete'])->name('item.delete');
     });
+    
     // Services -> Service Preparation
     Route::prefix('/admin/services')->group(function() {
         Route::get('/', [ServiceTypeController::class, 'servicesTable'])->name('serviceTypes.table');
@@ -106,6 +108,15 @@ Route::middleware(['auth', 'admin'])->group(function() {
         Route::get('/{part}/edit', [PartController::class, 'partEdit'])->name('part.edit');
         Route::post('/{part}/update', [PartController::class, 'partUpdate'])->name('part.update');
         Route::post('/{part}', [PartController::class, 'partDelete'])->name('part.delete');
+    });
+    Route::prefix('/admin/equipments')->group(function() {
+        Route::get('/', [EquipmentController::class, 'equipmentsTable'])->name('equipments.table');
+        Route::get('/create', [EquipmentController::class, 'equipmentForm'])->name('equipment.create.form');
+        Route::get('/{equipment}', [EquipmentController::class, 'equipmentDetail'])->name('equipment.show');
+        Route::post('/store', [EquipmentController::class, 'equipmentCreate'])->name('equipment.store');
+        Route::get('{equipment}/edit', [EquipmentController::class, 'equipmentEdit'])->name('equipment.edit');
+        Route::post('/{equipment}/update', [EquipmentController::class], 'equipmentUpdate')->name('equipment.update');
+        Route::post('/{equipment}', [EquipmentController::class, 'equipmentDelete'])->name('equipment.delete');
     });
 
     // Employee -> User Management

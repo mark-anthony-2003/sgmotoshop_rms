@@ -10,6 +10,10 @@ class Laborer extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'employee_id';
+    public $incrementing = false;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'employee_id',
         'position_type_id',

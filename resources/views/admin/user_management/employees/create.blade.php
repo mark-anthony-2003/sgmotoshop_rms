@@ -62,26 +62,35 @@
                             @error('contact_number') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                         </div>
 
+                        @php
+                            $currentUserStatus = old('user_status');
+                            if (!$currentUserStatus && isset($employee) && $employee->user && $employee->user->user_status) {
+                                $currentUserStatus = $employee->user->user_status;
+                            }
+                        @endphp
                         <div>
                             <label for="user_status" class="block text-sm font-medium text-[#222831] mb-1">User Status</label>
                             <select name="user_status" id="user_status" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
-                                <option disabled {{ old('user_status', $employee->user->user_status ?? '') === '' ? 'selected' : '' }}>Select Status</option>
-                                <option value="active" {{ old('user_status', $employee->user->user_status ?? '') === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ old('user_status', $employee->user->user_status ?? '') === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                                <option value="suspended" {{ old('user_status', $employee->user->user_status ?? '') === 'suspended' ? 'selected' : '' }}>Suspended</option>
+                                <option disabled {{ old('user_status', $currentUserStatus) === '' ? 'selected' : '' }}>Select Status</option>
+                                <option value="active" {{ old('user_status', $currentUserStatus) === 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ old('user_status', $currentUserStatus) === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                <option value="suspended" {{ old('user_status', $currentUserStatus) === 'suspended' ? 'selected' : '' }}>Suspended</option>
                             </select>
                             @error('user_status') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                         </div>                        
                         
                         @php
-                            $currentAddressType = old('address_type', $employee->user->addresses->first()->address_type ?? '');
+                            $currentAddressType = old('address_type');
+                            if (!$currentAddressType && isset($employee) && $employee->user && $employee->user->addresses->isNotEmpty()) {
+                                $currentAddressType = $employee->user->addresses->first()->address_type;
+                            }
                         @endphp
                         <div>
                             <label for="address_type" class="block text-sm font-medium text-[#222831] mb-1">Address Type</label>
                             <select name="address_type" id="address_type" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
-                                <option disabled {{ $currentAddressType === '' ? 'selected' : '' }}>Select Type</option>
-                                <option value="home" {{ $currentAddressType === 'home' ? 'selected' : '' }}>Home</option>
-                                <option value="work" {{ $currentAddressType === 'work' ? 'selected' : '' }}>Work</option>
+                                <option disabled {{ old('address_type', $currentAddressType) === '' ? 'selected' : '' }}>Select Type</option>
+                                <option value="home" {{ old('address_type', $currentAddressType) === 'home' ? 'selected' : '' }}>Home</option>
+                                <option value="work" {{ old('address_type', $currentAddressType) === 'work' ? 'selected' : '' }}>Work</option>
                             </select>
                             @error('address_type') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                         </div>
@@ -142,8 +151,8 @@
 
                         <div class="grid grid-cols-4 gap-4">
                             <div>
-                                <label for="position_type_id" class="block text-sm font-medium text-[#222831] mb-1">Position</label>
-                                <select name="position_type_id" id="position_type_id" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
+                                <label for="position_type" class="block text-sm font-medium text-[#222831] mb-1">Position</label>
+                                <select name="position_type_id" id="position_type" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
                                     <option disabled {{ old('position_type_id', $employee->position_type_id ?? null) ? '' : 'selected' }}>
                                         Select Position
                                     </option>
@@ -158,7 +167,41 @@
                                 </select>
                                 @error('position_type_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
-                            
+
+                            @php
+                                $currentWork = old('work');                            
+                                if (!$currentWork && isset($employee) && $employee->laborer && $employee->laborer->work) {
+                                    $currentWork = $employee->laborer->work;
+                                }
+                            @endphp
+                        
+                            <div>
+                                <label for="work" class="block text-sm font-medium text-[#222831] mb-1">Work</label>
+                                <select name="work" id="work" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
+                                    <option value="" {{ old('work', $currentWork) === '' ? 'selected' : '' }}>
+                                        Select Work
+                                    </option>
+                                    <option value="Mechanic" {{ old('work', $currentWork) === 'Mechanic' ? 'selected' : '' }}>
+                                        Mechanic
+                                    </option>
+                                    <option value="Auto Electrician" {{ old('work', $currentWork) === 'Auto Electrician' ? 'selected' : '' }}>
+                                        Auto Electrician
+                                    </option>
+                                    <option value="Transmission Specialist" {{ old('work', $currentWork) === 'Transmission Specialist' ? 'selected' : '' }}>
+                                        Transmission Specialist
+                                    </option>
+                                    <option value="Welder" {{ old('work', $currentWork) === 'Welder' ? 'selected' : '' }}>
+                                        Welder
+                                    </option>
+                                    <option value="Tire Technician" {{ old('work', $currentWork) === 'Tire Technician' ? 'selected' : '' }}>
+                                        Tire Technician
+                                    </option>
+                                    <option value="Oil Change Specialist" {{ old('work', $currentWork) === 'Oil Change Specialist' ? 'selected' : '' }}>
+                                        Oil Change Specialist
+                                    </option>
+                                </select>
+                                @error('work') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
 
                             <div>
                                 <label for="salary_type_id" class="block text-sm font-medium text-[#222831] mb-1">Salary Type</label>
@@ -177,6 +220,23 @@
                                 </select>
                                 @error('salary_type_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
+
+                            @php
+                                $currentEmploymentStatus = old('employment_status');
+                                if (!$currentEmploymentStatus && isset($employee) && $employee->employment_status) {
+                                    $currentEmploymentStatus = $employee->employment_status;
+                                }
+                            @endphp
+                            <div>
+                                <label for="employment_status" class="block text-sm font-medium text-[#222831] mb-1">Employment Status</label>
+                                <select name="employment_status" id="employment_status" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
+                                    <option value="" {{ old('employment_status', $currentEmploymentStatus) === '' ? 'selected' : '' }}>Select Status</option>
+                                    <option value="active" {{ old('employment_status', $currentEmploymentStatus) === 'active' ? 'selected' : '' }}>Active</option>
+                                    <option value="on_leave" {{ old('employment_status', $currentEmploymentStatus) === 'on_leave' ? 'selected' : '' }}>On Leave</option>
+                                    <option value="resigned" {{ old('employment_status', $currentEmploymentStatus) === 'resigned' ? 'selected' : '' }}>Resigned</option>
+                                </select>
+                                @error('employment_status') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -194,19 +254,43 @@
 @push('scripts')
 <script>
     const togglePasswordVisibility = () => {
-        const passwordInput = document.getElementById('password');
-        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        const passwordInput = document.getElementById('password')
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const positionTypeSelect = document.getElementById('position_type')
+        const workContainer = document.getElementById('work').closest('div')
+        const employmentStatusContainer = document.getElementById('employment_status').closest('div')
+
+        function toggleWorkAndStatusFields() {
+            const selectedOption = positionTypeSelect.options[positionTypeSelect.selectedIndex]
+            const selectedText = selectedOption.textContent.trim().toLowerCase()
+
+            if (selectedText === 'laborer') {
+                workContainer.style.display = 'block'
+                employmentStatusContainer.style.display = 'block'
+            } else {
+                workContainer.style.display = 'none'
+                employmentStatusContainer.style.display = 'none'
+                document.getElementById('work').value = ''
+                document.getElementById('employment_status').value = ''
+            }
+        }
+
+        toggleWorkAndStatusFields()
+        positionTypeSelect.addEventListener('change', toggleWorkAndStatusFields)
+    })
+
     $(document).ready(function () {
-        const oldProvince = "{{ old('province', $employee?->user?->addresses?->first()?->province ?? '') }}";
-        const oldCity = "{{ old('city', $employee?->user?->addresses?->first()?->city ?? '') }}";
-        const oldBarangay = "{{ old('barangay', $employee?->user?->addresses?->first()?->barangay ?? '') }}";
+        const oldProvince = "{{ old('province', $employee?->user?->addresses?->first()?->province ?? '') }}"
+        const oldCity = "{{ old('city', $employee?->user?->addresses?->first()?->city ?? '') }}"
+        const oldBarangay = "{{ old('barangay', $employee?->user?->addresses?->first()?->barangay ?? '') }}"
 
         $.get('/address/provinces', function (data) {
             $('#province').empty().append('<option value="">Select Province</option>')
             data.forEach(function (item) {
-                const selected = item.name === oldProvince ? 'selected' : '';
+                const selected = item.name === oldProvince ? 'selected' : ''
                 $('#province').append(`<option value="${item.name}" data-code="${item.code}" ${selected}>${item.name}</option>`)
             })
 

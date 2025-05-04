@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Employee;
+use App\Models\Laborer;
+use App\Models\Manager;
+use App\Models\PerDaySalary;
 use App\Models\PositionType;
+use App\Models\RegularSalary;
 use App\Models\SalaryType;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,21 +35,26 @@ class EmployeeController extends Controller
     public function employeeCreate(Request $request)
     {
         $validated = $request->validate([
-            'first_name'        => 'required|string|max:100',
-            'last_name'         => 'required|string|max:100',
-            'email'             => 'required|email|unique:users,email',
-            'password'          => 'required|string|min:6',
-            'date_of_birth'     => 'required|date',
-            'contact_number'    => 'required|string|max:20',
-            'profile_image'     => 'nullable|image|mimes:png,jpg|max:5000',
-            'user_status'       => 'required|in:active,inactive,suspended',
-            'country'           => 'required|string|max:100',
-            'province'          => 'required|string|max:100',
-            'city'              => 'required|string|max:100',
-            'barangay'          => 'required|string|max:100',
-            'address_type'      => 'required|in:home,work',
-            'position_type_id'  => 'required|exists:position_types,position_type_id',
-            'salary_type_id'    => 'required|exists:salary_types,salary_type_id'
+            'first_name'            => 'required|string|max:100',
+            'last_name'             => 'required|string|max:100',
+            'email'                 => 'required|email|unique:users,email',
+            'password'              => 'required|string|min:6',
+            'date_of_birth'         => 'required|date',
+            'contact_number'        => 'required|string|max:20',
+            'profile_image'         => 'nullable|image|mimes:png,jpg|max:5000',
+            'user_status'           => 'required|in:active,inactive,suspended',
+            'country'               => 'required|string|max:100',
+            'province'              => 'required|string|max:100',
+            'city'                  => 'required|string|max:100',
+            'barangay'              => 'required|string|max:100',
+            'address_type'          => 'required|in:home,work',
+            'position_type_id'      => 'required|exists:position_types,position_type_id',
+            'salary_type_id'        => 'required|exists:salary_types,salary_type_id',
+            'work'                  => 'nullable|string|in:Mechanic,Auto Electrician,Transmission Specialist,Welder,Tire Technician,Oil Change Specialist',
+            'employment_status'     => 'nullable|string|in:active,on_leave,resigned',
+            'monthly_rate'          => 'nullable|integer',
+            'daily_rate'            => 'nullable|integer',
+            'days_worked'           => 'nullable|integer',
         ]);
 
         $employeeImagePath = null;
@@ -76,12 +85,29 @@ class EmployeeController extends Controller
             'address_type'  => $validated['address_type']
         ]);
 
-        Employee::create([
+        $employee = Employee::create([
             'user_id'          => $user->user_id,
             'salary_type_id'   => $validated['salary_type_id'],
             'position_type_id' => $validated['position_type_id'],
-            'date_hired'       => now(),
+            'date_hired'       => now()
         ]);
+
+        if ($validated['position_type_id'] == 1) {
+            Manager::create([
+                'position_type_id'   => $validated['position_type_id'],
+                'employee_id'        => $employee->employee_id,
+                'area_checker'       => true,
+                'inventory_recorder' => true,
+                'payroll_assistance' => true
+            ]);
+        } elseif ($validated['position_type_id'] == 2) {
+            Laborer::create([
+                'position_type_id'   => $validated['position_type_id'],
+                'employee_id'        => $employee->employee_id,
+                'work'               => $validated['work'],
+                'employment_status'  => $validated['employment_status']
+            ]);
+        }
 
         return redirect()->route('employees.table')->with('success', 'Account created successfully');
     }
@@ -100,7 +126,7 @@ class EmployeeController extends Controller
         $validated = $request->validate([
             'first_name'        => 'required|string|max:100',
             'last_name'         => 'required|string|max:100',
-            'email'             => 'required|email',
+            'email'             => 'required|email|unique:users,email,' . $employee->user->user_id . ',user_id',
             'password'          => 'nullable|string|min:6',
             'date_of_birth'     => 'required|date',
             'contact_number'    => 'required|string|max:20',
@@ -113,6 +139,8 @@ class EmployeeController extends Controller
             'address_type'      => 'required|in:home,work',
             'position_type_id'  => 'required|exists:position_types,position_type_id',
             'salary_type_id'    => 'required|exists:salary_types,salary_type_id',
+            'work'              => 'nullable|string|in:Mechanic,Auto Electrician,Transmission Specialist,Welder,Tire Technician,Oil Change Specialist',
+            'employment_status' => 'nullable|string|in:active,on_leave,resigned',
         ]);
 
         $employeeImagePath = $employee->user->profile_image;
@@ -142,14 +170,37 @@ class EmployeeController extends Controller
             ]
         );
 
-        $employee->user->employee()->updateOrCreate(
-            ['user_id' => $employee->user->user_id],
-            [
-                'salary_type_id'   => $validated['salary_type_id'],
-                'position_type_id' => $validated['position_type_id'],
-            ]
-        );
+        $employee->update([
+            'salary_type_id'   => $validated['salary_type_id'],
+            'position_type_id' => $validated['position_type_id'],
+        ]);
+
+        if ($validated['position_type_id'] == 1) {
+            $employee->laborer()->delete();
+
+            $employee->manager()->updateOrCreate(
+                ['employee_id' => $employee->employee_id],
+                [
+                    'position_type_id'   => 1,
+                    'area_checker'       => true,
+                    'inventory_recorder' => true,
+                    'payroll_assistance' => true,
+                ]
+            );
+        } elseif ($validated['position_type_id'] == 2) {
+            $employee->manager()->delete();
+
+            $employee->laborer()->updateOrCreate(
+                ['employee_id' => $employee->employee_id],
+                [
+                    'position_type_id'   => 2,
+                    'work'               => $validated['work'],
+                    'employment_status'  => $validated['employment_status']
+                ]
+            );
+        }
 
         return redirect()->route('employees.table')->with('success', 'Employee updated successfully');
     }
+
 }

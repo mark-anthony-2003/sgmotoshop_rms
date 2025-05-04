@@ -35,6 +35,12 @@
                    Parts
                 </a>
             </li>
+            <li>
+                <a href="{{ route('equipments.table') }}"
+                   class="block px-4 py-2 routed hover:bg-gray-100 {{ Route::is('equipments.table') ? $activeClass : '' }}">
+                    Equipments
+                </a>
+            </li>
 
             <li class="mt-4 font-semibold text-gray-500 uppercase">User Management</li>
             <li>

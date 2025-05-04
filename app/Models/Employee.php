@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
@@ -34,5 +35,21 @@ class Employee extends Model
     public function salaryType(): BelongsTo
     {
         return $this->belongsTo(SalaryType::class, 'salary_type_id');
+    }
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'employee_id');
+    }
+
+    public function laborer()
+    {
+        return $this->hasOne(Laborer::class, 'employee_id');
+    }
+
+
+    public function equipment(): HasOne
+    {
+        return $this->hasOne(Equipment::class, 'employee_id');
     }
 }
