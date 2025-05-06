@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ServiceTypeController extends Controller
 {
+    public function services()
+    {
+        $services = ServiceType::all();
+        return view('pages.services.index', compact('services'));
+    }
+
     public function servicesTable()
     {
         $serviceTypesList = ServiceType::all();

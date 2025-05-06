@@ -9,6 +9,16 @@ use Symfony\Component\VarDumper\Caster\RedisCaster;
 
 class LaborerController extends Controller
 {
+    public function laborerProfile()
+    {
+        return view('pages.profile.employees.laborer.index');
+    }
+
+    public function laborerPanel()
+    {
+        return view('includes.employee.laborer.index');
+    }
+
     public function assignLaborer(Request $request, $serviceDetailId)
     {
         $request->validate([

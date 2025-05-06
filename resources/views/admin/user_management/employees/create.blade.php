@@ -149,7 +149,7 @@
                     <div>
                         <h4 class="text-lg font-semibold text-[#222831] mb-4">Employment</h4>
 
-                        <div class="grid grid-cols-4 gap-4">
+                        <div class="grid grid-cols-3 gap-4">
                             <div>
                                 <label for="position_type" class="block text-sm font-medium text-[#222831] mb-1">Position</label>
                                 <select name="position_type_id" id="position_type" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
@@ -169,12 +169,28 @@
                             </div>
 
                             @php
+                                $currentEmploymentStatus = old('employment_status');
+                                if (!$currentEmploymentStatus && isset($employee) && $employee->employment_status) {
+                                    $currentEmploymentStatus = $employee->employment_status;
+                                }
+                            @endphp
+                            <div>
+                                <label for="employment_status" class="block text-sm font-medium text-[#222831] mb-1">Employment Status</label>
+                                <select name="employment_status" id="employment_status" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
+                                    <option disabled {{ old('employment_status', $currentEmploymentStatus) === '' ? 'selected' : '' }}>Select Status</option>
+                                    <option value="active" {{ old('employment_status', $currentEmploymentStatus) === 'active' ? 'selected' : '' }}>Active</option>
+                                    <option value="on_leave" {{ old('employment_status', $currentEmploymentStatus) === 'on_leave' ? 'selected' : '' }}>On Leave</option>
+                                    <option value="resigned" {{ old('employment_status', $currentEmploymentStatus) === 'resigned' ? 'selected' : '' }}>Resigned</option>
+                                </select>
+                                @error('employment_status') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
+
+                            @php
                                 $currentWork = old('work');                            
                                 if (!$currentWork && isset($employee) && $employee->laborer && $employee->laborer->work) {
                                     $currentWork = $employee->laborer->work;
                                 }
                             @endphp
-                        
                             <div>
                                 <label for="work" class="block text-sm font-medium text-[#222831] mb-1">Work</label>
                                 <select name="work" id="work" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
@@ -202,10 +218,14 @@
                                 </select>
                                 @error('work') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
+                        </div>
+                    </div>
 
+                    <div>
+                        <div class="grid grid-cols-4 gap-4">
                             <div>
                                 <label for="salary_type_id" class="block text-sm font-medium text-[#222831] mb-1">Salary Type</label>
-                                <select name="salary_type_id" id="salary_type_id" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
+                                <select name="salary_type_id" id="salary_type" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
                                     <option disabled {{ old('salary_type_id', $employee->salary_type_id ?? null) ? '' : 'selected' }}>
                                         Select Salary Type
                                     </option>
@@ -221,21 +241,22 @@
                                 @error('salary_type_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
 
-                            @php
-                                $currentEmploymentStatus = old('employment_status');
-                                if (!$currentEmploymentStatus && isset($employee) && $employee->employment_status) {
-                                    $currentEmploymentStatus = $employee->employment_status;
-                                }
-                            @endphp
                             <div>
-                                <label for="employment_status" class="block text-sm font-medium text-[#222831] mb-1">Employment Status</label>
-                                <select name="employment_status" id="employment_status" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-white">
-                                    <option value="" {{ old('employment_status', $currentEmploymentStatus) === '' ? 'selected' : '' }}>Select Status</option>
-                                    <option value="active" {{ old('employment_status', $currentEmploymentStatus) === 'active' ? 'selected' : '' }}>Active</option>
-                                    <option value="on_leave" {{ old('employment_status', $currentEmploymentStatus) === 'on_leave' ? 'selected' : '' }}>On Leave</option>
-                                    <option value="resigned" {{ old('employment_status', $currentEmploymentStatus) === 'resigned' ? 'selected' : '' }}>Resigned</option>
-                                </select>
-                                @error('employment_status') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                                <label for="monthly_rate" class="block text-sm font-medium text-[#222831] mb-1">Regular Salary</label>
+                                <input type="number" name="monthly_rate" id="monthly_rate" value="{{ old('monthly_rate', $employee->regularSalary->monthly_rate ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                @error('monthly_rate') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div style="display: none">
+                                <label for="daily_rate" class="block text-sm font-medium text-[#222831] mb-1">Daily Rate</label>
+                                <input type="number" name="daily_rate" id="daily_rate" value="{{ old('daily_rate', $employee->perDaySalary->daily_rate ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                @error('daily_rate') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div style="display: none">
+                                <label for="days_worked" class="block text-sm font-medium text-[#222831] mb-1">Days Worked</label>
+                                <input type="number" name="days_worked"  id="days_worked" value="{{ old('days_worked', $employee->perDaySalary->days_worked ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                @error('days_worked') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
@@ -260,26 +281,45 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         const positionTypeSelect = document.getElementById('position_type')
-        const workContainer = document.getElementById('work').closest('div')
-        const employmentStatusContainer = document.getElementById('employment_status').closest('div')
+        const workContainer = document.getElementById('work')?.closest('div')
+        const salaryTypeSelect = document.getElementById('salary_type')
+        const monthlyRateField = document.getElementById('monthly_rate')?.closest('div')
+        const dailyRateField = document.getElementById('daily_rate')?.closest('div')
+        const daysWorkedField = document.getElementById('days_worked')?.closest('div')
 
         function toggleWorkAndStatusFields() {
-            const selectedOption = positionTypeSelect.options[positionTypeSelect.selectedIndex]
-            const selectedText = selectedOption.textContent.trim().toLowerCase()
-
+            const selectedText = positionTypeSelect?.selectedOptions[0]?.textContent.trim().toLowerCase()
+            
             if (selectedText === 'laborer') {
                 workContainer.style.display = 'block'
-                employmentStatusContainer.style.display = 'block'
             } else {
                 workContainer.style.display = 'none'
-                employmentStatusContainer.style.display = 'none'
                 document.getElementById('work').value = ''
-                document.getElementById('employment_status').value = ''
+            }
+        }
+
+        function toggleSalaryTypeAndSalaryFields() {
+            const selectedText = salaryTypeSelect?.selectedOptions[0]?.textContent.trim().toLowerCase()
+
+            if (selectedText === 'regular') {
+                monthlyRateField.style.display = 'block'
+                dailyRateField.style.display = 'none'
+                daysWorkedField.style.display = 'none'
+            } else if (selectedText === 'per day') {
+                monthlyRateField.style.display = 'none'
+                dailyRateField.style.display = 'block'
+                daysWorkedField.style.display = 'block'
+            } else {
+                monthlyRateField.style.display = 'none'
+                dailyRateField.style.display = 'none'
+                daysWorkedField.style.display = 'none'
             }
         }
 
         toggleWorkAndStatusFields()
-        positionTypeSelect.addEventListener('change', toggleWorkAndStatusFields)
+        toggleSalaryTypeAndSalaryFields()
+        positionTypeSelect?.addEventListener('change', toggleWorkAndStatusFields)
+        salaryTypeSelect?.addEventListener('change', toggleSalaryTypeAndSalaryFields)
     })
 
     $(document).ready(function () {

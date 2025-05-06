@@ -34,16 +34,10 @@
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $employee->user->email }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-xs font-medium text-gray-800 uppercase">{{ $employee->positionType->position_name }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap font-medium text-gray-800">
-                                                @if ($employee->laborer)
-                                                    <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
-                                                        {{ $employee->laborer->employment_status === 'active' ? 'bg-teal-500' : 'bg-red-500' }}">
-                                                        {{ strtoupper(ucfirst(str_replace('_', ' ', $employee->laborer->employment_status))) }}
-                                                    </span>
-                                                @else
-                                                    <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white bg-teal-500 uppercase">
-                                                        ACTIVE
-                                                    </span>
-                                                @endif
+                                                <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                    {{ $employee->employment_status === 'active' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $employee->employment_status))) }}
+                                                </span>
                                             </td>
                                             <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
                                                 <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase

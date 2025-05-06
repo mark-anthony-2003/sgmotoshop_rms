@@ -17,8 +17,7 @@ class Laborer extends Model
     protected $fillable = [
         'employee_id',
         'position_type_id',
-        'work',
-        'employment_status'
+        'work'
     ];
 
     public function employee(): BelongsTo

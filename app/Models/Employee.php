@@ -18,6 +18,7 @@ class Employee extends Model
         'service_transaction_id',
         'salary_type_id',
         'position_type_id',
+        'employment_status',
         'date_hired'
     ];
 
@@ -31,22 +32,27 @@ class Employee extends Model
     {
         return $this->belongsTo(PositionType::class, 'position_type_id');
     }
-
-    public function salaryType(): BelongsTo
-    {
-        return $this->belongsTo(SalaryType::class, 'salary_type_id');
-    }
-
     public function manager()
     {
         return $this->hasOne(Manager::class, 'employee_id');
     }
-
     public function laborer()
     {
         return $this->hasOne(Laborer::class, 'employee_id');
     }
 
+    public function salaryType(): BelongsTo
+    {
+        return $this->belongsTo(SalaryType::class, 'salary_type_id');
+    }
+    public function regularSalary(): BelongsTo
+    {
+        return $this->belongsTo(RegularSalary::class, 'salary_type_id');
+    }
+    public function perDaySalary(): BelongsTo
+    {
+        return $this->belongsTo(PerDaySalary::class, 'salary_type_id');
+    }
 
     public function equipment(): HasOne
     {

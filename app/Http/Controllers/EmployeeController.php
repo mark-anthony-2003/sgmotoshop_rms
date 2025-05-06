@@ -54,7 +54,7 @@ class EmployeeController extends Controller
             'employment_status'     => 'nullable|string|in:active,on_leave,resigned',
             'monthly_rate'          => 'nullable|integer',
             'daily_rate'            => 'nullable|integer',
-            'days_worked'           => 'nullable|integer',
+            'days_worked'           => 'nullable|integer'
         ]);
 
         $employeeImagePath = null;
@@ -86,10 +86,11 @@ class EmployeeController extends Controller
         ]);
 
         $employee = Employee::create([
-            'user_id'          => $user->user_id,
-            'salary_type_id'   => $validated['salary_type_id'],
-            'position_type_id' => $validated['position_type_id'],
-            'date_hired'       => now()
+            'user_id'           => $user->user_id,
+            'salary_type_id'    => $validated['salary_type_id'],
+            'position_type_id'  => $validated['position_type_id'],
+            'employment_status' => $validated['employment_status'],
+            'date_hired'        => now()
         ]);
 
         if ($validated['position_type_id'] == 1) {
@@ -104,8 +105,22 @@ class EmployeeController extends Controller
             Laborer::create([
                 'position_type_id'   => $validated['position_type_id'],
                 'employee_id'        => $employee->employee_id,
-                'work'               => $validated['work'],
-                'employment_status'  => $validated['employment_status']
+                'work'               => $validated['work']
+            ]);
+        }
+
+        if ($validated['salary_type_id'] == 1) {
+            RegularSalary::create([
+                'salary_type_id'    => $validated['salary_type_id'],
+                'employee_id'       => $employee->employee_id,
+                'monthly_rate'      => $validated['monthly_rate']
+            ]);
+        } elseif ($validated['salary_type_id'] == 2) {
+            PerDaySalary::create([
+                'salary_type_id'    => $validated['salary_type_id'],
+                'employee_id'       => $employee->employee_id,
+                'daily_rate'        => $validated['daily_rate'],
+                'days_worked'       => $validated['days_worked']
             ]);
         }
 
@@ -141,6 +156,9 @@ class EmployeeController extends Controller
             'salary_type_id'    => 'required|exists:salary_types,salary_type_id',
             'work'              => 'nullable|string|in:Mechanic,Auto Electrician,Transmission Specialist,Welder,Tire Technician,Oil Change Specialist',
             'employment_status' => 'nullable|string|in:active,on_leave,resigned',
+            'monthly_rate'          => 'nullable|integer',
+            'daily_rate'            => 'nullable|integer',
+            'days_worked'           => 'nullable|integer'
         ]);
 
         $employeeImagePath = $employee->user->profile_image;
@@ -171,8 +189,9 @@ class EmployeeController extends Controller
         );
 
         $employee->update([
-            'salary_type_id'   => $validated['salary_type_id'],
-            'position_type_id' => $validated['position_type_id'],
+            'salary_type_id'    => $validated['salary_type_id'],
+            'position_type_id'  => $validated['position_type_id'],
+            'employment_status' => $validated['employment_status']
         ]);
 
         if ($validated['position_type_id'] == 1) {
@@ -194,8 +213,7 @@ class EmployeeController extends Controller
                 ['employee_id' => $employee->employee_id],
                 [
                     'position_type_id'   => 2,
-                    'work'               => $validated['work'],
-                    'employment_status'  => $validated['employment_status']
+                    'work'               => $validated['work']
                 ]
             );
         }

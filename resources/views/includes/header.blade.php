@@ -9,16 +9,16 @@
                         $user = Auth::user();
 
                         if ($user->user_type === 'customer') {
-                            $dashboardRoute = route('customer-panel');
+                            $dashboardRoute = route('customer.panel');
                         } elseif ($user->user_type === 'admin') {
-                            $dashboardRoute = route('admin-panel');
+                            $dashboardRoute = route('admin.panel');
                         } elseif ($user->user_type === 'employee') {
                             $employee = $user->employees;
                             if ($employee && $employee->positionType) {
                                 if ($employee->positionType->position_type_name === 'manager') {
                                     $dashboardRoute = route('manager.panel');
                                 } elseif ($employee->positionType->position_type_name === 'laborer') {
-                                    $dashboardRoute = route('laborer-panel');
+                                    $dashboardRoute = route('laborer.panel');
                                 }
                             }
                         }
@@ -33,8 +33,8 @@
 
             <div class="hidden sm:flex flex-1 justify-center gap-x-6">
                 @if (Auth::check() && Auth::user()->user_type === 'customer')
-                    <a class="font-medium text-[#222831]" href="#">Items</a>
-                    <a class="font-medium text-[#222831]" href="#">Services</a>
+                    <a class="font-medium text-[#222831]" href="{{ route('items') }}">Items</a>
+                    <a class="font-medium text-[#222831]" href="{{ route('services') }}">Services</a>
                 @endif
             </div>
 
@@ -129,9 +129,30 @@
                             </svg>
                         </button>
                         <div class="hs-dropdown-menu hidden z-50 mt-2 min-w-[14rem] bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-user">
-                            <a href="{{ route('customer-profile', ['customerId' => auth()->user()->user_id]) }}" class="block px-4 py-2 text-sm text-[#222831]">
-                                User Settings
-                            </a>
+                            @php
+                                $user = auth()->user();
+                                $userType = $user->user_type;
+                                $userId = $user->user_id;
+                            @endphp
+                            @if ($userType === 'customer')
+                                <a href="{{ route('customer.profile', ['customerId' => $userId]) }}" class="block px-4 py-2 text-sm text-[#222831]">
+                                    User Settings
+                                </a>
+                            @elseif ($userType === 'employee')
+                                @php
+                                    $position = strtolower($user->employee->positionType->position_name ?? '');
+                                @endphp
+                                @if ($position === 'manager')
+                                    <a href="{{ route('manager.profile', ['managerId' => $userId]) }}" class="block px-4 py-2 text-sm text-[#222831]">
+                                        User Settings
+                                    </a>
+                                @elseif ($position === 'laborer')
+                                    <a href="{{ route('laborer.profile', ['laborerId' => $userId]) }}" class="block px-4 py-2 text-sm text-[#222831]">
+                                        User Settings
+                                    </a>
+                                @endif
+                            @endif
+                        
                             <form method="post" action="{{ route('sign-out') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-[#F05454] rounded-md cursor-pointer">

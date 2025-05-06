@@ -26,11 +26,6 @@ return new class extends Migration
                 'Tire Technician',
                 'Oil Change Specialist'
             ]);
-            $table->enum('employment_status', [
-                'active',
-                'on_leave',
-                'resigned'
-            ]);
             $table->timestamps();
         });
     }

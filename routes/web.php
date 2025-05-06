@@ -78,7 +78,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
             return view('includes.admin.index');
         }
         return abort(403);
-    })->name('admin-panel');
+    })->name('admin.panel');
+
+    // Dashboard
 
     // Items -> Product Management
     Route::prefix('admin/items')->group(function() {
@@ -135,15 +137,19 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 // Employee Routes
 Route::middleware(['auth', 'employee'])->group(function() {
-    Route::get('/laborer/home', function() {
-        return view('includes.employee.laborer.index');
-    })->name('laborer-panel');
-
     // Manager Panel
-    Route::get('/manager/panel', [ManagerController::class, 'managerPanel'])->name('manager.panel');
-    Route::post('/manager/approve/{serviceDetailId}', [ManagerController::class, 'approveReservation'])->name('manager.approve');
-    Route::post('/manager/reject/{serviceDetailId}', [ManagerController::class, 'rejectReservation'])->name('manager.reject');
-    Route::post('/laborer/assign/{serviceDetailId}', [LaborerController::class, 'assignLaborer'])->name('laborer.assign');
+    Route::prefix('/manager')->group(function() {
+        Route::get('/panel', [ManagerController::class, 'managerPanel'])->name('manager.panel');
+        Route::get('/profile/{managerId}', [ManagerController::class, 'managerProfile'])->name('manager.profile');
+        Route::post('/approve/{serviceDetailId}', [ManagerController::class, 'approveReservation'])->name('manager.approve');
+        Route::post('/reject/{serviceDetailId}', [ManagerController::class, 'rejectReservation'])->name('manager.reject');
+        Route::post('/assign-laborer/{serviceDetailId}', [LaborerController::class, 'assignLaborer'])->name('laborer.assign'); 
+    });
+
+    Route::prefix('/laborer')->group(function() {
+        Route::get('/panel', [LaborerController::class, 'laborerPanel'])->name('laborer.panel');
+        Route::get('/profile/{laborerId}', [LaborerController::class, 'laborerProfile'])->name('laborer.profile');
+    });
 });
 
 // Customer Routes
@@ -157,21 +163,23 @@ Route::middleware(['auth', 'customer'])->group(function() {
 
     // Customer Profile
     Route::prefix('/customer/profile')->group(function() {
-        Route::get('/{customerId}', [UserCustomerController::class, 'customerProfile'])->name('customer-profile');
+        Route::get('/{customerId}', [UserCustomerController::class, 'customerProfile'])->name('customer.profile');
         Route::post('/{customerId}', [UserCustomerController::class, 'updateCustomerProfile'])->name('customer.update');
     });
 
     // Order Items
     Route::prefix('/customer/items')->group(function() {
         Route::get('/', [OrderItemController::class, 'itemsList'])->name('items');
-        Route::get('/{item}', [OrderItemController::class, 'itemOrderCard'])->name('item-order');
-        Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item-addToCart');
+        Route::get('/{item}', [OrderItemController::class, 'itemOrderCard'])->name('item.order');
+        Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item.addToCart');
         
         // Order Items Summary
         Route::post('/summary', [OrderItemController::class, 'itemsOrderCheckOut'])->name('items.checkout');
         Route::get('/summary', [OrderItemController::class, 'itemOrderSummary'])->name('items.summary');
     });
 
+    // Services
+    Route::get('/customer/services', [ServiceTypeController::class, 'services'])->name('services');
     // Reservation
     Route::prefix('/customer/reservation')->group(function() {
         Route::get('/', [ReservationController::class, 'reservationForm'])->name('reservation-form');

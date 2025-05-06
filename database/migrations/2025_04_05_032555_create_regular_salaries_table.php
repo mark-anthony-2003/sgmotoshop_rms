@@ -15,6 +15,9 @@ return new class extends Migration
             $table->foreignId('salary_type_id')
                 ->constrained('salary_types', 'salary_type_id')
                 ->onDelete('cascade');
+            $table->foreignId('employee_id')
+                ->constrained('employees', 'employee_id')
+                ->onDelete('cascade');
             $table->integer('monthly_rate');
             $table->timestamps();
         });

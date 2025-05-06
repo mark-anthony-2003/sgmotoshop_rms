@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class ManagerController extends Controller
 {
+    public function managerProfile($managerId)
+    {
+        $user = auth()->user();
+
+        if ($user->user_type !== 'employee' || 
+            strtolower($user->employee->positionType->position_name ?? '') !== 'manager' || 
+            $user->user_id != $managerId) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $manager = $user->employee;
+
+        return view('pages.profile.employees.manager.index', compact('manager'));
+    }
+
     public function managerPanel()
     {
         $reservations = ServiceDetail::with('serviceType')->get();

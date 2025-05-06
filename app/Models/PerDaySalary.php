@@ -9,8 +9,13 @@ class PerDaySalary extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'employee_id';
+    public $incrementing = false;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'salary_type_id',
+        'employee_id',
         'daily_rate',
         'days_worked'
     ];

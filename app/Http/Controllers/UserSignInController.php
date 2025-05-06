@@ -6,7 +6,6 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserSignInController extends Controller
 {
@@ -23,6 +22,7 @@ class UserSignInController extends Controller
     {
         return view('pages.auth.employee.index');
     }
+
     public function showEmployeeSignInAsManager()
     {
         if (Auth::check()) {
@@ -31,6 +31,7 @@ class UserSignInController extends Controller
         $employeeType = 'manager';
         return view('pages.auth.employee.manager.index', compact('employeeType'));
     }
+
     public function showEmployeeSignInAsLaborer()
     {
         if (Auth::check()) {
@@ -49,67 +50,75 @@ class UserSignInController extends Controller
         return view('pages.auth.customer.index', compact('userType'));
     }
 
-    // Sign in for Admin|Customer
+    // Sign in for Admin | Customer
     public function signIn(Request $request)
     {
         $request->validate([
             'email'     => 'required|email',
             'password'  => 'required',
-            'user_type' => 'required|in:admin,customer'
+            'user_type' => 'required|in:admin,customer',
         ]);
 
-        $user = User::where('email', $request->email)
+        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $credentials['email'])
                     ->where('user_type', $request->user_type)
                     ->first();
-        
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user);
 
+        if ($user && Auth::attempt($credentials)) {
             if ($user->user_type === 'admin') {
-                return redirect()->route('admin-panel');
+                return redirect()->route('admin.panel');
             }
-            return redirect()->route('customer-panel');
+            return redirect()->route('customer.panel');
         }
+
         return back()->withErrors([
             'email' => 'Invalid email or password.'
         ])->withInput();
     }
 
-    // Sign in for Employee:Manager|Laborer
+    // Sign in for Employee: Manager | Laborer
     public function signInEmployee(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email'         => 'required|email',
             'password'      => 'required',
-            'position_name' => 'required|in:manager,laborer'
+            'employee_type' => 'required|in:manager,laborer',
         ]);
 
-        $user = User::where('email', $credentials['email'])->first();
+        $credentials = $request->only('email', 'password');
 
-        if ($user && Hash::check($credentials['password'], $user->user_password)) {
-            $employee = Employee::where('employee_id', $user->user_id)
-                                ->whereHas('positionType', function($query) use ($credentials) {
-                                    $query->where('position_name', $credentials['position_name']);
-                                })
-                                ->first();
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
 
-            if ($employee) {
-                Auth::login($user);
-
-                $positionType = $employee->positionType->position_type_name;
-                if ($positionType === 'manager') {
-                    return redirect()->route('manager.panel');
-                } elseif ($positionType === 'laborer') {
-                    return redirect()->route('laborer-panel');
-                }
+            if ($user->user_type !== 'employee') {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Unauthorized: not an employee.']);
             }
-            Auth::logout();
-            return redirect()->back()->withErrors([
-                'position_name' => 'Unauthorized access for this employee type.'
-            ]);
+
+            $employee = $user->employee;
+
+            if (!$employee || !$employee->positionType) {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Employee role not found.']);
+            }
+
+            $actualPosition = strtolower($employee->positionType->position_name);
+            $expectedPosition = strtolower($request->employee_type);
+
+            if ($actualPosition !== $expectedPosition) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'You are not authorized to sign in as a ' . $expectedPosition . '.'
+                ]);
+            }
+
+            return $actualPosition === 'manager'
+                ? redirect()->route('manager.panel')
+                : redirect()->route('laborer.panel');
         }
-        return redirect()->back()->withErrors([
-            'email' => 'Invalid credentials'
-        ]);
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.'
+        ])->withInput();
     }
 }

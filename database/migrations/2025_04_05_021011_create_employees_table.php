@@ -22,6 +22,11 @@ return new class extends Migration
             $table->foreignId('position_type_id')
                 ->constrained('position_types', 'position_type_id')
                 ->onDelete('cascade');
+            $table->enum('employment_status', [
+                'active',
+                'on_leave',
+                'resigned'
+            ]);
             $table->date('date_hired');
             $table->timestamps();
         });
