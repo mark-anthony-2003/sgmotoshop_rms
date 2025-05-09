@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaborerController;
 use App\Http\Controllers\ManagerController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\UserCustomerController;
 use App\Http\Controllers\UserSignInController;
 use App\Http\Controllers\UserSignUpController;
+use App\Models\PendingReservation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -44,10 +47,10 @@ Route::middleware('guest')->group(function() {
                 if ($employee->positionType->position_type_name === 'manager') {
                     return redirect()->route('manager.panel');
                 } elseif ($employee->positionType->position_type_name === 'laborer') {
-                    return redirect()->route('laborer-panel');
+                    return redirect()->route('laborer.panel');
                 }
             } elseif ($user->user_type === 'customer') {
-                return redirect()->route('customer-panel');
+                return redirect()->route('customer.panel');
             }
         }
         return view('pages.auth.index');
@@ -73,14 +76,8 @@ Route::middleware('guest')->group(function() {
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->group(function() {
-    Route::get('/admin/dashboard', function() {
-        if (Auth::user()->user_type === 'admin') {
-            return view('includes.admin.index');
-        }
-        return abort(403);
-    })->name('admin.panel');
-
     // Dashboard
+    Route::get('/admin/dashboard', [InventoryController::class, 'inventoryDashboard'])->name('admin.panel');
 
     // Items -> Product Management
     Route::prefix('admin/items')->group(function() {
@@ -117,7 +114,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
         Route::get('/{equipment}', [EquipmentController::class, 'equipmentDetail'])->name('equipment.show');
         Route::post('/store', [EquipmentController::class, 'equipmentCreate'])->name('equipment.store');
         Route::get('{equipment}/edit', [EquipmentController::class, 'equipmentEdit'])->name('equipment.edit');
-        Route::post('/{equipment}/update', [EquipmentController::class], 'equipmentUpdate')->name('equipment.update');
+        Route::post('/{equipment}/update', [EquipmentController::class, 'equipmentUpdate'])->name('equipment.update');
         Route::post('/{equipment}', [EquipmentController::class, 'equipmentDelete'])->name('equipment.delete');
     });
 
@@ -143,7 +140,8 @@ Route::middleware(['auth', 'employee'])->group(function() {
         Route::get('/profile/{managerId}', [ManagerController::class, 'managerProfile'])->name('manager.profile');
         Route::post('/approve/{serviceDetailId}', [ManagerController::class, 'approveReservation'])->name('manager.approve');
         Route::post('/reject/{serviceDetailId}', [ManagerController::class, 'rejectReservation'])->name('manager.reject');
-        Route::post('/assign-laborer/{serviceDetailId}', [LaborerController::class, 'assignLaborer'])->name('laborer.assign'); 
+        Route::post('/assign-laborer/{serviceDetailId}', [ManagerController::class, 'assignLaborer'])->name('laborer.assign');
+        Route::post('/payment-status/{service_detail_id}', [ManagerController::class, 'paymentStatus'])->name('manager.payment.status');
     });
 
     Route::prefix('/laborer')->group(function() {
@@ -159,32 +157,49 @@ Route::middleware(['auth', 'customer'])->group(function() {
             return view('includes.customer.index');
         }
         return abort(403);
-    })->name('customer-panel');
+    })->name('customer.panel');
 
     // Customer Profile
     Route::prefix('/customer/profile')->group(function() {
         Route::get('/{customerId}', [UserCustomerController::class, 'customerProfile'])->name('customer.profile');
         Route::post('/{customerId}', [UserCustomerController::class, 'updateCustomerProfile'])->name('customer.update');
-    });
+    });;
 
     // Order Items
     Route::prefix('/customer/items')->group(function() {
+        // Items
         Route::get('/', [OrderItemController::class, 'itemsList'])->name('items');
         Route::get('/{item}', [OrderItemController::class, 'itemOrderCard'])->name('item.order');
         Route::post('/{item}', [OrderItemController::class, 'itemAddToCart'])->name('item.addToCart');
-        
-        // Order Items Summary
-        Route::post('/summary', [OrderItemController::class, 'itemsOrderCheckOut'])->name('items.checkout');
-        Route::get('/summary', [OrderItemController::class, 'itemOrderSummary'])->name('items.summary');
     });
+    // Order Summary Routes
+    Route::prefix('/customer/order-summary')->group(function() {
+        Route::post('/', [OrderItemController::class, 'itemsOrderCheckOut'])->name('items.orderSummary.checkout');
+        Route::get('/', [OrderItemController::class, 'itemOrderSummary'])->name('items.summary');
+    });
+
+    // Shipment Route (POST)
+    Route::post('/items/ship', [OrderItemController::class, 'itemShipOrder'])->name('items.ship');
+
+    // GCash Success and Cancel Routes
+    Route::get('/gcash/success', [OrderItemController::class, 'gcashSuccess'])->name('gcash.success');
+    Route::get('/gcash/cancel', function () {
+        return redirect()->route('items')->with('error', 'GCash payment was cancelled.');
+    })->name('gcash.cancel');
+
 
     // Services
     Route::get('/customer/services', [ServiceTypeController::class, 'services'])->name('services');
     // Reservation
-    Route::prefix('/customer/reservation')->group(function() {
-        Route::get('/', [ReservationController::class, 'reservationForm'])->name('reservation-form');
+    Route::prefix('/customer/reservation')->group(function () {
+        Route::get('/', [ReservationController::class, 'reservationForm'])->name('reservation.form');
         Route::post('/', [ReservationController::class, 'makeReservation'])->name('reservation.submit');
+
+        // GCash-specific routes
+        Route::get('/gcash/checkout', [ReservationController::class, 'initiateGcashReservationPayment'])->name('gcash.reservation.checkout');
+        Route::get('/gcash/success/{id}', [ReservationController::class, 'gcashReservationSuccess'])->name('gcash.reservation.success');
     });
+    
 });
 
 // Temp force logout

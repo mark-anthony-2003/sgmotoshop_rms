@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Laborer;
 use App\Models\ServiceDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,32 +10,29 @@ use Symfony\Component\VarDumper\Caster\RedisCaster;
 
 class LaborerController extends Controller
 {
-    public function laborerProfile()
+    public function laborerProfile($laborerId)
     {
-        return view('pages.profile.employees.laborer.index');
+        $user = auth()->user();
+        if ($user->user_type !== 'employee' ||
+            strtolower($user->employee->positionType->position_name ?? '') !== 'laborer' ||
+            $user->user_id != $laborerId) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $laborer = $user->employee;
+        return view('pages.profile.employees.laborer.index', compact('laborer'));
     }
 
     public function laborerPanel()
     {
-        return view('includes.employee.laborer.index');
-    }
+        $reservations = ServiceDetail::with([
+            'serviceType',
+            'service',
+            'laborer.employee.user'
+        ])
+        ->whereNotNull('employee_id')
+        ->get();
 
-    public function assignLaborer(Request $request, $serviceDetailId)
-    {
-        $request->validate([
-            'laborer_id' => 'required|exists:laborers,laborer_id'
-        ]);
-
-        $serviceDetail = ServiceDetail::findOrFail($serviceDetailId);
-
-        if ($serviceDetail->approval_type !== 'approved') {
-            return redirect()->back()->with('error', 'Reservation must be approved first.');
-        }
-
-        $serviceDetail->update([
-            'assigned_by_manager_id' => $request->laborer_id
-        ]);
-
-        return redirect()->back()->with('success', 'Laborer assigned succussfully.');
+        return view('includes.employee.laborer.index', compact('reservations'));
     }
 }

@@ -24,9 +24,9 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('parts', 'part_id')
                 ->onDelete('cascade');
-            $table->foreignId('assigned_by_manager_id')
+            $table->foreignId('employee_id')
                 ->nullable()
-                ->constrained('users', 'user_id')
+                ->constrained('employees', 'employee_id')
                 ->onDelete('set null');
             $table->enum('approval_type', [
                 'pending',

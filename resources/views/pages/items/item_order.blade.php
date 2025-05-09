@@ -8,9 +8,9 @@
             <div class="p-2 rounded-md max-w-2xl mx-auto m-4t mb-8 bg-white shadow-sm">
                 <div class="flex flex-row gap-4">
                     <div class="w-full flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
-                        @if ($item->item_image)
+                        @if ($item->image)
                             <img 
-                                src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
+                                src="{{ asset('storage/' . $item->image) }}"
                                 alt="{{ $item->item_name }}"
                                 class="object-cover">
                         @else
@@ -29,7 +29,7 @@
                             </span>
                         </div>
             
-                        <form action="{{ route('item-addToCart', $item->item_id) }}" method="POST" class="mt-4">
+                        <form action="{{ route('item.addToCart', $item->item_id) }}" method="POST" class="mt-4">
                             @csrf
                             <div class="flex items-center gap-2">
                                 <button type="button"
@@ -64,10 +64,10 @@
                 <div class="grid grid-cols-5 gap-4">
                     @foreach ($popularItems as $popularItem)
                         <div class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-md">
-                            <a href="{{ route('item-order', $popularItem->item_id) }}">
+                            <a href="{{ route('item.order', $popularItem->item_id) }}">
                                 @if ($popularItem->image)
                                     <img 
-                                        src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
+                                        src="{{ asset('storage/' . $popularItem->image) }}"
                                         alt="{{ $popularItem->name }}"
                                         class="w-full h-auto rounded-t-md">
                                 @else

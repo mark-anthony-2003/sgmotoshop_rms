@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('shipments', function (Blueprint $table) {
             $table->id('shipment_id');
             $table->foreignId('cart_id')
+                ->nullable()
                 ->constrained('carts', 'cart_id')
-                ->onDelete('cascade');
+                ->onDelete('set null');
             $table->unsignedBigInteger('total_amount');
             $table->enum('item_status', [
                 'pending',

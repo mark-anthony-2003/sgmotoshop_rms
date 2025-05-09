@@ -9,7 +9,7 @@
                 <a href="{{ route('items') }}" class="w-full px-3 py-2.5 text-sm text-center font-medium text-white bg-[#30475E] rounded-sm transition duration-150">
                     Order Items
                 </a>
-                <a href="{{ route('reservation-form') }}" class="w-full px-3 py-2.5 text-sm text-center font-medium text-white bg-[#30475E] rounded-sm transition duration-150">
+                <a href="{{ route('reservation.form') }}" class="w-full px-3 py-2.5 text-sm text-center font-medium text-white bg-[#30475E] rounded-sm transition duration-150">
                     Make a Reservation
                 </a>
             </div>

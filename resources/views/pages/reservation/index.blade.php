@@ -79,7 +79,7 @@
                                             <td class="px-4 py-2">
                                                 <input 
                                                     type="checkbox"
-                                                    class="service_checkbox h-4 w-4 text-primary"
+                                                    class="service_checkbox h-4 w-4 text-primary accent-gray-700"
                                                     data-price="{{ $serviceType->price }}"
                                                     data-name="{{ $serviceType->service_name }}"
                                                     value="{{ $serviceType->service_type_id }}"
@@ -114,18 +114,13 @@
                         <h4 class="text-lg font-semibold text-[#222831]">Payment Method</h4>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             <label class="inline-flex items-center">
-                                <input type="radio" name="payment_method" value="cash" class="form-radio text-primary">
+                                <input type="radio" name="payment_method" value="cash" class="form-radio text-primary accent-gray-700">
                                 <span class="ml-2 text-sm text-[#222831]">Cash</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name="payment_method" value="gcash" class="form-radio text-primary">
+                                <input type="radio" name="payment_method" value="gcash" class="form-radio text-primary accent-gray-700">
                                 <span class="ml-2 text-sm text-[#222831]">Gcash</span>
                             </label>
-                        </div>
-
-                        <div class="max-w-sm">
-                            <label for="payment_reference" class="block text-sm font-medium text-[#222831] mb-1">Reference No (If Online Payment)</label>
-                            <input type="text" name="payment_reference" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cart extends Model
 {
@@ -15,6 +16,7 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'item_id',
+        'shipment_id',
         'quantity',
         'sub_total'
     ];
@@ -24,8 +26,8 @@ class Cart extends Model
     {
         return $this->belongsTo(Item::class, 'item_id');
     }
-    public function shipment(): BelongsTo
+    public function shipment(): HasOne
     {
-        return $this->belongsTo(Shipment::class, 'shipment_id');
+        return $this->hasOne(Shipment::class, 'cart_id', 'cart_id');
     }
 }

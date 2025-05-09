@@ -16,7 +16,7 @@ class ServiceDetail extends Model
         'service_id',
         'service_type_id',
         'part_id',
-        'assignment_by_manager',
+        'employee_id',
         'approval_type',
         'manager_remarks'
     ];
@@ -30,9 +30,8 @@ class ServiceDetail extends Model
     {
         return $this->belongsTo(ServiceType::class, 'service_type_id');
     }
-    public function assignedByManager(): BelongsTo
+    public function laborer()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Laborer::class, 'employee_id', 'employee_id');
     }
-    
 }

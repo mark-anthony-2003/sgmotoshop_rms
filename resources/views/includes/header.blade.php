@@ -13,11 +13,11 @@
                         } elseif ($user->user_type === 'admin') {
                             $dashboardRoute = route('admin.panel');
                         } elseif ($user->user_type === 'employee') {
-                            $employee = $user->employees;
+                            $employee = $user->employee;
                             if ($employee && $employee->positionType) {
-                                if ($employee->positionType->position_type_name === 'manager') {
+                                if ($employee->positionType->position_name === 'manager') {
                                     $dashboardRoute = route('manager.panel');
-                                } elseif ($employee->positionType->position_type_name === 'laborer') {
+                                } elseif ($employee->positionType->position_name === 'laborer') {
                                     $dashboardRoute = route('laborer.panel');
                                 }
                             }
@@ -45,74 +45,81 @@
                             <button id="hs-dropdown-cart" type="button" class="hs-dropdown-toggle inline-flex items-center gap-x-2 text-sm font-medium text-[#222831]">
                                 Cart @if ($cartCount > 0) {{ $cartCount }} @endif
                             </button>
-                            <div class="hs-dropdown-menu hidden z-50 mt-2 min-w-[14rem] bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-cart">
-                                <ul>
-                                    <form action="{{ route('items.checkout') }}" method="POST">
-                                        @csrf
+                            <div class="hs-dropdown-menu hidden z-50 mt-2 w-[22rem] bg-white shadow-lg rounded-lg p-4" aria-labelledby="hs-dropdown-cart">
+                                <form action="{{ route('items.orderSummary.checkout') }}" method="POST">
+                                    @csrf
+                            
+                                    <ul class="space-y-4 max-h-[400px] overflow-y-auto">
                                         @forelse ($carts as $cart)
-                                            <li class="flex items-start gap-2 border-b py-2">
+                                            <li class="flex items-start gap-3 border-b pb-3">
                                                 <input 
                                                     type="checkbox" 
                                                     name="selected_items[]" 
-                                                    class="item-checkbox mt-2"
-                                                    id="cart-item-{{ $cart->cart_id }}" 
-                                                    data-price="{{ $cart->item->item_price }}" 
+                                                    class="item-checkbox mt-2 accent-gray-700"
+                                                    value="{{ $cart->cart_id }}"
+                                                    id="cart-item-{{ $cart->cart_id }}"
+                                                    data-price="{{ $cart->item->price }}"
                                                     data-id="{{ $cart->cart_id }}"
                                                 >
                                                 <img 
-                                                    src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
+                                                    src="{{ asset('storage/' . $cart->item->image) }}" 
                                                     alt="{{ $cart->item->item_name }}" 
-                                                    width="50"
-                                                    class="rounded"
+                                                    class="w-12 h-12 object-cover rounded-md"
                                                 >
                                                 <div class="flex-1">
-                                                    <label for="cart-item-{{ $cart->cart_id }}" class="font-semibold">
+                                                    <label for="cart-item-{{ $cart->cart_id }}" class="block font-medium text-gray-800">
                                                         {{ Str::title($cart->item->item_name) }}
                                                     </label>
-                                                    <p class="text-sm text-gray-600">₱{{ number_format($cart->item->item_price, 2) }}</p>
-                                        
-                                                    <div class="flex items-center gap-1 mt-1">
+                                                    <p class="text-sm text-gray-600">₱{{ number_format($cart->item->price, 2) }}</p>
+                                                    <div class="flex items-center gap-1 mt-2">
                                                         <button 
                                                             type="button" 
                                                             onclick="changeCartQuantity({{ $cart->cart_id }}, -1)" 
-                                                            class="px-2 py-1 border rounded">-</button>
+                                                            class="px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">−</button>
                                                         <input 
                                                             type="number" 
-                                                            name="cart_quantity[{{ $cart->cart_id }}]" 
+                                                            name="quantity[{{ $cart->cart_id }}]" 
                                                             id="quantity-{{ $cart->cart_id }}" 
                                                             min="1" 
-                                                            max="{{ $cart->item->item_stocks ?? 10 }}" 
-                                                            value="{{ $cart->cart_quantity }}"
-                                                            class="w-12 text-center border rounded quantity-input">
+                                                            max="{{ $cart->item->stocks ?? 10 }}" 
+                                                            value="{{ $cart->quantity }}"
+                                                            class="w-12 text-center border border-gray-300 rounded"
+                                                        >
                                                         <button 
                                                             type="button" 
                                                             onclick="changeCartQuantity({{ $cart->cart_id }}, 1)" 
-                                                            class="px-2 py-1 border rounded">+</button>
+                                                            class="px-2 py-1 bg-gray-100 text-[#222831] rounded hover:bg-gray-200">+</button>
                                                     </div>
                                                 </div>
                                             </li>
                                         @empty
-                                            <li class="text-center p-3">
-                                                <p class="mb-0">Your cart is empty.</p>
-                                            </li>
+                                            <li class="text-center text-sm text-gray-500">Your cart is empty.</li>
                                         @endforelse
-                                        <li>
-                                            @if ($cartCount > 0)
-                                                <div>
-                                                    <input type="checkbox" id="selectAll">
-                                                    <label for="selectAll">All</label>
-                                                </div>
-                                                <div>
-                                                    <p>Total: ₱<span id="totalAmount">0.00</span></p>
-                                                    <button type="submit" id="checkoutButton" disabled>
-                                                        Check out ({{ $cartCount }})
-                                                    </button>
-                                                </div>
-                                            @endif
-                                        </li>
-                                    </form>
-                                </ul>
+                                    </ul>
+                            
+                                    @if ($cartCount > 0)
+                                        <div class="mt-4 border-t pt-4 space-y-3">
+                                            <div class="flex items-center justify-between">
+                                                <label class="flex items-center gap-2 text-sm font-medium">
+                                                    <input type="checkbox" id="selectAll" class="accent-gray-700">
+                                                    Select All
+                                                </label>
+                                                <p class="text-sm">Total: ₱<span id="totalAmount" class="font-semibold">0.00</span></p>
+                                            </div>
+                            
+                                            <button 
+                                                type="submit" 
+                                                id="checkoutButton" 
+                                                class="w-full bg-[#222831] text-white py-2 px-4 rounded disabled:opacity-50"
+                                                disabled
+                                            >
+                                                Checkout ({{ $cartCount }})
+                                            </button>
+                                        </div>
+                                    @endif
+                                </form>
                             </div>
+                            
                         </div>
                     @endif
 
@@ -153,7 +160,7 @@
                                 @endif
                             @endif
                         
-                            <form method="post" action="{{ route('sign-out') }}">
+                            <form method="POST" action="{{ route('sign-out') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-[#F05454] rounded-md cursor-pointer">
                                     Sign out

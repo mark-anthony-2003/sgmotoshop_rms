@@ -12,10 +12,10 @@
             <div class="grid grid-cols-5 gap-4">
                 @forelse ($items as $item)
                     <div class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-md">
-                        <a href="{{ route('item-order', $item->item_id) }}">
-                            @if ($item->item_image)
+                        <a href="{{ route('item.order', $item->item_id) }}">
+                            @if ($item->image)
                                 <img 
-                                    src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
+                                    src="{{ asset('storage/' . $item->image) }}"
                                     alt="{{ $item->item_name }}"
                                     class="w-full h-auto rounded-t-md">
                             @else

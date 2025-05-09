@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained('employees', 'employee_id')
                 ->onDelete('cascade');
             $table->foreignId('service_id')
-                ->constrained('services', 'service_id')
+                ->constrained('service_types', 'service_type_id')
                 ->onDelete('cascade');
             $table->string('equipment_name');
             $table->date('purchase_date');

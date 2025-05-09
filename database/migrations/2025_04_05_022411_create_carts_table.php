@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('item_id')
                 ->constrained('items', 'item_id')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('shipment_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('sub_total')->nullable();
             $table->timestamps();

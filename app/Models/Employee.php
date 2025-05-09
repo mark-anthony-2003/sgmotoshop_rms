@@ -58,4 +58,20 @@ class Employee extends Model
     {
         return $this->hasOne(Equipment::class, 'employee_id');
     }
+
+    protected static function booted()
+    {
+        static::created(function ($employee) {
+            Inventory::firstOrCreate(
+                ['employee_id' => $employee->employee_id],
+                [
+                    'item_id' => null,
+                    'service_transaction_id' => $employee->service_transaction_id,
+                    'equipment_id' => null,
+                    'finance_id' => null,
+                    'sales' => 0
+                ]
+            );
+        });
+    }    
 }

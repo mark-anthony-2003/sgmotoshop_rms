@@ -18,7 +18,7 @@
                                 <thead>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">No#</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Equipment Name</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Employee/s Assigned</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Assignee</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Maintenance Date</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Equipment Status</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -28,8 +28,12 @@
                                         <tr>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $index + 1 }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ Str::title($equipment->equipment_name) }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800"> Employees </td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">{{ $equipment->maintenance_date }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                {{ $equipment->employee->user->first_name }} {{ $equipment->employee->user->last_name }}
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                {{ \Carbon\Carbon::parse($equipment->maintenance_date)->format('F j, Y') }}
+                                            </td>
                                             <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
                                                 <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
                                                     {{ $equipment->equipment_status === 'operational' ? 'bg-teal-500' : 'bg-red-500' }}">

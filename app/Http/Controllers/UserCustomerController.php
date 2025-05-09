@@ -12,14 +12,13 @@ class UserCustomerController extends Controller
     public function customerProfile($customerId)
     {
         $customer = User::findOrFail($customerId);
-        $orderItems = Shipment::all();
+        $orders = Shipment::with(['cart.item', 'product'])->get();
         $reservations = ServiceDetail::with([
             'service',
-            'serviceType',
-            'assignedByManager'
+            'serviceType'
         ])->get();
 
-        return view('pages.profile.customer.index', compact('customer', 'orderItems', 'reservations'));
+        return view('pages.profile.customer.index', compact('customer', 'orders', 'reservations'));
     }
 
     public function updateCustomerProfile(Request $request, $customerId)
@@ -61,6 +60,6 @@ class UserCustomerController extends Controller
             ]
         );
 
-        return redirect()->route('customer-profile', $customer->user_id)->with('success', 'Profile updated successfully');
+        return redirect()->route('customer.profile', $customer->user_id)->with('success', 'Profile updated successfully');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Equipment extends Model
 {
@@ -21,4 +22,29 @@ class Equipment extends Model
         'maintenance_date',
         'equipment_status'
     ];
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(ServiceType::class, 'service_id', 'service_type_id');
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($equipment) {
+            Inventory::firstOrCreate(
+                ['equipment_id' => $equipment->equipment_id],
+                [
+                    'item_id' => null,
+                    'service_transaction_id' => null,
+                    'employee_id' => null,
+                    'finance_id' => null,
+                    'sales' => 0
+                ]
+            );
+        });
+    }    
 }

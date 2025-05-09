@@ -27,7 +27,6 @@ class AddressController extends Controller
             }
             return response()->json(['error' => 'Failed to fetch provinces.'], 500);
         } catch (\Exception $e) {
-            Log::error('Province API Error: ' . $e->getMessage());
             return response()->json(['error' => 'Service unavailable.'], 503);
         }
     }
@@ -41,7 +40,6 @@ class AddressController extends Controller
             }
             return response()->json(['error' => 'Failed to fetch cities.'], 500);
         } catch (\Exception $e) {
-            Log::error('City API Error: ' . $e->getMessage());
             return response()->json(['error' => 'Service unavailable.'], 503);
         }
     }
@@ -55,7 +53,6 @@ class AddressController extends Controller
             }
             return response()->json(['error' => 'Failed to fetch barangays.'], 500);
         } catch (\Exception $e) {
-            Log::error('Barangay API Error: ' . $e->getMessage());
             return response()->json(['error' => 'Service unavailable.'], 503);
         }
     }

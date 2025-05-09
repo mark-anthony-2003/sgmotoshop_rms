@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained('shipments', 'shipment_id')
                 ->onDelete('cascade');
             $table->integer('amount');
-            $table->string('tracking_no');
+            $table->string('tracking_number')->unique();
             $table->timestamps();
         });
     }

@@ -2,19 +2,28 @@
 
 @section('content')
     <section class="flex justify-center items-center mt-18">
-        <div class="w-full max-w-6xl px-4 py-4">
+        <div class="w-full max-w-7xl px-4 py-4">
             <h2 class="text-2xl font-bold text-[#222831] mb-5">Customer Profile</h2>
 
             <div class="flex">
                 <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
                     <nav class="flex gap-x-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
-                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white active" id="segment-item-1" aria-selected="true" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
+                        <button 
+                            type="button"
+                            class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white active"
+                            id="segment-item-1" aria-selected="true" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
                             User Settings
                         </button>
-                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white" id="segment-item-2" aria-selected="false" data-hs-tab="#segment-2" aria-controls="segment-2" role="tab">
+                        <button 
+                            type="button"
+                            class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                            id="segment-item-2" aria-selected="false" data-hs-tab="#segment-2" aria-controls="segment-2" role="tab">
                             Orders History
                         </button>
-                        <button type="button" class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white" id="segment-item-3" aria-selected="false" data-hs-tab="#segment-3" aria-controls="segment-3" role="tab">
+                        <button 
+                            type="button" 
+                            class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                            id="segment-item-3" aria-selected="false" data-hs-tab="#segment-3" aria-controls="segment-3" role="tab">
                             Reservations History
                         </button>
                     </nav>
@@ -23,7 +32,7 @@
 
             <div class="mt-3">
                 <div id="segment-1" role="tabpanel" aria-labelledby="segment-item-1">
-                    <form action="{{ route('customer.update', $customer->user_id) }}" method="post" enctype="multipart/form-data" class="space-y-8">
+                    <form action="{{ route('customer.update', $customer->user_id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                         @csrf
                         
                         <div>
@@ -116,11 +125,110 @@
                         </div>
                     </form>
                 </div>
-                <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
-                    <p class="text-gray-500">
-                        This is the <em class="font-semibold text-gray-800">second</em> item's tab body.
-                    </p>
+
+                <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2" class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
+                    <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
+                        <nav class="flex gap-x-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
+                            <button 
+                                type="button" 
+                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white active"
+                                id="segment-item-4" aria-selected="true" data-hs-tab="#segment-4" aria-controls="segment-4" role="tab">
+                                All
+                            </button>
+                            <button 
+                                type="button" 
+                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                                id="segment-item-5" aria-selected="false" data-hs-tab="#segment-5" aria-controls="segment-5" role="tab">
+                                Unpaid
+                            </button>
+                            <button 
+                                type="button" 
+                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                                id="segment-item-6" aria-selected="false" data-hs-tab="#segment-6" aria-controls="segment-6" role="tab">
+                                To Ship
+                            </button>
+                            <button 
+                                type="button" 
+                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                                id="segment-item-7" aria-selected="false" data-hs-tab="#segment-7" aria-controls="segment-7" role="tab">
+                                Shipped
+                            </button>
+                            <button 
+                                type="button" 
+                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
+                                id="segment-item-8" aria-selected="false" data-hs-tab="#segment-8" aria-controls="segment-8" role="tab">
+                                Returns
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div class="mt-3">
+                        <div id="segment-4" role="tabpanel" aria-labelledby="segment-item-4">
+                            <div class="flex flex-col">
+                                <div class="-m-1.5 overflow-x-auto">
+                                    <div class="p-1.5 min-w-full inline-block align-middle">
+                                        <div class="overflow-hidden">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Image</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Item Name</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Total Amount</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Method</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Status</th>
+                                                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Tracking Number</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-gray-200">
+                                                    @forelse ($orders as $order)
+                                                        <tr>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                <img src="{{ asset('storage/' . $order->cart->item->image) }}" alt="{{ $order->cart->item->item_name }}" class="w-12 h-12 object-cover">
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                {{ $order->cart->item->item_name }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                {{ $order->cart->quantity }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                ₱{{ number_format($order->cart->item->price, 2) }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                ₱{{ number_format($order->total_amount, 2) }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                {{ Str::title(str_replace('_', ' ', $order->payment_method)) }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                                    {{ $order->payment_status === 'paid' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                                    {{ strtoupper(ucfirst(str_replace('_', ' ', $order->payment_status))) }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                                {{ $order->product->tracking_number }}
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <td colspan="7" class="text-center py-4 text-gray-500">No Orders Yet</td>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="segment-5" role="tabpanel" class="hidden" aria-labelledby="segment-item-5">Unpaid</div>
+                        <div id="segment-6" role="tabpanel" class="hidden" aria-labelledby="segment-item-6">To Ship</div>
+                        <div id="segment-7" role="tabpanel" class="hidden" aria-labelledby="segment-item-7">Shipped</div>
+                        <div id="segment-8" role="tabpanel" class="hidden" aria-labelledby="segment-item-8">Returns</div>
+                    </div>
                 </div>
+                
                 <div id="segment-3" class="hidden" role="tabpanel" aria-labelledby="segment-item-3">
                     <div class="flex flex-col">
                         <div class="-m-1.5 overflow-x-auto">
@@ -173,9 +281,10 @@
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
                                                             {{ $reservation->service->payment_method }}
                                                         </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 uppercase">
-                                                            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">
-                                                                {{ $reservation->service->payment_status }}
+                                                        <td class="px-6 py-2 whitespace-nowrapfont-medium text-gray-800">
+                                                            <span class="inline-flex items-center gap-x-1 py-1.5 px-3 rounded-full text-xs font-medium text-white uppercase
+                                                                {{ $reservation->service->payment_status === 'completed' ? 'bg-teal-500' : 'bg-red-500' }}">
+                                                                {{ strtoupper(ucfirst($reservation->service->payment_status)) }}
                                                             </span>
                                                         </td>
                                                     </tr>

@@ -5,7 +5,7 @@
         <div class="w-full max-w-md px-4 py-4">
             <h2 class="text-2xl font-bold text-center text-[#222831] mb-5">Sign in as Admin</h2>
     
-            <form action="{{ route('sign-in.admin.submit') }}" method="post" class="space-y-5">
+            <form action="{{ route('sign-in.admin.submit') }}" method="POST" class="space-y-5">
                 @csrf
                 <input type="hidden" name="user_type" value="{{ $userType ?? 'admin' }}">
     

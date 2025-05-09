@@ -8,7 +8,7 @@
             <div class="grid grid-cols-5 gap-4">
                 @forelse ($services as $service)
                     <div class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-md">
-                        <a href="{{ route('reservation-form') }}">
+                        <a href="{{ route('reservation.form') }}">
                             @if ($service->image)
                                 <img 
                                     src="{{ asset('storage/' . $service->image) }}"

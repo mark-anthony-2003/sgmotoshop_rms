@@ -8,7 +8,7 @@
             </h2>
 
             <div class="flex justify-center items-center">
-                <form action="" method="POST" class="bg-white p-4 rounded-lg border space-y-4 w-4xl">
+                <form action="{{ isset($equipment) ? route('equipment.update', $equipment->equipment_id) : route('equipment.store') }}" method="POST" class="bg-white p-4 rounded-lg border space-y-4 w-4xl">
                     @csrf
 
                     <div class="grid grid-cols-3 gap-6">
@@ -19,15 +19,15 @@
                         </div>
 
                         <div>
-                            <label for="maintenance_date" class="block text-sm font-medium text-[#222831] mb-1">Maintenance Date</label> 
-                            <input type="date" name="maintenance_date" value="{{ old('maintenance_date', $equipment->maintenance_date ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
-                            @error('maintenance_date') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
                             <label for="purchase_date" class="block text-sm font-medium text-[#222831] mb-1">Purchase Date</label> 
                             <input type="date" name="purchase_date" value="{{ old('purchase_date', $equipment->purchase_date ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
                             @error('purchase_date') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="maintenance_date" class="block text-sm font-medium text-[#222831] mb-1">Maintenance Date</label> 
+                            <input type="date" name="maintenance_date" value="{{ old('maintenance_date', $equipment->maintenance_date ?? '') }}" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                            @error('maintenance_date') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
@@ -54,7 +54,9 @@
                             <select name="employee_id" id="employee_id" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
                                 <option selected>Select Employee</option>
                                 @foreach ($employees as $employee)
-                                    <option value="{{ $employee->employee_id }}" {{ old('employee_id') == $employee->employee_id ? 'selected' : '' }}>
+                                    <option 
+                                        value="{{ $employee->employee_id }}"
+                                        {{ (string) old('employee_id', $employee->employee_id ?? '') === (string) $employee->employee_id ? 'selected' : '' }}>
                                         {{ $employee->user->first_name }} {{ $employee->user->last_name }}
                                     </option>
                                 @endforeach
@@ -62,7 +64,20 @@
                             @error('employee_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                         </div>
 
-                        
+                        <div>
+                            <label for="service_id" class="block text-sm font-medium text-[#222831] mb-1">Service</label>
+                            <select name="service_id" id="service_id" class="block w-full px-3 py-1.5 text-sm border border-gray-300 rounded">
+                                <option selected>Select Service</option>
+                                @foreach ($services as $service)
+                                    <option 
+                                        value="{{ $service->service_type_id }}"
+                                        {{ (string) old('service_id', $service->service_type_id ?? '') === (string) $service->service_type_id ? 'selected' : '' }}>
+                                        {{ $service->service_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('service_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                     <div class="text-right">
