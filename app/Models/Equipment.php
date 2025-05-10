@@ -31,20 +31,4 @@ class Equipment extends Model
     {
         return $this->belongsTo(ServiceType::class, 'service_id', 'service_type_id');
     }
-
-    protected static function booted()
-    {
-        static::created(function ($equipment) {
-            Inventory::firstOrCreate(
-                ['equipment_id' => $equipment->equipment_id],
-                [
-                    'item_id' => null,
-                    'service_transaction_id' => null,
-                    'employee_id' => null,
-                    'finance_id' => null,
-                    'sales' => 0
-                ]
-            );
-        });
-    }    
 }
