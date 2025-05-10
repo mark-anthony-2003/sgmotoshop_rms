@@ -11,6 +11,7 @@ use App\Models\PositionType;
 use App\Models\RegularSalary;
 use App\Models\SalaryType;
 use App\Models\User;
+use App\Services\InventoryLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

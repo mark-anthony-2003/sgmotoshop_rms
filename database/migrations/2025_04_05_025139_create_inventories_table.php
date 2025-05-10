@@ -13,27 +13,30 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id('inventory_id');
+
             $table->foreignId('item_id')
                 ->nullable()
                 ->constrained('items', 'item_id')
                 ->onDelete('cascade');
-            $table->foreignId('service_transaction_id')
-                ->nullable()
-                ->constrained('service_transactions', 'service_transaction_id')
-                ->onDelete('cascade');
             $table->foreignId('employee_id')
                 ->nullable()
-                ->constrained('inventories', 'inventory_id')
-                ->onDelete('cascade');
+                ->constrained('employees', 'employee_id')
+                ->onDelete('set null');
             $table->foreignId('equipment_id')
                 ->nullable()
                 ->constrained('equipments', 'equipment_id')
-                ->onDelete('cascade');
-            $table->foreignId('finance_id')
-                ->nullable()
-                ->constrained('finances', 'finance_id')
-                ->onDelete('cascade');
-            $table->integer('sales');
+                ->onDelete('set null');
+
+            $table->enum('source_type', ['service_transaction', 'finance', 'sales', 'equipment', 'hr']);
+            $table->unsignedBigInteger('source_id');
+            $table->index(['source_type', 'source_id']);
+
+            $table->integer('quantity')->nullable();
+            $table->enum('movement_type', ['in', 'out', 'log']);
+            $table->text('remarks')->nullable();
+
+            $table->decimal('sales', 10, 2)->nullable();
+
             $table->timestamps();
         });
     }

@@ -71,6 +71,28 @@
         });
 
         stockSalesChart.render();
+
+        const financeChart = new ApexCharts(document.querySelector("#finance-chart"), {
+            chart: {
+                type: 'line',
+                height: 300,
+                toolbar: { show: false }
+            },
+            series: [{
+                name: 'Total Sales',
+                data: @json($financeSales)
+            }],
+            xaxis: {
+                categories: @json($financeMonths),
+                labels: { style: { fontSize: '13px', colors: '#9ca3af' } }
+            },
+            colors: ['#f59e0b'],
+            stroke: { curve: 'smooth' },
+            dataLabels: { enabled: false },
+            markers: { size: 4 }
+        });
+
+        financeChart.render();
     });
 </script>
 @endpush

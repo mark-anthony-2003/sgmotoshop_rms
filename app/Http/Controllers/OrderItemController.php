@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Luigel\Paymongo\Facades\Paymongo;
 
 class OrderItemController extends Controller
 {
@@ -172,7 +171,7 @@ class OrderItemController extends Controller
                     'shipment_method'   => $request->shipment_method,
                     'payment_method'    => $request->payment_method,
                     'payment_status'    => 'pending',
-                    'payment_reference' => null,
+                    'payment_reference' => null
                 ]);
 
                 $cart->shipment_id = $shipment->shipment_id;
@@ -288,7 +287,7 @@ class OrderItemController extends Controller
     
                 $item->decrement('stocks', $cart->quantity);
                 $item->increment('sold', $cart->quantity);
-    
+
                 $shipment = Shipment::create([
                     'cart_id'           => $cart->cart_id,
                     'total_amount'      => $cart->sub_total,
@@ -297,7 +296,7 @@ class OrderItemController extends Controller
                     'shipment_method'   => $data['shipment_method'],
                     'payment_method'    => 'gcash',
                     'payment_status'    => 'paid',
-                    'payment_reference' => 'GCASH-' . strtoupper(Str::random(10)),
+                    'payment_reference' => 'GCASH-' . strtoupper(Str::random(10))
                 ]);
     
                 $cart->shipment_id = $shipment->shipment_id;
@@ -307,7 +306,7 @@ class OrderItemController extends Controller
                     'user_id'         => $user->user_id,
                     'shipment_id'     => $shipment->shipment_id,
                     'amount'          => $shipment->total_amount,
-                    'tracking_number' => 'TRK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6)),
+                    'tracking_number' => 'TRK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6))
                 ]);
             }
     

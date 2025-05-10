@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Equipment;
 use App\Models\ServiceType;
 use Illuminate\Http\Request;
+use App\Services\InventoryLogger;
 
 class EquipmentController extends Controller
 {
@@ -50,6 +51,16 @@ class EquipmentController extends Controller
             'equipment_status'  => $validated['equipment_status']
         ]);
 
+        InventoryLogger::log([
+            'equipment_id' => $equipment->equipment_id,
+            'employee_id' => $equipment->employee_id,
+            'source_type' => 'equipment',
+            'source_id' => $equipment->equipment_id,
+            'quantity' => 1,
+            'movement_type' => 'in',
+            'remarks' => 'New equipment created',
+        ]);
+
         if (!$equipment) {
             return redirect()->back()->withCookies(['errors', 'Failed to store equipment']);
         }
@@ -86,12 +97,33 @@ class EquipmentController extends Controller
             'equipment_status'  => $validated['equipment_status']
         ]);
 
+        InventoryLogger::log([
+            'equipment_id' => $equipment->equipment_id,
+            'employee_id' => $equipment->employee_id,
+            'source_type' => 'equipment',
+            'source_id' => $equipment->equipment_id,
+            'quantity' => 0,
+            'movement_type' => 'in',
+            'remarks' => 'Equipment updated',
+        ]);
+
         return redirect()->route('equipments.table')->with('success', 'Equipment updated successfully');
     }
 
     public function equipmentDelete(Equipment $equipment)
     {
         $equipment->delete();
+
+        InventoryLogger::log([
+            'equipment_id' => $equipment->equipment_id,
+            'employee_id' => $equipment->employee_id,
+            'source_type' => 'equipment',
+            'source_id' => $equipment->equipment_id,
+            'quantity' => -1,
+            'movement_type' => 'out',
+            'remarks' => 'Equipment deleted',
+        ]);
+        
         return redirect()->route('equipments.table')->with('success', 'Equipment deleted successfully');
     }
 }

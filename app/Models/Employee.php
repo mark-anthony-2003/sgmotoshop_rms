@@ -47,12 +47,13 @@ class Employee extends Model
     }
     public function regularSalary(): BelongsTo
     {
-        return $this->belongsTo(RegularSalary::class, 'salary_type_id');
+        return $this->belongsTo(RegularSalary::class, 'employee_id', 'employee_id');
     }
-    public function perDaySalary(): BelongsTo
+    public function perDaySalary(): HasOne
     {
-        return $this->belongsTo(PerDaySalary::class, 'salary_type_id');
+        return $this->hasOne(PerDaySalary::class, 'employee_id', 'employee_id');
     }
+
 
     public function equipment(): HasOne
     {
