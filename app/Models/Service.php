@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Service extends Model
 {
@@ -29,5 +30,9 @@ class Service extends Model
     public function serviceTransaction(): HasOne
     {
         return $this->hasOne(ServiceTransaction::class, 'service_id');
+    }
+    public function inventories(): MorphMany
+    {
+        return $this->morphMany(Inventory::class, 'inventory');
     }
 }

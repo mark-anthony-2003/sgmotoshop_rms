@@ -26,13 +26,13 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Stocks & Sales -->
             <div class="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
-                <h2 class="text-lg font-semibold text-[#222831] mb-4">Stocks & Sales by Month</h2>
+                <h2 class="text-lg font-semibold text-[#222831] mb-4">Stocks & Sold by Month</h2>
                 <div id="item-stock-sales-chart" class="w-full"></div>
             </div>
 
             <!-- Finance Overview -->
             <div class="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
-                <h2 class="text-lg font-semibold text-[#222831] mb-4">Finance Overview</h2>
+                <h2 class="text-lg font-semibold text-[#222831] mb-4">Sales Overview</h2>
                 <div id="finance-chart" class="w-full"></div>
             </div>
         </div>
@@ -71,28 +71,6 @@
         });
 
         stockSalesChart.render();
-
-        const financeChart = new ApexCharts(document.querySelector("#finance-chart"), {
-            chart: {
-                type: 'line',
-                height: 300,
-                toolbar: { show: false }
-            },
-            series: [{
-                name: 'Total Sales',
-                data: @json($financeSales)
-            }],
-            xaxis: {
-                categories: @json($financeMonths),
-                labels: { style: { fontSize: '13px', colors: '#9ca3af' } }
-            },
-            colors: ['#f59e0b'],
-            stroke: { curve: 'smooth' },
-            dataLabels: { enabled: false },
-            markers: { size: 4 }
-        });
-
-        financeChart.render();
     });
 </script>
 @endpush

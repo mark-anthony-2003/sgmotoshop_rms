@@ -135,30 +135,6 @@
                                 id="segment-item-4" aria-selected="true" data-hs-tab="#segment-4" aria-controls="segment-4" role="tab">
                                 All
                             </button>
-                            <button 
-                                type="button" 
-                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
-                                id="segment-item-5" aria-selected="false" data-hs-tab="#segment-5" aria-controls="segment-5" role="tab">
-                                Unpaid
-                            </button>
-                            <button 
-                                type="button" 
-                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
-                                id="segment-item-6" aria-selected="false" data-hs-tab="#segment-6" aria-controls="segment-6" role="tab">
-                                To Ship
-                            </button>
-                            <button 
-                                type="button" 
-                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
-                                id="segment-item-7" aria-selected="false" data-hs-tab="#segment-7" aria-controls="segment-7" role="tab">
-                                Shipped
-                            </button>
-                            <button 
-                                type="button" 
-                                class="hs-tab-active:bg-white hs-tab-active:text-[#222831] py-2.5 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-500 font-medium rounded-md disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white dark:focus:text-white"
-                                id="segment-item-8" aria-selected="false" data-hs-tab="#segment-8" aria-controls="segment-8" role="tab">
-                                Returns
-                            </button>
                         </nav>
                     </div>
 
@@ -222,10 +198,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="segment-5" role="tabpanel" class="hidden" aria-labelledby="segment-item-5">Unpaid</div>
-                        <div id="segment-6" role="tabpanel" class="hidden" aria-labelledby="segment-item-6">To Ship</div>
-                        <div id="segment-7" role="tabpanel" class="hidden" aria-labelledby="segment-item-7">Shipped</div>
-                        <div id="segment-8" role="tabpanel" class="hidden" aria-labelledby="segment-item-8">Returns</div>
                     </div>
                 </div>
                 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Services\InventoryLogger;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -51,16 +50,6 @@ class ItemController extends Controller
             'item_status'   => $validated['item_status']
         ]);
 
-        InventoryLogger::log([
-            'item_id'      => $item->item_id,
-            'employee_id'  => auth()->user()->employee->employee_id ?? null,
-            'source_type'  => 'sales',
-            'source_id'    => $item->item_id,
-            'quantity'     => $item->stocks,
-            'movement_type'=> 'in',
-            'remarks'      => 'New item created',
-        ]);
-
         if (!$item) {
             return redirect()->back()->withErrors(['error' => 'Failed to store item.']);
         }
@@ -95,37 +84,12 @@ class ItemController extends Controller
             'image'         => $itemImagePath,
             'item_status'   => $validated['item_status']
         ]);
-
-        $quantityChange = $validated['stocks'] - $item->stocks;
-        if ($quantityChange != 0) {
-            InventoryLogger::log([
-                'item_id'      => $item->item_id,
-                'employee_id'  => auth()->user()->employee->employee_id ?? null,
-                'source_type'  => 'sales',
-                'source_id'    => $item->item_id,
-                'quantity'     => $quantityChange,
-                'movement_type'=> $quantityChange > 0 ? 'in' : 'out',
-                'remarks'      => 'Item stock adjusted',
-            ]);
-        }
-
         return redirect()->route('items.table')->with('success', 'Item updated successfully');
     }
 
     public function itemDelete(Item $item)
     {
         $item->delete();
-
-        InventoryLogger::log([
-            'item_id'      => $item->item_id,
-            'employee_id'  => auth()->user()->employee->employee_id ?? null,
-            'source_type'  => 'sales',
-            'source_id'    => $item->item_id,
-            'quantity'     => -$item->stocks,
-            'movement_type'=> 'out',
-            'remarks'      => 'Item deleted',
-        ]);
-
         return redirect()->route('items.table')->with('success', 'Item deleted successfully');
     }
 }

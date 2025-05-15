@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventory;
 use App\Models\PendingReservation;
 use App\Models\Service;
 use App\Models\ServiceDetail;
@@ -71,21 +72,29 @@ class ReservationController extends Controller
                 'service_id'    => $service->service_id,
             ]);
     
-            // Manually check if 'serviceTypes' exists in the object
             foreach ($request->serviceTypes ?? [] as $serviceTypeId) {
                 ServiceDetail::create([
                     'service_id'      => $service->service_id,
                     'service_type_id' => $serviceTypeId,
                     'part_id'         => null,
                 ]);
+                Inventory::create([
+                    'inventory_type'    => 'service type',
+                    'inventoryable_id'  => $serviceTypeId,
+                    'amount'            => -1,
+                ]);
             }
     
-            // Manually check if 'parts' exists in the object
             foreach ($request->parts ?? [] as $partId) {
                 ServiceDetail::create([
                     'service_id'      => $service->service_id,
                     'service_type_id' => null,
                     'part_id'         => $partId,
+                ]);
+                Inventory::create([
+                    'inventory_type'    => 'part',
+                    'inventoryable_id'  => $partId,
+                    'amount'            => -1,
                 ]);
             }
     
@@ -167,13 +176,11 @@ class ReservationController extends Controller
     
         $data = json_decode($pending->data, true);
     
-        // Check if total_amount is available in the session
         if (!isset($data['total_amount'])) {
             return redirect()->route('reservation.form')->with('error', 'Total amount is missing or invalid.');
         }
     
         try {
-            // Instead of directly creating the service here, call storeReservation to handle storing the reservation data
             return $this->storeReservation(
                 (object)[
                     'serviceTypes' => $data['serviceTypes'] ?? [],
@@ -181,9 +188,9 @@ class ReservationController extends Controller
                     'preferred_date' => $data['preferred_date'] ?? null
                 ],
                 $data['total_amount'],
-                'gcash', // Payment method
-                'completed', // Payment status
-                'GCASH-' . strtoupper(Str::random(10)) // Generate payment reference
+                'gcash',
+                'completed',
+                'GCASH-' . strtoupper(Str::random(10))
             );
     
         } catch (\Exception $e) {

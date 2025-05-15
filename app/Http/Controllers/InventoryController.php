@@ -32,26 +32,11 @@ class InventoryController extends Controller
         $months = $monthlyData->pluck('month')->toArray();
         $totalStocks = $monthlyData->pluck('total_stocks')->toArray();
         $totalSold = $monthlyData->pluck('total_sold')->toArray();
-
-        // Finance Overview: Monthly Sales from inventories
-        $financeData = DB::table('inventories')
-            ->whereNotNull('sales')
-            ->select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-                DB::raw('SUM(sales) as total_sales')
-            )
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        $financeMonths = $financeData->pluck('month')->toArray();
-        $financeSales = $financeData->pluck('total_sales')->toArray();
         
 
         return view('admin.dashboard.index', compact(
             'productsCount', 'servicesCount', 'employeesCount', 'equipmentsCount',
             'months', 'totalStocks', 'totalSold',
-            'financeMonths', 'financeSales'
         ));
     }
 }

@@ -14,33 +14,13 @@ class Inventory extends Model
     protected $primaryKey = 'inventory_id';
 
     protected $fillable = [
-        'item_id',
-        'employee_id',
-        'equipment_id',
-        'source_type',
-        'source_id',
-        'quantity',
-        'movement_type',
-        'remarks',
-        'sales'
+        'inventory_type',
+        'inventoryable_id',
+        'amount'
     ];
 
-    // Polymorphic relation to source (service_transaction, finance, sales)
-    public function source(): MorphTo
+    public function inventoryable(): MorphTo
     {
-        return $this->morphTo(null, 'source_type', 'source_id');
-    }
-
-    public function item(): BelongsTo
-    {
-        return $this->belongsTo(Item::class, 'item_id');
-    }
-    public function employee(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'employee_id');
-    }
-    public function equipment(): BelongsTo
-    {
-        return $this->belongsTo(Equipment::class, 'equipment_id');
+        return $this->morphTo();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Inventory;
 use App\Models\Item;
 use App\Models\Product;
 use App\Models\Shipment;
@@ -151,17 +152,23 @@ class OrderItemController extends Controller
         try {
             foreach ($carts as $cart) {
                 $item = $cart->item;
-    
+
                 if (!$item) {
                     throw new \Exception("Item not found for cart ID {$cart->cart_id}");
                 }
-    
+
                 if ($item->stocks < $cart->quantity) {
                     throw new \Exception("Not enough stock for item: {$item->item_name}");
                 }
-    
+
                 $item->decrement('stocks', $cart->quantity);
                 $item->increment('sold', $cart->quantity);
+
+                Inventory::create([
+                    'inventory_type'    => 'product',
+                    'inventoryable_id'  => $item->item_id,
+                    'amount'            => -$cart->quantity,
+                ]);
 
                 $shipment = Shipment::create([
                     'cart_id'           => $cart->cart_id,
@@ -171,29 +178,26 @@ class OrderItemController extends Controller
                     'shipment_method'   => $request->shipment_method,
                     'payment_method'    => $request->payment_method,
                     'payment_status'    => 'pending',
-                    'payment_reference' => null
+                    'payment_reference' => null,
                 ]);
 
                 $cart->shipment_id = $shipment->shipment_id;
                 $cart->save();
 
                 Product::create([
-                    'user_id' => $user->user_id,
-                    'shipment_id' => $shipment->shipment_id,
-                    'amount' => $shipment->total_amount,
-                    'tracking_number' => 'TRK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6))
+                    'user_id'         => $user->user_id,
+                    'shipment_id'     => $shipment->shipment_id,
+                    'amount'          => $shipment->total_amount,
+                    'tracking_number' => 'TRK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6)),
                 ]);
             }
 
             DB::commit();
-
             session()->forget('itemsCheckout');
-
             return redirect()->route('items')->with('success', 'Order placed and shipment created successfully.');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Failed to place order', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to place order. Please try again.');
         }
     }
@@ -287,6 +291,12 @@ class OrderItemController extends Controller
     
                 $item->decrement('stocks', $cart->quantity);
                 $item->increment('sold', $cart->quantity);
+
+                Inventory::create([
+                    'inventory_type'    => 'product',
+                    'inventoryable_id'  => $item->item_id,
+                    'amount'            => -$cart->quantity,
+                ]);
 
                 $shipment = Shipment::create([
                     'cart_id'           => $cart->cart_id,
