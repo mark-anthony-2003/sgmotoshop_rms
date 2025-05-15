@@ -167,7 +167,7 @@ class OrderItemController extends Controller
                 Inventory::create([
                     'inventory_type'    => 'product',
                     'inventoryable_id'  => $item->item_id,
-                    'amount'            => -$cart->quantity,
+                    'amount'            => $cart->sub_total
                 ]);
 
                 $shipment = Shipment::create([
@@ -295,7 +295,7 @@ class OrderItemController extends Controller
                 Inventory::create([
                     'inventory_type'    => 'product',
                     'inventoryable_id'  => $item->item_id,
-                    'amount'            => -$cart->quantity,
+                    'amount'            => $cart->sub_total
                 ]);
 
                 $shipment = Shipment::create([

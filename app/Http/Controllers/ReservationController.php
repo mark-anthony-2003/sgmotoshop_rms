@@ -79,9 +79,9 @@ class ReservationController extends Controller
                     'part_id'         => null,
                 ]);
                 Inventory::create([
-                    'inventory_type'    => 'service type',
+                    'inventory_type'    => 'service',
                     'inventoryable_id'  => $serviceTypeId,
-                    'amount'            => -1,
+                    'amount'            => $service->total_amount
                 ]);
             }
     
@@ -94,7 +94,7 @@ class ReservationController extends Controller
                 Inventory::create([
                     'inventory_type'    => 'part',
                     'inventoryable_id'  => $partId,
-                    'amount'            => -1,
+                    'amount'            => $service->total_amount
                 ]);
             }
     

@@ -22,18 +22,15 @@
             @endforeach
         </div>
 
-        <!-- Charts Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Stocks & Sales -->
             <div class="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
                 <h2 class="text-lg font-semibold text-[#222831] mb-4">Stocks & Sold by Month</h2>
                 <div id="item-stock-sales-chart" class="w-full"></div>
             </div>
 
-            <!-- Finance Overview -->
             <div class="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
-                <h2 class="text-lg font-semibold text-[#222831] mb-4">Sales Overview</h2>
-                <div id="finance-chart" class="w-full"></div>
+                <h2 class="text-lg font-semibold text-[#222831] mb-4">Inventory Trends</h2>
+                <div id="inventory-trend-chart" class="w-full"></div>
             </div>
         </div>
     </div>
@@ -43,7 +40,7 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Stocks & Sales Bar Chart
+        // Stocks & Sold by Month Bar Chart
         const stockSalesChart = new ApexCharts(document.querySelector("#item-stock-sales-chart"), {
             chart: {
                 type: 'bar',
@@ -71,6 +68,40 @@
         });
 
         stockSalesChart.render();
+
+        // Inventory Trend Chart
+        const inventoryChart = new ApexCharts(document.querySelector("#inventory-trend-chart"), {
+            chart: {
+                type: 'line',
+                height: 300,
+                toolbar: { show: false }
+            },
+            series: [
+                {
+                    name: 'Product',
+                    data: @json($productSeries)
+                },
+                {
+                    name: 'Service',
+                    data: @json($serviceSeries)
+                }
+            ],
+            xaxis: {
+                categories: @json($inventoryMonths),
+                labels: {
+                    style: { fontSize: '13px', colors: '#9ca3af' }
+                }
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            colors: ['#6366f1', '#f59e0b'],
+            legend: { position: 'top' },
+            dataLabels: { enabled: false }
+        });
+
+        inventoryChart.render();
     });
 </script>
 @endpush

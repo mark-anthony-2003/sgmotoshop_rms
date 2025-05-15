@@ -32,11 +32,32 @@ class InventoryController extends Controller
         $months = $monthlyData->pluck('month')->toArray();
         $totalStocks = $monthlyData->pluck('total_stocks')->toArray();
         $totalSold = $monthlyData->pluck('total_sold')->toArray();
+
+        $inventoryTrends = DB::table('inventories')
+            ->select(
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                'inventory_type',
+                DB::raw('SUM(amount) as total_amount')
+            )
+            ->groupBy('month', 'inventory_type')
+            ->orderBy('month')
+            ->get();
+
+        $grouped = $inventoryTrends->groupBy('inventory_type');
+
+        $inventoryMonths = $inventoryTrends->pluck('month')->unique()->values()->toArray();
+
+        $productData = $grouped['product']->pluck('total_amount', 'month')->toArray() ?? [];
+        $serviceData = $grouped['service']->pluck('total_amount', 'month')->toArray() ?? [];
+
+        $productSeries = array_map(fn($month) => $productData[$month] ?? 0, $inventoryMonths);
+        $serviceSeries = array_map(fn($month) => $serviceData[$month] ?? 0, $inventoryMonths);
         
 
         return view('admin.dashboard.index', compact(
             'productsCount', 'servicesCount', 'employeesCount', 'equipmentsCount',
             'months', 'totalStocks', 'totalSold',
+            'inventoryMonths', 'productSeries', 'serviceSeries'
         ));
     }
 }
