@@ -30,7 +30,7 @@ class ItemController extends Controller
             'price'         => 'required|integer',
             'stocks'        => 'required|integer',
             'sold'          => 'required|integer',
-            'image'         => 'nullable|image|mimes:png,jpg|max:5000',
+            'image'         => 'nullable|image|mimes:png,jpg,jpeg|max:5000',
             'item_status'   => 'required|in:in_stock,out_of_stock',
         ]);
 

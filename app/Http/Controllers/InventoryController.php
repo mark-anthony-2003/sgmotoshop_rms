@@ -47,8 +47,8 @@ class InventoryController extends Controller
 
         $inventoryMonths = $inventoryTrends->pluck('month')->unique()->values()->toArray();
 
-        $productData = $grouped['product']->pluck('total_amount', 'month')->toArray() ?? [];
-        $serviceData = $grouped['service']->pluck('total_amount', 'month')->toArray() ?? [];
+        $productData = ($grouped['product'] ?? collect())->pluck('total_amount', 'month')->toArray();
+        $serviceData = ($grouped['service'] ?? collect())->pluck('total_amount', 'month')->toArray();
 
         $productSeries = array_map(fn($month) => $productData[$month] ?? 0, $inventoryMonths);
         $serviceSeries = array_map(fn($month) => $serviceData[$month] ?? 0, $inventoryMonths);
